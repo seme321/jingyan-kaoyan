@@ -2148,6 +2148,30 @@ html[data-theme='light'] .mascot-tip.bond-synergy .mascot-bubble-name {
   }
 }
 
+.codex-attribution-bar {
+  padding: 0.95rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  border-left: 3px solid var(--accent-sky);
+}
+
+.codex-attr-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+}
+
+.codex-attr-text {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+
 /* Responsive Breakpoints */
 @media (max-width: 980px) {
   .checkin-strip {

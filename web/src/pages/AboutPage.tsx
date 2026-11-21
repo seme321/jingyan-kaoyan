@@ -324,7 +324,25 @@ export const AboutPage: React.FC = () => {
               角色图鉴中特别鸣谢角色「Gemini」为本站通过 AI 自行生成的非商业致谢插图，不主张官方关联，亦不主张上游 CC 授权。
             </li>
             <li>
-              补给站角色图鉴中收录的 14 位 AI 拟人角色与三视图设定资料，参考整理自开源非商业展览企划 <strong>AI MUSE（AI_2Dgirls_Gallery）</strong>（特别致谢「Creeper-北极之光」提供初始形象参考，以及 ZipZipPipe、上善无形 等社区创作者的公开二创设定）。上述形象仅用于本站非商业考研陪伴与图鉴展示，不代表对应 AI 模型厂商官方设定。
+              补给站角色图鉴收录的 14 位 AI 拟人角色设定图与社区资料整理自{' '}
+              <a
+                href="https://github.com/HABAI182/ai-girls-atlas"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-contact-link"
+              >
+                HABAI182 / AI Girls Atlas
+              </a>{' '}
+              开源资料库项目（配套离线展览企划 <strong>AI MUSE / AI_2Dgirls_Gallery</strong>）：其中社区研究说明与来源核验文字遵循{' '}
+              <a
+                href="https://creativecommons.org/licenses/by/4.0/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-contact-link"
+              >
+                CC BY 4.0
+              </a>{' '}
+              署名（本站补充了考研水力学陪读台词与交互展示）；42 张多视图设定板系项目维护者参考「Creeper-北极之光」提供的初始形象图经 AI 生成，本站对其进行了单视角裁切、背景透明抠图与 WebP 压缩适配，<strong>不对上述图片主张统一的 CC 或商业使用许可</strong>；同时保留「上善无形」「ZipZipPipe」「这个刀子真甜」等社区创作者的逐条来源与各自许可边界（例如鲸鱼娘女仆设定的 CC BY-NC-SA 4.0 声明仅适用于其声明范围，不扩大到其他角色）。所有形象仅限本站非商业个人考研陪伴展示，不代表对应 AI 厂商官方设定。
             </li>
             <li>如原作者或相关权利人不同意本站使用，请通过下方联系方式告知，站长将在 <strong>48 小时内</strong>核实并替换或删除。</li>
             <li>站名“{BRAND.name}”、矢量小胖鲸标志、网站代码与界面为本站独立设计开发。</li>
@@ -337,6 +355,17 @@ export const AboutPage: React.FC = () => {
           </h3>
           <ul className="about-list">
             <li>特别鸣谢 Google <strong>Gemini</strong> 协助真题梳理、配图重置与页面开发。</li>
+            <li>
+              <a
+                href="https://github.com/HABAI182/ai-girls-atlas"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-contact-link"
+              >
+                HABAI182 / AI Girls Atlas
+              </a>
+              （AI 娘形象与二创资料库：研究说明 CC BY 4.0，脚本 MIT；第三方图像沿用逐文件来源与许可边界）
+            </li>
             <li>React、React Router（MIT License）</li>
             <li>KaTeX 数学公式渲染（MIT License，字体 SIL OFL 1.1）</li>
             <li>Rajdhani & JetBrains Mono 开源英数展示字体（SIL OFL 1.1）</li>

@@ -6,6 +6,7 @@ import {
   Check,
   CheckCircle2,
   Crown,
+  ExternalLink,
   Fish,
   Frame,
   Gift,
@@ -1002,6 +1003,36 @@ export const CompanionPage: React.FC = () => {
                 })}
               </div>
             )}
+          </section>
+
+          <section className="card-panel codex-attribution-bar" aria-label="图鉴资料来源与许可声明">
+            <div className="codex-attr-head">
+              <span className="hud-code">PROVENANCE // 来源核验与许可边界</span>
+              <Link to="/about" className="inline-contact-link">
+                查看完整署名与合规声明 →
+              </Link>
+            </div>
+            <p className="codex-attr-text">
+              本图鉴 14 位 AI 拟人角色设定板与社区资料来源整理自开源项目{' '}
+              <a
+                href="https://github.com/HABAI182/ai-girls-atlas"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-contact-link"
+              >
+                HABAI182 / AI Girls Atlas <ExternalLink size={12} style={{ verticalAlign: '-1px' }} />
+              </a>
+              （AI MUSE / AI_2Dgirls_Gallery 企划，特别致谢「Creeper-北极之光」提供初始参考图，以及上善无形、ZipZipPipe 等社区创作者）。社区研究说明遵循{' '}
+              <a
+                href="https://creativecommons.org/licenses/by/4.0/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-contact-link"
+              >
+                CC BY 4.0
+              </a>{' '}
+              署名（本站补充了考研水力学台词并进行了单视角抠图与 WebP 适配）；角色图像沿用逐条来源与各自许可边界，不对外主张统一 CC 或商业许可，仅限非商业学习陪伴展示。
+            </p>
           </section>
         </div>
       )}

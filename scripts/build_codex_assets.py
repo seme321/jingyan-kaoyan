@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 """
 Build Codex image assets (sheets, transparent front-view sprites, closeup avatars)
-and structured codex.json from AI_2Dgirls_Gallery-main, plus QA contact sheets.
+and structured codex.json from HABAI182/ai-girls-atlas (AI_2Dgirls_Gallery-main,
+https://github.com/HABAI182/ai-girls-atlas), plus QA contact sheets.
 """
 from __future__ import annotations
 
 import json
+import os
 import shutil
 from pathlib import Path
 from typing import Dict, List, Tuple
@@ -15,7 +17,7 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 from scipy.ndimage import binary_dilation, label
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC_ROOT = Path(r"c:\Users\6\Desktop\AI_2Dgirls_Gallery-main")
+SRC_ROOT = Path(os.environ.get("CODEX_SRC_ROOT", str(ROOT.parent / "AI_2Dgirls_Gallery-main")))
 GALLERY_JSON = SRC_ROOT / "data" / "gallery-data.json"
 
 OUT_CODEX = ROOT / "web" / "public" / "codex"
@@ -24,9 +26,7 @@ OUT_SPRITES = OUT_CODEX / "sprites"
 OUT_AVATARS = OUT_CODEX / "avatars"
 OUT_JSON = ROOT / "web" / "public" / "data" / "codex.json"
 
-QA_DIR = Path(
-    r"C:\Users\6\.gemini\antigravity\brain\41e1a533-63f2-4ecb-9a5f-7e2268a97ee3\scratch"
-)
+QA_DIR = Path(os.environ.get("CODEX_QA_DIR", str(ROOT / "tmp_codex_qa")))
 
 VARIANTS: List[Tuple[str, str, str, str, str]] = [
     ("chibi", "03_Q版", "Q版", "R", "Q版"),

@@ -420,7 +420,25 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
                     ))}
                   </div>
                   <p className="char-source-disclaimer">
-                    图鉴立绘与资料整理参考自开源展览企划 AI MUSE（特别感谢「Creeper-北极之光」提供初始参考图，仅供非商业个人学习陪伴展示，不代表对应 AI 厂商官方人设；如涉权益争议请联系站长 48 小时内移除）。
+                    本页社区资料与来源核验整理参考自{' '}
+                    <a
+                      href="https://github.com/HABAI182/ai-girls-atlas"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-contact-link"
+                    >
+                      HABAI182 / AI Girls Atlas
+                    </a>
+                    （AI MUSE / AI_2Dgirls_Gallery 企划；研究说明按{' '}
+                    <a
+                      href="https://creativecommons.org/licenses/by/4.0/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-contact-link"
+                    >
+                      CC BY 4.0
+                    </a>{' '}
+                    署名，本站补充了考研水力学陪读语录）。角色设定图由企划维护者参考「Creeper-北极之光」提供的初始图生成，经本站单视角裁切、透明抠图与 WebP 适配，仅供非商业学习陪伴展示，不对图片主张统一 CC 或商业许可；各社区作者署名与许可边界以逐条来源为准，不代表对应 AI 厂商官方人设；如涉权益争议请联系站长 48 小时内更正或移除。
                   </p>
                 </div>
               )}
