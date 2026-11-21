@@ -10,6 +10,7 @@ import './styles/tokens.css';
 import './styles/base.css';
 import './styles/shell.css';
 import './styles/pages.css';
+import './styles/companion.css';
 import App from './App';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

@@ -10,15 +10,19 @@ import {
   Compass,
   Copy,
   FileSpreadsheet,
+  Fish,
   Flame,
+  Heart,
   Layers,
   Megaphone,
   Sparkles,
   Timer,
+  UserCheck,
   Users,
 } from 'lucide-react';
 import { useData } from '../context/DataContext';
 import { useStudy } from '../context/StudyContext';
+import { useCompanion } from '../context/CompanionContext';
 import { BRAND } from '../brand';
 import { Mascot } from '../components/Mascot';
 import { copyText } from '../utils/clipboard';
@@ -55,6 +59,8 @@ export const HomePage: React.FC = () => {
     latestAnnouncement,
   } = useData();
   const { state, getRecord } = useStudy();
+  const { companion, activeMascot, claimableCount, unlockedCodexCount, interactWithMascot } =
+    useCompanion();
   const countdown = useMemo(getExamCountdown, []);
   const [copiedQq, setCopiedQq] = useState(false);
   const [quipIdx, setQuipIdx] = useState<number>(-1);
@@ -113,18 +119,24 @@ export const HomePage: React.FC = () => {
   const wrongPct = stats.total > 0 ? Math.min(100, Math.round((stats.wrongBook / stats.total) * 100)) : 0;
   const mockPct = readyYears.length > 0 ? Math.min(100, Math.round((state.mockHistory.length / readyYears.length) * 100)) : 0;
 
+  const unlockedQuotes = useMemo(() => {
+    const quotes = activeMascot.studyQuotes.length > 0 ? activeMascot.studyQuotes : EXTRA_QUIPS;
+    return activeMascot.bondLevel >= 2 ? quotes : quotes.slice(0, 3);
+  }, [activeMascot.bondLevel, activeMascot.studyQuotes]);
+
   const defaultGreeting =
     stats.total === 0
       ? `「${currentCourse.shortLabel}」考纲与 ${formulas.length} 组公式已就位，导入真题即可开刷！`
       : stats.practiced === 0
-        ? `你好呀，我是${BRAND.mascotName}！今天先从「${currentCourse.shortLabel}」第 1 题开始吧～`
+        ? activeMascot.greetTemplate
         : stats.wrongBook > 0
-          ? `终端检测到 ${stats.wrongBook} 道待斩错题，先把它们逐一击破吧！`
+          ? `${activeMascot.name}检测到 ${stats.wrongBook} 道待斩错题，先把它们逐一击破吧！`
           : masteryPct >= 80
-            ? '掌握率突破 80% 啦！来一场 180 分钟全真模考检验实战水准？'
-            : `已累计突破 ${stats.practiced} 题，保持节奏，专业课稳稳拿下！`;
+            ? `掌握率突破 80% 啦！${activeMascot.name}邀你来一场 180 分钟全真模考检验实力！`
+            : `已累计突破 ${stats.practiced} 题，${activeMascot.name}陪你稳住节奏拿下专业课！`;
 
-  const activeDialogue = quipIdx >= 0 ? EXTRA_QUIPS[quipIdx % EXTRA_QUIPS.length] : defaultGreeting;
+  const activeDialogue =
+    quipIdx >= 0 ? unlockedQuotes[quipIdx % unlockedQuotes.length] : defaultGreeting;
 
   return (
     <div className="page-container">
@@ -203,31 +215,70 @@ export const HomePage: React.FC = () => {
 
           {/* Operator Mascot Terminal Stage */}
           <div
-            className="hero-operator-stage"
-            role="button"
-            tabIndex={0}
-            title="点击切换大肥鱼备考提示"
-            onClick={() => setQuipIdx((i) => (i + 1) % EXTRA_QUIPS.length)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                setQuipIdx((i) => (i + 1) % EXTRA_QUIPS.length);
-              }
-            }}
+            className={`hero-operator-stage frame-${companion.equippedFrame} ${
+              activeMascot.bondLevel >= 10
+                ? 'bond-tier-10'
+                : activeMascot.bondLevel >= 6
+                  ? 'bond-tier-6'
+                  : ''
+            }`}
+            style={{ '--operator-accent': activeMascot.color } as React.CSSProperties}
           >
-            <div className="operator-stage-top">
-              <span>
-                ASSISTANT // <strong>DF-01</strong>
-              </span>
-              <span>{stats.practiced > 0 && masteryPct >= 80 ? 'CHEER' : 'ONLINE'}</span>
-            </div>
-            <Mascot pose={stats.practiced > 0 && masteryPct >= 80 ? 'cheer' : 'hero'} size={196} float />
-            <div className="operator-dialogue-strip">
-              <div className="operator-dialogue-head">
-                <span>{BRAND.mascotName} // BRIEFING</span>
-                <span>NEXT ▸</span>
+            <div
+              className="operator-stage-clickzone"
+              role="button"
+              tabIndex={0}
+              title={`点击切换${activeMascot.name}备考提示（每日首次互动可领小鱼干）`}
+              onClick={() => {
+                setQuipIdx((i) => (i + 1) % unlockedQuotes.length);
+                interactWithMascot();
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setQuipIdx((i) => (i + 1) % unlockedQuotes.length);
+                  interactWithMascot();
+                }
+              }}
+            >
+              <div className="operator-stage-top">
+                <span>
+                  ASSISTANT // <strong>{activeMascot.code}</strong>
+                </span>
+                <span className="operator-stage-badge">
+                  {activeMascot.rarity} · <Heart size={10} /> Lv.{activeMascot.bondLevel}
+                  {activeMascot.bondLevel >= 10 && <span className="oath-chip">✦ 誓约</span>}
+                  {activeMascot.bondLevel >= 6 && activeMascot.bondLevel < 10 && ' ✦'}
+                </span>
               </div>
-              <span>{activeDialogue}</span>
+              <Mascot
+                pose={stats.practiced > 0 && masteryPct >= 80 ? 'cheer' : 'hero'}
+                size={196}
+                float
+                isHomeStage
+              />
+              <div className="operator-dialogue-strip">
+                <div className="operator-dialogue-head">
+                  <span>{activeMascot.name} // BRIEFING</span>
+                  <span>NEXT ▸</span>
+                </div>
+                <span>{activeDialogue}</span>
+              </div>
+            </div>
+            <div className="operator-quick-bar">
+              <Link to="/companion?tab=missions" className="op-quick-link">
+                <Fish size={12} />
+                <span>任务</span>
+                {claimableCount > 0 && <span className="op-quick-dot">{claimableCount}</span>}
+              </Link>
+              <Link to="/companion?tab=codex" className="op-quick-link">
+                <Layers size={12} />
+                <span>图鉴 {unlockedCodexCount}/42</span>
+              </Link>
+              <Link to="/companion?tab=stage" className="op-quick-link">
+                <UserCheck size={12} />
+                <span>换看板</span>
+              </Link>
             </div>
           </div>
         </div>

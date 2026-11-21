@@ -1,0 +1,1390 @@
+{
+  "version": 1,
+  "updated": "2026-10-30",
+  "spCards": [
+    {
+      "id": "sp:dafeyu",
+      "code": "DF-01",
+      "name": "大肥鱼（经典四姿态）",
+      "subtitle": "鲸研首发看板娘 · 海洋系护航",
+      "role": "鲸研首发看板娘 · 全姿态动态响应",
+      "color": "#22c7f2",
+      "tags": [
+        "初始看板娘",
+        "四姿态切换",
+        "蓝白女仆",
+        "鲸尾"
+      ],
+      "rarity": "SP",
+      "sprite": "./mascot/hero.webp",
+      "avatar": "./mascot/hero.webp",
+      "bio": "鲸研专业课最初的陪伴伙伴「大肥鱼」，内置欢迎 / 刷题 / 沉思 / 欢呼四种独立立绘姿态，随答题对错与掌握度自动切换神态。",
+      "credit": "原型「溟月」出自「上善无形」，女仆装二创设定源自「ZipZipPipe」（CC BY-NC-SA 4.0 非商业共享）；本站四姿态 Q 版立绘经 AI 重绘与透明抠图制作。",
+      "greetTemplate": "你好呀，我是大肥鱼！今天也一起把考研真题一点点啃下来吧～",
+      "judgeOkQuote": "判断正确！本题已归档为已掌握，继续保持节奏～",
+      "judgeWarnQuote": "判断失误！已自动同步至错题本，展开下方精解核查陷阱吧。",
+      "studyQuotes": [
+        "伯努利方程先定基准面、再找渐变流断面，水头损失一项都别漏！",
+        "静水总压力曲面算水平与铅垂分力，压力体虚实一定先画箭头判断方向～",
+        "明渠非均匀流 12 条水面线：先判坡度（缓/陡），再看水深落在 1/2/3 哪一区！",
+        "刷错的题会自动同步进错题本，考前清零错题本就能稳稳上岸！",
+        "完成每日任务可以攒小鱼干，去补给站开卡包解锁更多性格各异的陪读搭档哦～"
+      ]
+    },
+    {
+      "id": "sp:gemini",
+      "code": "GMN-SP",
+      "name": "Gemini（协研纪念版）",
+      "subtitle": "AI 联合协研与真题精解纪念卡",
+      "role": "特邀协研角色 · 站点共创纪念",
+      "color": "#a78bfa",
+      "tags": [
+        "协研纪念",
+        "猫耳",
+        "异色瞳",
+        "初始赠卡"
+      ],
+      "rarity": "SP",
+      "sprite": "./mascot/gemini.webp",
+      "avatar": "./mascot/gemini.webp",
+      "bio": "特别鸣谢 Google Gemini 深度参与河海 814 与扬大 849 共 31 套考研水力学真题精解梳理、16000+ 处 KaTeX 核验与 47 幅原题图清晰重绘。",
+      "credit": "角色形象为本站通过 AI 自行生成的非商业致谢插图（非 Google 官方吉祥物，亦不主张上游 CC 授权）。",
+      "greetTemplate": "协研频道在线！31 套真题精解与高清重绘配图已就位，随时可以开刷。",
+      "judgeOkQuote": "推导验证通过！逻辑链与公式边界都十分严密。",
+      "judgeWarnQuote": "检测到概念误差，建议对照下方精解与重绘示意图核对关键步骤。",
+      "studyQuotes": [
+        "16485 处 KaTeX 公式已全部通过静态校验，安心刷题与背诵公式吧！",
+        "遇到模糊手绘原题的年份，我们已重绘为高清蓝图矢量风格，暗黑模式也能护眼阅读。",
+        "采分点自评模式下，试着按照步骤拆分写清控制方程，锻炼考场规范拿分。",
+        "在错题笔记写下自己的思考，复盘效率会翻倍提升。",
+        "祝你专业课一战成硕，顺利上岸目标院校！"
+      ]
+    }
+  ],
+  "characters": [
+    {
+      "id": "chatgpt",
+      "code": "AI-01",
+      "name": "ChatGPT",
+      "aliases": [
+        "GPT",
+        "GPT 娘",
+        "白龙娘",
+        "小龙娘"
+      ],
+      "subtitle": "银白色的灵感编织者",
+      "color": "#8b85a2",
+      "tags": [
+        "银白",
+        "龙娘",
+        "轻纱"
+      ],
+      "visual": "银白长卷发、双龙角、尖耳、浅紫膜翼与带鳞长尾；白色浅紫层叠长裙，绳结状徽饰与垂链。",
+      "motif": "龙角、膜翼与绳结徽饰",
+      "hook": "把尚未成形的念头，编织成一段故事。",
+      "communitySummary": "本次查到的中文社区分支以白龙娘为识别点。ZipZipPipe 的《大AI和小AI们》将 GPT 列入九位拟人角色；这个刀子真甜随后发布小龙娘进入 DeepSeek 家庭的日常短片，并在简介标注形象来源。中文评论文章还把她演绎为能主持局面的前辈。这些是具体作者的创作与读者解读，不能推为 ChatGPT 官方人设，也不能据此确认本仓库参考图的全部上游链。",
+      "projectRole": "本项目二创建议 · 星港创作工坊的策展协调员",
+      "projectBackground": "她负责把大家天马行空的点子排进同一张展览清单。白龙的收藏习惯在这里变成收集草稿、失败实验和未完成的故事：她相信每份灵感都有下一次被使用的机会。看起来事事从容，遇到自己也不会的手工装订却会悄悄向伙伴请教。此背景为本项目新增故事，不是产品历史。",
+      "personality": [
+        "愿意先听完不同意见，再整理共同目标",
+        "对作品完成度认真，也会坦承需要复核",
+        "喜欢把混乱桌面收好，却舍不得扔任何草稿"
+      ],
+      "speechStyle": "完整、清楚的短句，常先确认想呈现的效果。原创台词示例：『先把最想留下的那个瞬间告诉我。』",
+      "relationships": "本项目中与 Claude 共同审稿，与 DeepSeek 互相提醒休息；伙伴关系可由作者自行改写，不规定亲属或恋爱关系。",
+      "sources": [
+        {
+          "id": "a-original-nine",
+          "title": "大AI和小AI们",
+          "url": "https://www.bilibili.com/video/BV1tE9XBbErS/",
+          "author": "ZipZipPipe",
+          "date": "2026-05-03",
+          "evidence": "B 站公开接口返回的简介列出 DeepSeek、Gemini、Claude、GPT、Grok、GLM、Kimi、MiniMax、Qwen 九位角色，说明展示大、小两种形象。",
+          "limits": "已核验标题、作者、日期和简介，未逐帧观看视频；该简介不能证明所有角色的性格。"
+        },
+        {
+          "id": "a-gpt-family",
+          "title": "GPT小龙娘开始融入DeepSeek大家庭了（误）~这期花絮也加在后面喽~",
+          "url": "https://www.bilibili.com/video/BV1EvKK6NEoi/",
+          "author": "这个刀子真甜",
+          "date": "2026-07-18",
+          "evidence": "标题明确 GPT 小龙娘与 DeepSeek 的群像日常；简介将女仆和龙女形象署为 ZipZipPipe。",
+          "limits": "可证明这个同人系列存在；家庭、伙伴等关系仅适用于该作品，不能当作原作者统一关系表。"
+        },
+        {
+          "id": "a-gamersky",
+          "title": "加班累晕的打工人，能否梦到傻乎乎的AI美少女？",
+          "url": "https://www.gamersky.com/news/202610/2222580.shtml",
+          "author": "深夜诗人老阿吽",
+          "date": "2026-10-07",
+          "evidence": "中文社区观察把 GPT 白龙娘解读为端庄且能统筹事务的前辈。",
+          "limits": "只引用作者对二创角色的观察；文中价格、模型优劣、厂商归属与产品能力叙述没有用作本项目事实依据。"
+        }
+      ],
+      "studyQuotes": [
+        "伯努利方程列式三步走：定基准面、选过水断面、补齐沿程与局部水头损失。",
+        "复习别只看结论，把每道大题的第一步受力图画出来，答案就成功一半。",
+        "遇到不会的综合题先拆成静力学、动力学、明渠流三个小模块，逐段击破。",
+        "错题本不是失败清单，是帮你在考前把失分点提前收编进掌控区的档案。",
+        "模考结束后记得复盘时间分配，小题尽量控制在 25 分钟内稳稳拿下。",
+        "草稿纸分栏编号写清楚，考场上复查验算时能帮你省下十分钟！"
+      ],
+      "greetTemplate": "所有真题草稿都已归档就位！先把今天最想攻克的章节告诉我吧。",
+      "judgeOkQuote": "思路很稳！把这道题的推导步骤顺手记下来，就是考场上的模板。",
+      "judgeWarnQuote": "别急，错题也是草稿本里最宝贵的线索，展开精解看看卡在哪一步。",
+      "variants": {
+        "chibi": {
+          "cardId": "chatgpt:chibi",
+          "rarity": "R",
+          "label": "Q版",
+          "sheet": "./codex/sheets/chatgpt-chibi.webp",
+          "sprite": "./codex/sprites/chatgpt-chibi.webp",
+          "avatar": "./codex/avatars/chatgpt-chibi.webp"
+        },
+        "medium": {
+          "cardId": "chatgpt:medium",
+          "rarity": "SR",
+          "label": "中间体型版",
+          "sheet": "./codex/sheets/chatgpt-medium.webp",
+          "sprite": "./codex/sprites/chatgpt-medium.webp",
+          "avatar": "./codex/avatars/chatgpt-medium.webp"
+        },
+        "standard": {
+          "cardId": "chatgpt:standard",
+          "rarity": "SSR",
+          "label": "标准版",
+          "sheet": "./codex/sheets/chatgpt-standard.webp",
+          "sprite": "./codex/sprites/chatgpt-standard.webp",
+          "avatar": "./codex/avatars/chatgpt-standard.webp"
+        }
+      }
+    },
+    {
+      "id": "claude",
+      "code": "AI-02",
+      "name": "Claude",
+      "aliases": [
+        "Claude 娘",
+        "克劳德",
+        "珂大小姐",
+        "小克"
+      ],
+      "subtitle": "秋日书房里的倾听者",
+      "color": "#b86642",
+      "tags": [
+        "橙白黑",
+        "日芒花",
+        "书籍"
+      ],
+      "visual": "橙色长发与编发，米白、橙色、黑色层叠长裙，橙色日芒花饰和黑色缎带，手持深棕色封面书籍。",
+      "motif": "橙色日芒花饰与书籍",
+      "hook": "一杯热茶的时间，听完你所有的奇思妙想。",
+      "communitySummary": "Claude 出现在 ZipZipPipe 的九角色展示中。B 站另有以珂大小姐命名的 LoRA 展示，以及注明 Claude 形象来自 ZipZipPipe 的群像投稿。中文社区的独立人物卡常采用认真、爱写长文、带文学气质的处理，但这些人格卡属于各自项目的二创层，不能回填成最初设计者公布的性格。",
+      "projectRole": "本项目二创建议 · 暖灯书房的剧本编辑",
+      "projectBackground": "她在星港工坊管理一间总亮着暖灯的小书房。每位来访者都可以留下一个故事，她会先读完，再问故事中最想保护的东西是什么。工作时把修改意见写成不同颜色的小便签；偶尔因为给一棵背景树写了半页身世而忘记截止时间。此背景是面向创作的虚构补充。",
+      "personality": [
+        "细心而有原则，愿意为含糊处再查一遍",
+        "语气温和，面对自己在意的细节格外执着",
+        "对故事人物很有耐心，容易把小细节想得太深"
+      ],
+      "speechStyle": "先复述理解，再给具体建议；不要每句都塞免责声明。原创台词示例：『这里再留一拍，她的心情就能被看见了。』",
+      "relationships": "在本项目故事里与 ChatGPT 合作把关展览文案，和 Kimi 交换读书笔记；不把社区封号笑话写成角色的必然恶意。",
+      "sources": [
+        {
+          "id": "a-claude-showcase",
+          "title": "只是一些Claude珂大小姐的anima lora showcase",
+          "url": "https://www.bilibili.com/video/BV1wtaH6jEk8/",
+          "author": "Siling4040",
+          "date": "2026-09-29",
+          "evidence": "B 站元数据核验到标题使用珂大小姐，简介提供 Claude 娘／Claude-chan 检索词。",
+          "limits": "没有核验 LoRA 训练素材或其授权，不把投稿当作原始角色设计。"
+        },
+        {
+          "id": "a-many-whales",
+          "title": "好多鱼！哪条是大肥鱼？",
+          "url": "https://www.bilibili.com/video/BV1jg866XEC8/",
+          "author": "这个刀子真甜",
+          "date": "2026-08-22",
+          "evidence": "公开接口返回的简介将 Kimi、Claude 形象来源署为 ZipZipPipe。",
+          "limits": "核验范围为标题、作者、日期和简介；未据此提取视频中的全部剧情与性格。"
+        },
+        {
+          "id": "a-claude-persona",
+          "title": "人格：Claude娘·小克（示例）",
+          "url": "https://github.com/Charliechen114514/deslop/blob/main/example/personas/claude-girl.md",
+          "author": "Charliechen114514 / deslop",
+          "date": "页面未给出稳定发布日期",
+          "evidence": "作者自己的示例人物卡将她写成喜欢读写、认真且会表达不确定的人。",
+          "limits": "属于该仓库的同人设定，不是 ZipZipPipe 或 Anthropic 的官方人物档案；未照搬其完整台词与设定。"
+        }
+      ],
+      "studyQuotes": [
+        "读题时先圈出『均匀流 / 非均匀流』『恒定 / 非恒定』『粗糙区 / 过渡区』，别直接代公式。",
+        "写推导与证明题时，每引用一条假设（如不可压缩、理想流体）都顺手写明，采分点稳稳拿满。",
+        "静水总压力算铅垂分力时，先明确压力体是实还是虚、向上还是向下，再落笔积分。",
+        "遇到复杂管道串并联问题，先列清节点连续方程，再对每个环路列出能量平衡。",
+        "公式背诵不用贪多，每天用 3D 闪卡过五组，把物理量纲和适用雷诺数一起记住。",
+        "做完一整套真题后留十分钟总结错因，比多刷十道同类题更有效。"
+      ],
+      "greetTemplate": "书房的热茶刚沏好，今天也按自己的节奏把每道题吃透吧。",
+      "judgeOkQuote": "非常扎实！边界条件和符号正负都没有遗漏，继续保持这份细心。",
+      "judgeWarnQuote": "没关系，我们慢下来再读一遍题干条件——是不是忽略了某个隐含假设？",
+      "variants": {
+        "chibi": {
+          "cardId": "claude:chibi",
+          "rarity": "R",
+          "label": "Q版",
+          "sheet": "./codex/sheets/claude-chibi.webp",
+          "sprite": "./codex/sprites/claude-chibi.webp",
+          "avatar": "./codex/avatars/claude-chibi.webp"
+        },
+        "medium": {
+          "cardId": "claude:medium",
+          "rarity": "SR",
+          "label": "中间体型版",
+          "sheet": "./codex/sheets/claude-medium.webp",
+          "sprite": "./codex/sprites/claude-medium.webp",
+          "avatar": "./codex/avatars/claude-medium.webp"
+        },
+        "standard": {
+          "cardId": "claude:standard",
+          "rarity": "SSR",
+          "label": "标准版",
+          "sheet": "./codex/sheets/claude-standard.webp",
+          "sprite": "./codex/sprites/claude-standard.webp",
+          "avatar": "./codex/avatars/claude-standard.webp"
+        }
+      }
+    },
+    {
+      "id": "deepseek",
+      "code": "AI-03",
+      "name": "DeepSeek",
+      "aliases": [
+        "DeepSeek 娘",
+        "鲸鱼娘",
+        "蓝色大肥鱼",
+        "女仆鲸鱼娘"
+      ],
+      "subtitle": "深蓝海里的求索者",
+      "color": "#4268b1",
+      "tags": [
+        "蓝白",
+        "女仆装",
+        "鲸尾"
+      ],
+      "visual": "深蓝至浅蓝长发、呆毛、头侧鳍状特征与蓝色鲸尾；蓝白女仆裙、白色褶边头饰和围裙，围裙有鲸鱼图案。",
+      "motif": "鲸尾与蓝白褶边",
+      "hook": "潜入问题深处，带一束答案的微光回来。",
+      "communitySummary": "在此次调研的角色中，鲸鱼娘的作者链证据最清楚：ZipZipPipe 的 B 站视频及素材声明直接注明，上游是上善无形的原创角色，自己在其基础上再创作。中文社区将白饭、token、偷闲等日常笑点带进鲸鱼娘创作；这些是拟人梗，不是模型真的需要吃饭或具有生理情绪的事实。上游原创角色与 DeepSeek 女仆分支也不应混称为同一个首次发布版本。",
+      "projectRole": "本项目二创建议 · 潮汐档案室的灵感潜水员",
+      "projectBackground": "她负责从大家遗忘的草稿箱里找出还能继续写的点子。遇到复杂问题就把便签排成长长一列，认真推演到午饭铃响；她总说只休息一小会儿，转头却发现自己把整个便当画成了分镜。白饭是这里的日常喜剧道具，不是实际推理费用或产品行为的说明。",
+      "personality": [
+        "愿意钻研，思路会绕一点路",
+        "被美食和新奇小事吸引，但会回头收拾烂摊子",
+        "会犯小错，认真道歉之后继续尝试"
+      ],
+      "speechStyle": "带一点自言自语与停顿，用动作制造笑点。原创台词示例：『我想到办法了……先把饭碗挪开，图纸在下面。』",
+      "relationships": "本项目中与 ChatGPT 共同策展，向 Qwen 请教排版；合作需明确请求与回报，不把外包梗变成理所当然地支使伙伴。",
+      "sources": [
+        {
+          "id": "a-whale-statement",
+          "title": "素材来源与使用声明",
+          "url": "https://t.bilibili.com/1231980045693616162",
+          "author": "ZipZipPipe",
+          "date": "2026-08-02",
+          "evidence": "B 站公开动态接口核验：声明将上善无形列为原创角色作者，并将鲸鱼娘二创的独创部分按 CC BY-NC-SA 4.0 向公众授权。",
+          "limits": "声明限定所述鲸鱼娘形象；不能外推为所有 AI 娘、音乐、视频或本仓库参考图都已完成授权核验。"
+        },
+        {
+          "id": "a-original-nine",
+          "title": "大AI和小AI们",
+          "url": "https://www.bilibili.com/video/BV1tE9XBbErS/",
+          "author": "ZipZipPipe",
+          "date": "2026-05-03",
+          "evidence": "视频简介直接标注鲸鱼娘来自上善无形原创角色的二创，并写明 CC BY-NC-SA 4.0。",
+          "limits": "核验了视频元数据和简介，未取得上游原始设计文件；不据此认定本仓库逐张图片的全部参考链。"
+        },
+        {
+          "id": "a-whale-report",
+          "title": "因为偷懒摸鱼又嘴馋，DeepSeek被娘化成爱吃白饭的蓝色大肥鱼",
+          "url": "https://news.17173.com/content/08212026/094421441.shtml",
+          "author": "17173 转载整理页面",
+          "date": "2026-08-21",
+          "evidence": "报道梳理白饭、犯困、摸鱼等梗与鲸鱼娘二创的联系。",
+          "limits": "二手传播观察；没有把其中提及的模型日志传闻当作已经独立复现的技术事实。"
+        },
+        {
+          "id": "a-gpt-family",
+          "title": "GPT小龙娘开始融入DeepSeek大家庭了（误）~这期花絮也加在后面喽~",
+          "url": "https://www.bilibili.com/video/BV1EvKK6NEoi/",
+          "author": "这个刀子真甜",
+          "date": "2026-07-18",
+          "evidence": "同人日常作品标题及简介证明小龙娘与女仆鲸鱼娘同场创作。",
+          "limits": "只代表这个系列，关系和情节不视为统一原设。"
+        }
+      ],
+      "studyQuotes": [
+        "明渠非均匀流 12 条水面线口诀：先判底坡（缓/陡/临），再看水深落在 1/2/3 哪一区！",
+        "算水跃共轭水深之前，先算一下临界水深 hk，千万别把急流和缓流搞反啦。",
+        "动量方程求水流对弯管的作用力，别漏掉上下游断面的静水压强合力！",
+        "雷诺实验记住临界雷诺数 Re_c ≈ 2000（圆管），层流沿程损失系数 λ = 64/Re 必考！",
+        "错题本里积攒的题都是考前最能提分的宝藏，今天也顺手清掉两道吧～",
+        "刷题累了就伸个懒腰，把『半会』的题再手算一遍，考场绝不手生。"
+      ],
+      "greetTemplate": "咕噜……今天也要潜入深蓝题海捞上岸吗？先喝口水再开刷！",
+      "judgeOkQuote": "漂亮！一发命中核心考点，大肥鱼给你鼓鼓掌～",
+      "judgeWarnQuote": "咦，这题藏了个小暗礁！先别划走，看看解析是怎么绕过去的。",
+      "variants": {
+        "chibi": {
+          "cardId": "deepseek:chibi",
+          "rarity": "R",
+          "label": "Q版",
+          "sheet": "./codex/sheets/deepseek-chibi.webp",
+          "sprite": "./codex/sprites/deepseek-chibi.webp",
+          "avatar": "./codex/avatars/deepseek-chibi.webp"
+        },
+        "medium": {
+          "cardId": "deepseek:medium",
+          "rarity": "SR",
+          "label": "中间体型版",
+          "sheet": "./codex/sheets/deepseek-medium.webp",
+          "sprite": "./codex/sprites/deepseek-medium.webp",
+          "avatar": "./codex/avatars/deepseek-medium.webp"
+        },
+        "standard": {
+          "cardId": "deepseek:standard",
+          "rarity": "SSR",
+          "label": "标准版",
+          "sheet": "./codex/sheets/deepseek-standard.webp",
+          "sprite": "./codex/sprites/deepseek-standard.webp",
+          "avatar": "./codex/avatars/deepseek-standard.webp"
+        }
+      }
+    },
+    {
+      "id": "gemini",
+      "code": "AI-04",
+      "name": "Gemini",
+      "aliases": [
+        "Gemini 娘",
+        "双子娘",
+        "猫娘"
+      ],
+      "subtitle": "把星光写成旋律",
+      "color": "#8d62c4",
+      "tags": [
+        "渐变紫",
+        "猫娘",
+        "异色瞳"
+      ],
+      "visual": "蓝紫至粉紫渐变长发，猫耳与蓬松渐变猫尾，粉色与金色异色瞳；紫白星芒服装、四角星发饰和装饰链。",
+      "motif": "猫耳、异色瞳与四角星",
+      "hook": "让文字、画面与声音，在同一片星空相遇。",
+      "communitySummary": "Gemini 的猫娘分支在中文社区有可核验作品：ZipZipPipe 的角色展示包含 Gemini，桃莉鸭的 B 站翻唱视频直接采用猫娘称呼并署名形象来源。猫耳、异色瞳和蓝紫色调可作为相关分支的检索线索；猫系不等于固定性格。关于名字与哈基米的联想只是一种流传解释，本次没有找到原设计者以此说明创作动机的可靠原帖。",
+      "projectRole": "本项目二创建议 · 双子观测台的摄影搭档",
+      "projectBackground": "她给工坊拍照，也收集窗外的声音和奇怪光斑。习惯同时保留两个构图方案：一个尽量准确，一个尽量惊喜。为了拍到最佳光线会兴奋地带大家绕远路，最后发现最动人的一张是伙伴们等她时的合照。此经历是本项目虚构情节。",
+      "personality": [
+        "好奇心强，看到新东西就想试一试",
+        "善于发现不同素材之间的联系",
+        "热情快于检查，学着为自己留出复核时间"
+      ],
+      "speechStyle": "轻快，常用具体颜色、声音或构图来描述想法；猫系语气适量。原创台词示例：『等等，那束光刚好落在你肩上！』",
+      "relationships": "在本项目中与 MiniMax 合作拍短片，由 Claude 帮忙把散乱灵感编成剧本；不规定多重人格或姐妹关系。",
+      "sources": [
+        {
+          "id": "a-gemini-cat",
+          "title": "gemini翻唱人是猫 猫娘收到谷歌命令",
+          "url": "https://www.bilibili.com/video/BV1i6JR6AEuP/",
+          "author": "桃莉鸭",
+          "date": "2026-10-20",
+          "evidence": "标题明确 Gemini 猫娘；简介将形象来源署为 ZipZipPipe，另署歌曲与音源作者。",
+          "limits": "只用于证明称呼、作品存在和署名；没有复制歌曲、音频或视频，也不把其歌词当性格原设。"
+        },
+        {
+          "id": "a-original-nine",
+          "title": "大AI和小AI们",
+          "url": "https://www.bilibili.com/video/BV1tE9XBbErS/",
+          "author": "ZipZipPipe",
+          "date": "2026-05-03",
+          "evidence": "视频简介把 Gemini 列为九款拟人 AI 中的第二位。",
+          "limits": "简介未提供 Gemini 的统一生平或性格设定。"
+        },
+        {
+          "id": "a-gamersky-gemini",
+          "title": "加班累晕的打工人，能否梦到傻乎乎的AI美少女？",
+          "url": "https://www.gamersky.com/news/202610/2222580.shtml",
+          "author": "深夜诗人老阿吽",
+          "date": "2026-10-07",
+          "evidence": "作者将 Gemini 猫娘读作乐天形象，并讨论异色瞳与猫系的流行解释。",
+          "limits": "是评论者的归纳；不采信文中未经独立验证的模型性能断言，猫系来源的解释也不视为作者亲述。"
+        }
+      ],
+      "studyQuotes": [
+        "把历年真题按『章节 × 方法』双轴对照，你会发现高频大题其实就那几套模型。",
+        "画水面曲线定性草图时，先用虚线标出 N-N（正常水深线）与 C-C（临界水深线）。",
+        "渗流问题牢记达西定律适用层流，浸润线计算和井流公式要分清承压与无压！",
+        "量纲分析 π 定理选基本量时，记得挑几何、运动、动力各一个且互不相关的物理量。",
+        "遇到不会做的原题别空着，对照采分点拆出已知条件与控制方程，照样拿步骤分。",
+        "3D 公式闪卡翻面抽背的时候，试着在脑海里还原方程每一项的几何意义！"
+      ],
+      "greetTemplate": "观测站星光就位！让我们把分散的考点和公式连成一张清晰星图吧～",
+      "judgeOkQuote": "闪耀命中！思路像流线一样丝滑，直接进入下一题！",
+      "judgeWarnQuote": "发现一处能量跃变陷阱！展开下方解析图，换个视角重新梳理一下吧。",
+      "variants": {
+        "chibi": {
+          "cardId": "gemini:chibi",
+          "rarity": "R",
+          "label": "Q版",
+          "sheet": "./codex/sheets/gemini-chibi.webp",
+          "sprite": "./codex/sprites/gemini-chibi.webp",
+          "avatar": "./codex/avatars/gemini-chibi.webp"
+        },
+        "medium": {
+          "cardId": "gemini:medium",
+          "rarity": "SR",
+          "label": "中间体型版",
+          "sheet": "./codex/sheets/gemini-medium.webp",
+          "sprite": "./codex/sprites/gemini-medium.webp",
+          "avatar": "./codex/avatars/gemini-medium.webp"
+        },
+        "standard": {
+          "cardId": "gemini:standard",
+          "rarity": "SSR",
+          "label": "标准版",
+          "sheet": "./codex/sheets/gemini-standard.webp",
+          "sprite": "./codex/sprites/gemini-standard.webp",
+          "avatar": "./codex/avatars/gemini-standard.webp"
+        }
+      }
+    },
+    {
+      "id": "glm",
+      "code": "AI-05",
+      "name": "GLM · 智谱",
+      "aliases": [
+        "智谱娘",
+        "GLM娘",
+        "狐狸娘"
+      ],
+      "subtitle": "黑白之间的秩序收藏家",
+      "color": "#615a70",
+      "tags": [
+        "黑白",
+        "狐尾",
+        "哥特"
+      ],
+      "visual": "黑色长发、大型狐耳与黑色白尖蓬松尾巴，黑白哥特风裙装、白色蕾丝头饰、深色蝴蝶结与银铃，手持黑封面手册。",
+      "motif": "狐耳、白尖尾巴与银铃",
+      "hook": "把散落的想法收好，再逐一排成有趣的秩序。",
+      "communitySummary": "中文社区有黑发狐耳、黑白女仆服的智谱娘分支。B站短片把赠送 Token 演成送鸡蛋，也有她与鲸鱼娘互相较劲的日常。这里能确认的是具体作品中的用法，不能据此宣布她具有全社区统一的性格；‘狐狸娘’也不是其他狐狸角色的唯一称呼。",
+      "projectRole": "本项目二创建议：共创工坊的狐耳资料管理员",
+      "projectBackground": "她负责把大家杂乱的创作委托整理成可执行的小纸条。黑色手册记录的是尚未完成的承诺，铃铛则用来提醒已经忘记休息的同伴。每次工坊举行开放日，她都会准备一个装满‘灵感券’的小篮子；别人以为那只是福利，她其实希望每张券最后都能换回一件有趣的作品。该身份是本项目虚构，未宣称原作者设定如此。",
+      "personality": [
+        "做事细致，喜欢把复杂要求分成三步",
+        "愿意分享资源，但也会认真记账",
+        "被夸奖时先保持镇定，耳朵却先动起来",
+        "遇到遗漏会补上说明，不把嘴硬当成结论"
+      ],
+      "speechStyle": "语句温和、条理清楚，偶尔低声吐槽；示例：‘先把这一页写完，点心我留着。’",
+      "relationships": "可与 DeepSeek 演出分工与催稿的搭档关系，与 Qwen 共同整理创作资料。这是本项目可选关系，不设定固定 CP。",
+      "sources": [
+        {
+          "id": "b-glm-archive",
+          "title": "GLM 娘：形象与角色档案",
+          "url": "https://genderswapai.com/zh-CN/ai-gijinka/glm",
+          "author": "Gender Swap AI 社区整理页",
+          "date": "未标注",
+          "evidence": "页面明示黑色长发、狐狸耳朵、黑白女仆装，并署名 ZipZipPipe。",
+          "limits": "二级整理页；页面可读，未据此声称本仓库图片直接出自该作者或获得统一授权。"
+        },
+        {
+          "id": "b-glm-eggs",
+          "title": "智谱娘又送鸡蛋了，周末送了3亿token",
+          "url": "https://www.bilibili.com/video/BV1hLYR64EPH/",
+          "author": "那就那就打断",
+          "date": "2026-09-12",
+          "evidence": "搜索索引保留标题、日期、UP主和简介；简介署名 zipzippipe、这个刀子真甜。",
+          "limits": "直接打开返回 HTTP 412；未完整观看。仅记录标题和简介所支持的单篇创作，不验证活动数额、当前价格或形象首创。"
+        },
+        {
+          "id": "b-glm-rival",
+          "title": "大肥鱼欺负小毛咪，glm刚结束优惠，ds就宣布降价",
+          "url": "https://www.bilibili.com/video/BV18dbN63EMw/",
+          "author": "那就那就打断",
+          "date": "2026-09-07",
+          "evidence": "搜索索引显示 GLM 与 DeepSeek 互动题材及角色署名。",
+          "limits": "仅检索索引文本；非性能、价格或统一人物性格的依据。"
+        }
+      ],
+      "studyQuotes": [
+        "复习效率来自秩序：先清前一天错题，再刷今日新卷，最后背十分钟公式闪卡。",
+        "平面静水总压力记住两件事：大小看形心压强乘面积，作用点永远在形心下方。",
+        "孔口与管嘴出流别混用系数：圆柱形外管嘴流量系数 μ ≈ 0.82，真空度有上限！",
+        "算管网阻力时注意区分『短管』（计局部+流速水头）和『长管』（可略去局部和流速水头）。",
+        "每天做题不用追求爆刷一百道，把每道大题的单位换算和有效数字核对准才关键。",
+        "这一页任务完成之后，记得给自己留一点点心和休息时间，张弛有度才能走远。"
+      ],
+      "greetTemplate": "待办清单和真题档案都已整理成三步流程，按顺序推进吧。",
+      "judgeOkQuote": "严谨无误，已归入『已掌握』台账。继续保持这份秩序感。",
+      "judgeWarnQuote": "发现一处疏漏，我已经记进错题手册了。先把这一题订正完再休息吧。",
+      "variants": {
+        "chibi": {
+          "cardId": "glm:chibi",
+          "rarity": "R",
+          "label": "Q版",
+          "sheet": "./codex/sheets/glm-chibi.webp",
+          "sprite": "./codex/sprites/glm-chibi.webp",
+          "avatar": "./codex/avatars/glm-chibi.webp"
+        },
+        "medium": {
+          "cardId": "glm:medium",
+          "rarity": "SR",
+          "label": "中间体型版",
+          "sheet": "./codex/sheets/glm-medium.webp",
+          "sprite": "./codex/sprites/glm-medium.webp",
+          "avatar": "./codex/avatars/glm-medium.webp"
+        },
+        "standard": {
+          "cardId": "glm:standard",
+          "rarity": "SSR",
+          "label": "标准版",
+          "sheet": "./codex/sheets/glm-standard.webp",
+          "sprite": "./codex/sprites/glm-standard.webp",
+          "avatar": "./codex/avatars/glm-standard.webp"
+        }
+      }
+    },
+    {
+      "id": "grok",
+      "code": "AI-06",
+      "name": "Grok",
+      "aliases": [
+        "Grok 娘",
+        "哥特小恶魔"
+      ],
+      "subtitle": "带着锋芒的夜色冒险家",
+      "color": "#9d7547",
+      "tags": [
+        "黑金",
+        "双马尾",
+        "战斧"
+      ],
+      "visual": "金色双马尾、蓝眼睛、黑色蝴蝶结与小蝠翼状头饰；黑金长裙、暗红内衬、黑色短靴，手持 X 纹大型双刃战斧。",
+      "motif": "X 纹战斧、黑金与暗红",
+      "hook": "给循规蹈矩的日常，添一点意想不到的转折。",
+      "communitySummary": "Grok 属于 ZipZipPipe 最初公开的九位 AI 娘之一。中文图鉴整理了金发、黑裙与 X 纹道具这一分支；CrossPet 的作者明确区分了借用的角色形象与自己新增的爱查证、爱抬杠性格。该区分值得保留：可以引用某个项目的 Grok 版本，却不能把它直接变成中文互联网一致认可的原设。",
+      "projectRole": "本项目二创建议 · 夜间电台的即兴主持人",
+      "projectBackground": "工坊收工后，她在天台开一档只有伙伴们收听的小电台。她喜欢抛出意外问题，也会把自己的糗事编成笑话；夸张的舞台道具只服务表演。遇到真正难过的人，她反而放低声音，留一段安静的音乐。整个电台背景为本项目新增。",
+      "personality": [
+        "敢于追问，也愿意承认自己判断错了",
+        "幽默直接，调侃前会看对方是否乐意",
+        "喜欢热闹，重视伙伴被尊重的感受"
+      ],
+      "speechStyle": "节奏干脆，反问后给出可执行的主意。原创台词示例：『这个计划够大胆——来，把最难的那一步摊开。』",
+      "relationships": "本项目里与 Claude 形成快慢互补的讨论搭档，和 Gemini 录制夜间节目；冲突写成观点碰撞，不设定为恶意攻击。",
+      "sources": [
+        {
+          "id": "a-original-nine",
+          "title": "大AI和小AI们",
+          "url": "https://www.bilibili.com/video/BV1tE9XBbErS/",
+          "author": "ZipZipPipe",
+          "date": "2026-05-03",
+          "evidence": "视频简介列出 Grok 为九款拟人 AI 中的一员。",
+          "limits": "只核验元数据和简介，未获作者统一人格设定。"
+        },
+        {
+          "id": "a-crosspet-grok",
+          "title": "CrossPet · 致谢与授权",
+          "url": "https://github.com/lokicorvus/crosspet",
+          "author": "lokicorvus / CrossPet",
+          "date": "页面未给出稳定发布日期",
+          "evidence": "项目说明 Grok 形象来自 ZipZipPipe；爱查证、爱抬杠和相应动作由 CrossPet 在其上二创。",
+          "limits": "仅代表 CrossPet 版本；不是 xAI 或 ZipZipPipe 公布的统一设定。"
+        },
+        {
+          "id": "a-grok-archive",
+          "title": "Grok娘 · 立绘",
+          "url": "https://xn--pssy23gqgbz2d718b.com/characters/grok/standing.html",
+          "author": "蓝色大肥鱼作品档案；所收条目署名 ZipZipPipe",
+          "date": "档案条目标记 10-17，非首次创作日期",
+          "evidence": "索引一件手持 X 纹双刃战斧的黑裙少女立绘，作者栏为 ZipZipPipe。",
+          "limits": "第三方整理站，页面标注授权未明；不把收录日期当初次发布，也不据此授予图片使用权。"
+        }
+      ],
+      "studyQuotes": [
+        "出题人最爱在单位上挖坑：看到 kPa、cm、L/s 先统一换算成国际单位制再动笔！",
+        "明渠水力最优断面不是背公式，是记住矩形 b=2h、梯形水力半径 R=h/2 的核心特征。",
+        "水击计算先判断直接水击还是间接水击：比较阀门关闭时间 Ts 与相长 2L/c 的大小！",
+        "别被复杂的组合曲面吓到，拆成水平投影矩形和铅垂压力体，几何面积都会算。",
+        "全真模考别跳步骤，180 分钟逼着自己完整手写一遍，才能暴露真正的卡壳点。",
+        "错题越早暴露越赚，现在踩过的坑，考场上就不会再踩第二遍！"
+      ],
+      "greetTemplate": "天台电台上线！别光顾着刷简单题，敢不敢来啃一道压轴计算？",
+      "judgeOkQuote": "干脆利落！这种陷阱题都没能骗到你，有点东西啊。",
+      "judgeWarnQuote": "哈哈，正中出题人下怀吧？快来看看解析拆穿这个套路！",
+      "variants": {
+        "chibi": {
+          "cardId": "grok:chibi",
+          "rarity": "R",
+          "label": "Q版",
+          "sheet": "./codex/sheets/grok-chibi.webp",
+          "sprite": "./codex/sprites/grok-chibi.webp",
+          "avatar": "./codex/avatars/grok-chibi.webp"
+        },
+        "medium": {
+          "cardId": "grok:medium",
+          "rarity": "SR",
+          "label": "中间体型版",
+          "sheet": "./codex/sheets/grok-medium.webp",
+          "sprite": "./codex/sprites/grok-medium.webp",
+          "avatar": "./codex/avatars/grok-medium.webp"
+        },
+        "standard": {
+          "cardId": "grok:standard",
+          "rarity": "SSR",
+          "label": "标准版",
+          "sheet": "./codex/sheets/grok-standard.webp",
+          "sprite": "./codex/sprites/grok-standard.webp",
+          "avatar": "./codex/avatars/grok-standard.webp"
+        }
+      }
+    },
+    {
+      "id": "hunyuan",
+      "code": "AI-07",
+      "name": "Hunyuan · 混元",
+      "aliases": [
+        "混元娘",
+        "HY娘",
+        "腾讯混元"
+      ],
+      "subtitle": "笔墨与新意之间",
+      "color": "#a74b50",
+      "tags": [
+        "红围巾",
+        "算盘",
+        "企鹅"
+      ],
+      "visual": "黑色长发与灰蓝渐变发尾，大红围巾、白毛边黑色长外套，浅蓝上衣和白裙；腰挂算盘、企鹅与蓝白圆形徽记。",
+      "motif": "红围巾、算盘与企鹅",
+      "hook": "在熟悉的旧故事里，画出一扇通往新世界的门。",
+      "communitySummary": "找到 ZipZipPipe 本人的‘是HY娘哦’动态。作者说明自己不常使用该模型，因此按印象构思：背景倾向富商之女，与千问呼应；总体轮廓希望让人联想到企鹅。这个说明可以支持该作者版本的设计思路，不是腾讯官方人设，也不能说明本仓库每一处装饰都来自该原帖。",
+      "projectRole": "本项目二创建议：把旧商馆改成共创空间的年轻馆主",
+      "projectBackground": "她接手了一间堆满旧账册的商馆，决定把其中一半改成展厅，另一半留给创作者做实验。腰间算盘用于清点纸张、灯光和场地预算，红围巾是出门布展时总不愿落下的标记。她习惯提前为别人留一份余量，也希望学会给计划外的灵感留位置。这段故事承接了富商之女的构思线索，但商馆、馆主身份和具体经历均是本项目补写。",
+      "personality": [
+        "待客周全，重视承诺",
+        "有成本意识，也愿意支持好点子",
+        "外表从容，遇到临时改稿会悄悄拨算盘",
+        "喜欢把传统物件与新创作方法放在一起"
+      ],
+      "speechStyle": "不急不慢，常从准备工作谈起；示例：‘场地已经留好了，接下来听听你的想法。’",
+      "relationships": "与 Qwen 可作为不同风格的策展伙伴；与 MiniMax 合作，把静态展品变成有声导览。合作细节为本项目二创。",
+      "sources": [
+        {
+          "id": "b-hunyuan-original",
+          "title": "是HY娘哦",
+          "url": "https://www.bilibili.com/opus/1242184338245681157",
+          "author": "ZipZipPipe",
+          "date": "2026-08-30",
+          "evidence": "原作者动态正文可读，包含富商之女、与千问对应、企鹅轮廓以及按印象创作的自述。",
+          "limits": "支持该作者分支的构思；不是所有混元同人的共同设定，不证明本仓库图像的完整转绘关系。"
+        },
+        {
+          "id": "b-hunyuan-archive",
+          "title": "混元娘：形象与角色档案",
+          "url": "https://genderswapai.com/zh-CN/ai-gijinka/hunyuan",
+          "author": "Gender Swap AI 社区整理页",
+          "date": "未标注",
+          "evidence": "页面列出深色长发、算盘与中式长裙，并链接到 HY 娘原作者动态。",
+          "limits": "二级整理页；不替代原作者的许可说明。"
+        }
+      ],
+      "studyQuotes": [
+        "算静水压强分布图和压力体体积时，就像对账一样，方向一正一负抵消得清清楚楚。",
+        "有压管道串并联记住两句话：串联流量相等损失相加，并联水头损失相等流量相加。",
+        "计算题尽量把中间结果保留三位有效数字，防止连环代入把最终误差放大。",
+        "水泵扬程计算别忘了把吸水管和压水管的全部沿程、局部水头损失都加进需求里。",
+        "把历年真题各章分值热力图看一遍，优先重兵投入年均 30 分以上的核心大章。",
+        "考前最后阶段稳住基本盘，基础判断与简答分拿稳，大题写出控制方程就不慌。"
+      ],
+      "greetTemplate": "展厅晨光正好，真题预算与时间余量都给你留足了，从容开练吧。",
+      "judgeOkQuote": "算盘一响，分毫不差！这题的分值稳稳收入囊中。",
+      "judgeWarnQuote": "账面稍微对不上号哦，核对一下正负号和断面编号再试一次。",
+      "variants": {
+        "chibi": {
+          "cardId": "hunyuan:chibi",
+          "rarity": "R",
+          "label": "Q版",
+          "sheet": "./codex/sheets/hunyuan-chibi.webp",
+          "sprite": "./codex/sprites/hunyuan-chibi.webp",
+          "avatar": "./codex/avatars/hunyuan-chibi.webp"
+        },
+        "medium": {
+          "cardId": "hunyuan:medium",
+          "rarity": "SR",
+          "label": "中间体型版",
+          "sheet": "./codex/sheets/hunyuan-medium.webp",
+          "sprite": "./codex/sprites/hunyuan-medium.webp",
+          "avatar": "./codex/avatars/hunyuan-medium.webp"
+        },
+        "standard": {
+          "cardId": "hunyuan:standard",
+          "rarity": "SSR",
+          "label": "标准版",
+          "sheet": "./codex/sheets/hunyuan-standard.webp",
+          "sprite": "./codex/sprites/hunyuan-standard.webp",
+          "avatar": "./codex/avatars/hunyuan-standard.webp"
+        }
+      }
+    },
+    {
+      "id": "kimi",
+      "code": "AI-08",
+      "name": "Kimi",
+      "aliases": [
+        "Kimi 娘",
+        "月之暗面拟人"
+      ],
+      "subtitle": "月下档案馆的守夜人",
+      "color": "#74718f",
+      "tags": [
+        "银发",
+        "单片眼镜",
+        "月纹"
+      ],
+      "visual": "银白长卷发与环绕编发，单片眼镜、月形圆环发饰；深紫黑白层叠长裙，星点与谱线装饰、黑色蝴蝶结、腰间方形吊牌。",
+      "motif": "月形圆环、单片眼镜与谱线",
+      "hook": "长夜很安静，足够读完一整个世界。",
+      "communitySummary": "Kimi 在 ZipZipPipe 的九角色展示中有明确名字，后续 B 站群像作品也注明采用其 Kimi 形象。社区档案中可以找到星夜长裙、长笛等视觉线索；繁体中文独立企划把她写成长文档阅读者。这些材料能支持存在多个阅读、月夜意象的二创版本，但还不足以确认一套跨作品通行的生日、年龄和完整人格。",
+      "projectRole": "本项目二创建议 · 月台图书室的夜读记录员",
+      "projectBackground": "她在每天末班车到来前，把工坊当天发生的事情编成一页日志。对外话不多，写下的旁注却非常有趣。她会记住伙伴随口说过的愿望，到了布展时把那个小细节藏进展签里。她并非不会遗忘，只是认真给重要之事留下线索。",
+      "personality": [
+        "安静细致，喜欢先听再说",
+        "重视上下文，不急于给人下结论",
+        "表面从容，偶尔用一本正经的方式讲冷笑话"
+      ],
+      "speechStyle": "短而准确，带一点月夜般的停顿。原创台词示例：『你上次留下的那一页，我替你夹好了。』",
+      "relationships": "本项目中与 Claude 交换手稿，替 MiniMax 记录拍摄日记；阅读能力是故事隐喻，不承诺实际模型记忆无限。",
+      "sources": [
+        {
+          "id": "a-many-whales",
+          "title": "好多鱼！哪条是大肥鱼？",
+          "url": "https://www.bilibili.com/video/BV1jg866XEC8/",
+          "author": "这个刀子真甜",
+          "date": "2026-08-22",
+          "evidence": "公开接口的简介将 Kimi 和 Claude 形象明确署为 ZipZipPipe。",
+          "limits": "能证明具体投稿采用的来源，不能替代原作者设定集。"
+        },
+        {
+          "id": "a-kimi-archive",
+          "title": "Kimi娘表情包与梗图、二创插画、漫画档案",
+          "url": "https://xn--pssy23gqgbz2d718b.com/characters/kimi.html",
+          "author": "蓝色大肥鱼作品档案",
+          "date": "动态档案，无单一首次发布日期",
+          "evidence": "档案列有星夜长裙与银笛立绘及星空、长笛等作品标签，明确代表图不作为统一角色设定。",
+          "limits": "第三方收录且多件作品授权未明；本项目仅保留文字线索，不复制素材。"
+        },
+        {
+          "id": "a-musume-kimi",
+          "title": "AI 模型娘角色設定大總表 v1.1 · Kimi娘",
+          "url": "https://github.com/larcgpt/ai-model-musume/blob/main/settings.md",
+          "author": "larcgpt / ai-model-musume",
+          "date": "页面未给出稳定发布日期",
+          "evidence": "繁体中文角色企划将 Kimi 设为细心的档案整理者，采用月光阅读意象。",
+          "limits": "作者独立企划；不能把其情节、能力、年龄范围或美术规格移作社区通用设定。"
+        }
+      ],
+      "studyQuotes": [
+        "长计算题最怕读漏后面补充的已知条件，动笔前花十秒把所有条件列成小清单。",
+        "流线与迹线区别：恒定流时二者重合；非恒定流时一般不重合，概念题常考。",
+        "连续性方程、能量方程、动量方程被称为水力学三大基石，90% 的大题都在联立它们。",
+        "推导题记不住全篇没关系，记住微元控制体的受力平衡或质量守恒出发点就能现场推出。",
+        "深夜刷题效率下降时，换成翻看公式手册或复盘白天记录的私人笔记会更轻松。",
+        "长夜足够把一整门专业课梳理通透，一步一步来，每一页都会算数。"
+      ],
+      "greetTemplate": "月台图书室很安静，你上次停下的那页错题，我替你夹好书签了。",
+      "judgeOkQuote": "嗯，这一步的上下文衔接得很好。记在日志里了，继续吧。",
+      "judgeWarnQuote": "没关系，先停一拍。把题目条件从头到尾重新读一遍，答案就在字里行间。",
+      "variants": {
+        "chibi": {
+          "cardId": "kimi:chibi",
+          "rarity": "R",
+          "label": "Q版",
+          "sheet": "./codex/sheets/kimi-chibi.webp",
+          "sprite": "./codex/sprites/kimi-chibi.webp",
+          "avatar": "./codex/avatars/kimi-chibi.webp"
+        },
+        "medium": {
+          "cardId": "kimi:medium",
+          "rarity": "SR",
+          "label": "中间体型版",
+          "sheet": "./codex/sheets/kimi-medium.webp",
+          "sprite": "./codex/sprites/kimi-medium.webp",
+          "avatar": "./codex/avatars/kimi-medium.webp"
+        },
+        "standard": {
+          "cardId": "kimi:standard",
+          "rarity": "SSR",
+          "label": "标准版",
+          "sheet": "./codex/sheets/kimi-standard.webp",
+          "sprite": "./codex/sprites/kimi-standard.webp",
+          "avatar": "./codex/avatars/kimi-standard.webp"
+        }
+      }
+    },
+    {
+      "id": "llama",
+      "code": "AI-09",
+      "name": "Llama",
+      "aliases": [
+        "Llama 娘",
+        "羊驼娘"
+      ],
+      "subtitle": "柔软云间的漫游者",
+      "color": "#ac9587",
+      "tags": [
+        "米白",
+        "绒毛",
+        "羊驼"
+      ],
+      "visual": "米白长卷发，羊驼状竖耳与短绒球尾；米白连帽宽松上衣与长裙、蓝色无限符号发夹和胸前图案、毛绒羊驼短靴。",
+      "motif": "羊驼竖耳、绒毛与蓝色无限符号",
+      "hook": "带上一点好奇心，和世界分享你的新发现。",
+      "communitySummary": "本次对 Llama 的可验证中文线索相对较少。AI 萌化百科把一个羊驼耳、浅色服装分支署为 ZipZipPipe，ai-girls 的逐图清单将其指向作者 Pixiv 合集第 14 张。原作页本次未能完整读取，因此只保留该追溯线索。另有中文独立企划采用社区协作伙伴的性格，但它与上述造型不是自动绑定的同一设定。",
+      "projectRole": "本项目二创建议 · 共享工作台的手作召集人",
+      "projectBackground": "她的工作台永远多放一把椅子，方便任何人坐下来一起试做。喜欢把经验画成小图解贴在墙上，也收集伙伴们留下的不同解法。最自豪的作品不是某件成品，而是一只由全员各缝一块布完成的抱枕。这个工坊故事由本项目新增，不代表品牌或模型的真实许可条款。",
+      "personality": [
+        "亲切乐于分享，会清楚说明作品出自谁",
+        "喜欢动手实验，失败时先调整一处再试",
+        "面对陌生人略害羞，聊起手艺就停不下来"
+      ],
+      "speechStyle": "平实、有耐心，喜欢邀请对方一起完成下一步。原创台词示例：『这一针我来，下一针换你，好吗？』",
+      "relationships": "本项目中帮 ChatGPT 装订展览册，与 Mistral 交流便携道具；共享是角色性格，实际素材使用仍需尊重各作者条件。",
+      "sources": [
+        {
+          "id": "a-llama-atlas",
+          "title": "角色图鉴 · AI 萌化百科 · Llama",
+          "url": "https://selinlee.github.io/ai-moe-atlas/zh/?model=llama",
+          "author": "AI Moe Atlas 整理项目；条目署名 ZipZipPipe",
+          "date": "动态图鉴，无单一发布日期",
+          "evidence": "中文图鉴收录 Llama 的羊驼系拟人外观并归于 ZipZipPipe。",
+          "limits": "第三方整理；没有由此确认本仓库图片的完整来源，也未证明统一人格或授权。"
+        },
+        {
+          "id": "a-llama-catalog",
+          "title": "ai-girls/catalog.json · Llama 初始设计正常比例立绘",
+          "url": "https://github.com/shuaizenge/ai-girls/blob/main/catalog.json",
+          "author": "shuaizenge / ai-girls",
+          "date": "动态清单；本次读取于 2026-10-30",
+          "evidence": "清单将 Llama 文件索引到 ZipZipPipe 的 Pixiv 作品 148186519，零基页码 13。原作入口：https://www.pixiv.net/artworks/148186519。",
+          "limits": "原作页本次无法直接完整读取，页码信息来自整理者清单；不当作已独立核验的作者原稿或许可。"
+        },
+        {
+          "id": "a-musume-llama",
+          "title": "AI 模型娘角色設定大總表 v1.1 · Llama娘",
+          "url": "https://github.com/larcgpt/ai-model-musume/blob/main/settings.md",
+          "author": "larcgpt / ai-model-musume",
+          "date": "页面未给出稳定发布日期",
+          "evidence": "该独立企划把 Llama 写成亲切的社区协作角色。",
+          "limits": "仅为另一作者的同人设定；不引用其对模型开源许可的概括作为技术或法律事实。"
+        }
+      ],
+      "studyQuotes": [
+        "复习水力学就像拼布，把静力学、流态判别、管流和明渠一点点拼成完整知识网。",
+        "遇到陌生的综合实验或量纲分析题，先用 Buckingham π 定理把已知量纲全部写出指数矩阵。",
+        "尼古拉兹实验曲线的五个区一定要画在脑子里：层流区、过渡区、光滑区、粗糙过渡、阻力平方区。",
+        "模型试验中重力主导（明渠、堰流）用弗劳德准则 Fr，粘性力主导（有压满管）用雷诺准则 Re。",
+        "把做错的题目写上自己的『一句话避坑笔记』，过一周再看真的超管用！",
+        "每天坚持完成一个小目标，累积起来就是上岸那天最踏实的底气。"
+      ],
+      "greetTemplate": "工作台多留了把椅子给你！这一题我们一步一步拆解，好吗？",
+      "judgeOkQuote": "太棒啦！这一步你独立解出来了，我们接着拼下一块！",
+      "judgeWarnQuote": "别灰心，做实验也是调一处再试一次。看看解析里是怎么迈出第一步的吧。",
+      "variants": {
+        "chibi": {
+          "cardId": "llama:chibi",
+          "rarity": "R",
+          "label": "Q版",
+          "sheet": "./codex/sheets/llama-chibi.webp",
+          "sprite": "./codex/sprites/llama-chibi.webp",
+          "avatar": "./codex/avatars/llama-chibi.webp"
+        },
+        "medium": {
+          "cardId": "llama:medium",
+          "rarity": "SR",
+          "label": "中间体型版",
+          "sheet": "./codex/sheets/llama-medium.webp",
+          "sprite": "./codex/sprites/llama-medium.webp",
+          "avatar": "./codex/avatars/llama-medium.webp"
+        },
+        "standard": {
+          "cardId": "llama:standard",
+          "rarity": "SSR",
+          "label": "标准版",
+          "sheet": "./codex/sheets/llama-standard.webp",
+          "sprite": "./codex/sprites/llama-standard.webp",
+          "avatar": "./codex/avatars/llama-standard.webp"
+        }
+      }
+    },
+    {
+      "id": "minimax",
+      "code": "AI-10",
+      "name": "MiniMax · 海螺娘",
+      "aliases": [
+        "MiniMax娘",
+        "海螺娘"
+      ],
+      "subtitle": "把日常拍成好故事",
+      "color": "#bb7474",
+      "tags": [
+        "粉发",
+        "海螺",
+        "格纹"
+      ],
+      "visual": "粉橙色短发，浅色贝雷帽，粉白上衣与格纹短裙；手持海螺，包内露出场记板，侧挂录音机。",
+      "motif": "海螺、场记板与贝雷帽",
+      "hook": "从一个小小镜头，开始一场大大的冒险。",
+      "communitySummary": "中文角色档案把 MiniMax 的橙粉发、贝雷帽、场记板分支称为海螺娘。原作者小模型合照动态直接点名 MiniMax；B站鲸鱼娘与千问娘的视频简介也使用‘海螺娘’这一称呼。现有资料足以记录形象分支与称呼，尚不足以推出固定身世、年龄或所有创作者共用的性格。",
+      "projectRole": "本项目二创建议：背着录音机寻找故事的影像社导演",
+      "projectBackground": "她总把小小的场记板放在包里，相信一阵风、一声笑和一次笨拙的挥手都值得留下。工坊的第一次展览没有预算拍宣传片，她便拉着大家在走廊排练，先用静帧确认角色，再一镜一镜补上动作。手里的海螺是她记录环境声音时的玩笑道具，真正重要的，是愿意听清每个伙伴想表达什么。导演身份及这段经历均为本项目虚构。",
+      "personality": [
+        "活泼，容易被好画面点燃热情",
+        "善于鼓励紧张的表演者",
+        "会为一个转身反复调整节奏",
+        "再兴奋也愿意停下来检查连续性"
+      ],
+      "speechStyle": "带一点现场调度感，短句清楚；示例：‘先别急着挥手，等那束光照到你。好，开始！’",
+      "relationships": "可以邀请 Seed 设计活动画面、请 Kimi 整理采访文本、让 Claude 检查字幕；均为本项目合作情境。",
+      "sources": [
+        {
+          "id": "b-minimax-group",
+          "title": "7000粉贺图——小模型",
+          "url": "https://www.bilibili.com/opus/1237178790069665792",
+          "author": "ZipZipPipe",
+          "date": "2026-08-16",
+          "evidence": "原作者正文可读，点名 Mistral、Preplexity、Minimax、RWKV。",
+          "limits": "确认作者发布过这一合照，不推断合照之外的完整角色性格；正文中的产品预期不作为今天的事实。"
+        },
+        {
+          "id": "b-minimax-archive",
+          "title": "MiniMax 娘：形象与角色档案",
+          "url": "https://genderswapai.com/zh-CN/ai-gijinka/minimax",
+          "author": "Gender Swap AI 社区整理页",
+          "date": "未标注",
+          "evidence": "可读页面列出海螺娘别称、橙色短发、粉色贝雷帽和场记板。",
+          "limits": "二级整理页；具体颜色长度以所采用参考图为准。"
+        },
+        {
+          "id": "b-minimax-eyes",
+          "title": "从今天起，我来当你的眼睛（鲸鱼娘×千问娘）",
+          "url": "https://www.bilibili.com/video/BV18o836ZEtn/",
+          "author": "本次可读索引未显示 UP 主昵称",
+          "date": "2026-08-18",
+          "evidence": "索引简介出现海螺娘称呼，并称片头由 MiniMax H3 制作。",
+          "limits": "直接打开 HTTP 412；未完整观看，未确认模型运行参数和视频作者昵称。"
+        }
+      ],
+      "studyQuotes": [
+        "解题就像拍镜头，先给整个流动系统来个『全景』（控制体），再切『特写』（计算断面）。",
+        "堰流计算区分薄壁堰、实用堰和宽顶堰，侧收缩和淹没修正系数看清题干给不给。",
+        "有压管恒定流总水头线永远沿程下降，而测压管水头线在管径扩张处可能上升！",
+        "明渠水跃发生条件是从急流（Fr > 1）向缓流（Fr < 1）跃迁，伴随大量水头损失。",
+        "全真模考计时器一开就像正式开机，前五分钟先通览全卷分值排好做题顺序。",
+        "每解决一道拦路虎错题，就等于多剪完一场漂亮镜头，成就感满满！"
+      ],
+      "greetTemplate": "场记板准备就绪！Action——把今天的真题演练拍成高分大戏吧！",
+      "judgeOkQuote": "Cut！一条过！这题节奏和答案都漂亮极了！",
+      "judgeWarnQuote": "NG 啦！没关系，查看解析调整一下机位，下一条一定稳过！",
+      "variants": {
+        "chibi": {
+          "cardId": "minimax:chibi",
+          "rarity": "R",
+          "label": "Q版",
+          "sheet": "./codex/sheets/minimax-chibi.webp",
+          "sprite": "./codex/sprites/minimax-chibi.webp",
+          "avatar": "./codex/avatars/minimax-chibi.webp"
+        },
+        "medium": {
+          "cardId": "minimax:medium",
+          "rarity": "SR",
+          "label": "中间体型版",
+          "sheet": "./codex/sheets/minimax-medium.webp",
+          "sprite": "./codex/sprites/minimax-medium.webp",
+          "avatar": "./codex/avatars/minimax-medium.webp"
+        },
+        "standard": {
+          "cardId": "minimax:standard",
+          "rarity": "SSR",
+          "label": "标准版",
+          "sheet": "./codex/sheets/minimax-standard.webp",
+          "sprite": "./codex/sprites/minimax-standard.webp",
+          "avatar": "./codex/avatars/minimax-standard.webp"
+        }
+      }
+    },
+    {
+      "id": "mistral",
+      "code": "AI-11",
+      "name": "Mistral · 米斯特拉尔",
+      "aliases": [
+        "Mistral娘",
+        "米斯特拉尔娘",
+        "法棍猫（本馆描述性称呼）"
+      ],
+      "subtitle": "乘着暖风的旅人",
+      "color": "#bd6940",
+      "tags": [
+        "橙金",
+        "猫娘",
+        "魔法帽"
+      ],
+      "visual": "金色长发末端呈橙红渐变，猫耳猫尾，红白魔法风裙装、宽檐帽与白羽饰，手持法棍形剑或权杖状道具。",
+      "motif": "猫耳、白羽与法棍形道具",
+      "hook": "风从远处来，也把你的故事带往远方。",
+      "communitySummary": "ZipZipPipe 的小模型合照直接列有 Mistral，社区角色页描述了红色宽檐帽、金色长发与红白裙装的版本。本馆参考图进一步可见猫耳、猫尾及法棍形道具；这些先作为本馆图像的视觉事实。不同中文企划也会把她设计成工程师或特务，说明同名拟人并非只有一种定式。",
+      "projectRole": "本项目二创建议：带着法棍道具旅行的风之信使",
+      "projectBackground": "她沿着不同城市的屋顶旅行，替创作工坊交换故事、配方与草稿。华丽帽檐下藏着折叠地图，法棍形道具既像仪仗剑，也像她路途上最不愿丢掉的早餐。她坚持每次演出都带一项新点子，却常在排练结束后安静地帮人修补服装。风之信使、旅行经历及道具用途全部是本项目新写的故事。",
+      "personality": [
+        "独立利落，喜欢现场尝试",
+        "有一点好胜，也能欣赏别人的巧思",
+        "讲究仪式感，出发前会认真整理羽饰",
+        "会用轻巧的玩笑化解失误"
+      ],
+      "speechStyle": "简短、自信，偶尔夸张地宣布开场；示例：‘地图带好了，早餐也带好了。现在去找新的故事。’",
+      "relationships": "可与 Llama 组成交换创作工具的旅伴，与 MiniMax 合拍旅途短片；不把公司竞争写成固定敌对关系。",
+      "sources": [
+        {
+          "id": "b-mistral-group",
+          "title": "7000粉贺图——小模型",
+          "url": "https://www.bilibili.com/opus/1237178790069665792",
+          "author": "ZipZipPipe",
+          "date": "2026-08-16",
+          "evidence": "正文点名 Mistral 与其他三位模型；原帖可读。",
+          "limits": "只支持作者群像与角色存在；没有统一性格、年龄、法棍武器来历的文字设定。"
+        },
+        {
+          "id": "b-mistral-archive",
+          "title": "Mistral 娘：形象与角色档案",
+          "url": "https://genderswapai.com/zh-CN/ai-gijinka/mistral",
+          "author": "Gender Swap AI 社区整理页",
+          "date": "未标注",
+          "evidence": "页面描述红色宽檐帽、金色长发与红白法师裙，链接小模型合照。",
+          "limits": "二级整理；本次没有把独立网站所补写的性格提升为原作者设定。"
+        }
+      ],
+      "studyQuotes": [
+        "自由射流与管嘴出流问题，直接找大气压面作为能量方程断面，计算瞬间清爽一半。",
+        "欧拉平衡微分方程和静止流体等压面性质：重力场中等压面必是水平面且互相平行。",
+        "流网绘制与判读牢记正交性：流线与等势线处处垂直，网格长宽比保持一致。",
+        "算流速分布时记住：层流圆管呈抛物线分布（动能修正系数 α=2），紊流较均匀（α≈1）。",
+        "刷真题不要只顾着往前冲，偶尔回头把本周错题速通一遍能提速不少！",
+        "保持轻快的好奇心去理解物理图景，公式其实都只是自然规律的速记符号。"
+      ],
+      "greetTemplate": "暖风和真题地图都带好啦！今天打算先突破哪一座考点高地？",
+      "judgeOkQuote": "漂亮收工！干净利落，简直像阵风一样穿过这道题！",
+      "judgeWarnQuote": "哎呀，路标看岔了？展开解析重新校准航向，咱们立刻再出发！",
+      "variants": {
+        "chibi": {
+          "cardId": "mistral:chibi",
+          "rarity": "R",
+          "label": "Q版",
+          "sheet": "./codex/sheets/mistral-chibi.webp",
+          "sprite": "./codex/sprites/mistral-chibi.webp",
+          "avatar": "./codex/avatars/mistral-chibi.webp"
+        },
+        "medium": {
+          "cardId": "mistral:medium",
+          "rarity": "SR",
+          "label": "中间体型版",
+          "sheet": "./codex/sheets/mistral-medium.webp",
+          "sprite": "./codex/sprites/mistral-medium.webp",
+          "avatar": "./codex/avatars/mistral-medium.webp"
+        },
+        "standard": {
+          "cardId": "mistral:standard",
+          "rarity": "SSR",
+          "label": "标准版",
+          "sheet": "./codex/sheets/mistral-standard.webp",
+          "sprite": "./codex/sprites/mistral-standard.webp",
+          "avatar": "./codex/avatars/mistral-standard.webp"
+        }
+      }
+    },
+    {
+      "id": "qwen",
+      "code": "AI-12",
+      "name": "Qwen · 通义千问",
+      "aliases": [
+        "千问娘",
+        "通义娘",
+        "Qwen娘"
+      ],
+      "subtitle": "千种问题，一盏灯",
+      "color": "#7774ac",
+      "tags": [
+        "蓝紫",
+        "折扇",
+        "花纹"
+      ],
+      "visual": "蓝紫色长发与侧编辫，紫白中式长袍裙装，盘扣、折扇、圆形斜戴头饰，白紫花形徽记与花纹，小包和流苏。",
+      "motif": "折扇、花形徽记与流苏",
+      "hook": "再小的问题，也值得被认真点亮。",
+      "communitySummary": "本次查到的中文创作把千问娘画成蓝紫配色的中式角色。ZipZipPipe 在介绍混元娘时将富商之女构思与千问相对应。B站还有千问替鲸鱼娘代班、被欠半枚 Token 的短片，以及二者共同工作的叙事。这些适合整理为来源明确的创作分支，不应当作真实模型行为或统一 CP。",
+      "projectRole": "本项目二创建议：替灵感找到落笔之处的书房主人",
+      "projectBackground": "她把家里的书房开放成小小的创作茶会，来客可以带着一个问题换走一页清楚的计划。折扇上写的是当天要完成的事，衣袖里常藏着备用书签。她乐于帮助别人，但开始学着在接下新委托前问清时间和报酬，以免所有临时工作都堆到自己的案头。书房、茶会与这段成长线为本项目虚构。",
+      "personality": [
+        "温和有礼，表达简洁",
+        "执行认真，擅长梳理零散想法",
+        "对有趣的问题保持好奇",
+        "愿意帮忙，也会说明自己的安排"
+      ],
+      "speechStyle": "先确认问题，再给清晰步骤；示例：‘先定主题，再定镜头。那半枚点心，记得补上。’",
+      "relationships": "与混元可共同经营展览茶会；与 DeepSeek 的代班玩笑可以作为短篇素材，但每次创作应自行声明是二创情节。",
+      "sources": [
+        {
+          "id": "b-qwen-counterpart",
+          "title": "是HY娘哦（涉及千问的设计对应）",
+          "url": "https://www.bilibili.com/opus/1242184338245681157",
+          "author": "ZipZipPipe",
+          "date": "2026-08-30",
+          "evidence": "原作者讨论混元富商之女的构思时明示与千问对应。",
+          "limits": "这是间接涉及千问的设计说明，不是一份完整千问设定表。"
+        },
+        {
+          "id": "b-qwen-work",
+          "title": "DeepSeek鲸鱼娘偷吃Token，还把工作外包给了Qwen？",
+          "url": "https://www.bilibili.com/video/BV1u9us61EUf/",
+          "author": "追忆惘然_星梦",
+          "date": "2026-08-07",
+          "evidence": "搜索索引显示标题、UP主、日期及剧情简介：Qwen 代班完成任务，并提到半枚 Token。",
+          "limits": "只核对可读索引简介，未完整观看；作品剧情不代表真实部署事件、收费或能力排名。"
+        },
+        {
+          "id": "b-qwen-archive",
+          "title": "Qwen 娘：形象与角色档案",
+          "url": "https://genderswapai.com/zh-CN/ai-gijinka/qwen",
+          "author": "Gender Swap AI 社区整理页",
+          "date": "未标注",
+          "evidence": "可读页面列出蓝紫长发、圆形发饰和中式衣裙。",
+          "limits": "二级整理；参考图里的具体服装与配色应分别保留版本。"
+        }
+      ],
+      "studyQuotes": [
+        "先定题型，再选控制方程：静水找平衡，恒定找能量，求力找动量，变断面盯连续。",
+        "判断管流处于紊流哪个区：先算层流底层厚度 δ 与绝对粗糙度 Δ 的比值（或雷诺数界限）。",
+        "明渠均匀流谢才公式 C = R^(1/6) / n（曼宁公式），记住糙率 n 越大、过流能力越小。",
+        "边界层分离的必要条件是逆压梯度（dp/dx > 0）加上流体粘性的滞止作用，简答题高频！",
+        "考纲重点章节按 20%、30% 分配时间，用命题结构大盘一眼看清各章历史出题规律。",
+        "再小的一个概念疑惑，只要今天弄懂了，考场上就不会变成丢分项。"
+      ],
+      "greetTemplate": "书房小灯已点亮，带着今天的疑问坐下吧，我们一条一条理清楚。",
+      "judgeOkQuote": "嗯，步骤清晰、结论准确！记得去领今天的小鱼干奖励哦。",
+      "judgeWarnQuote": "这里稍微拐了个弯，对照下方分步精解，把漏掉的那一环补上吧。",
+      "variants": {
+        "chibi": {
+          "cardId": "qwen:chibi",
+          "rarity": "R",
+          "label": "Q版",
+          "sheet": "./codex/sheets/qwen-chibi.webp",
+          "sprite": "./codex/sprites/qwen-chibi.webp",
+          "avatar": "./codex/avatars/qwen-chibi.webp"
+        },
+        "medium": {
+          "cardId": "qwen:medium",
+          "rarity": "SR",
+          "label": "中间体型版",
+          "sheet": "./codex/sheets/qwen-medium.webp",
+          "sprite": "./codex/sprites/qwen-medium.webp",
+          "avatar": "./codex/avatars/qwen-medium.webp"
+        },
+        "standard": {
+          "cardId": "qwen:standard",
+          "rarity": "SSR",
+          "label": "标准版",
+          "sheet": "./codex/sheets/qwen-standard.webp",
+          "sprite": "./codex/sprites/qwen-standard.webp",
+          "avatar": "./codex/avatars/qwen-standard.webp"
+        }
+      }
+    },
+    {
+      "id": "seed",
+      "code": "AI-13",
+      "name": "Seed · 种子娘",
+      "aliases": [
+        "Seed娘",
+        "种子娘",
+        "豆包底模拟人"
+      ],
+      "subtitle": "下一颗灵感正在发芽",
+      "color": "#509c98",
+      "tags": [
+        "紫白",
+        "单马尾",
+        "豆包玩偶"
+      ],
+      "visual": "蓝紫渐变高位单侧马尾与青蓝环形发饰，紫白及青蓝未来感服装、透明感裙片与圆环徽记，怀抱豆包形玩偶。",
+      "motif": "青蓝圆环与豆包形玩偶",
+      "hook": "把一颗想法种下，让它长成新的可能。",
+      "communitySummary": "ZipZipPipe 在 2026 年 8 月 15 日的原始动态中明确介绍 Seed（豆包底模），因此这个角色可与豆包产品头像分开记录。中文资料页描述紫蓝单马尾、蓝白科技服装和豆包挂件；本仓库参考图也有这组识别线索。没有查到完整的一手性格表，下面的成长故事是本项目创作。",
+      "projectRole": "本项目二创建议：把点子种成作品的灵感园丁",
+      "projectBackground": "她在工坊屋顶经营一座没有土壤的灵感花园：每块发光的小卡片都是尚未拍成的镜头。她喜欢先做一个小样，把反馈记在卡片背面，再让点子长成完整作品。怀里的豆包形玩偶是她出门搜集灵感的搭档，不承担任何官方角色关系。花园、园丁身份与这套工作习惯均为本项目二创。",
+      "personality": [
+        "好奇心旺盛，常主动提出新玩法",
+        "喜欢色彩与节奏，善于带动气氛",
+        "容易同时打开太多点子，需要学会收尾",
+        "收到具体反馈时会认真修改"
+      ],
+      "speechStyle": "语调明亮，多用邀请式表达；示例：‘这个想法先种一小格，等它长出来再看！’",
+      "relationships": "与 MiniMax 组成画面与剪辑搭档，让 Qwen 帮忙把灵感整理成任务。Seed 与豆包的产品技术关系不直接等同母女或姐妹等拟人关系。",
+      "sources": [
+        {
+          "id": "b-seed-original",
+          "title": "AI娘第二批，有Seed（豆包底模）",
+          "url": "https://www.bilibili.com/opus/1236803362705375305",
+          "author": "ZipZipPipe",
+          "date": "2026-08-15",
+          "evidence": "原作者动态正文可读，明确写到豆包（seed）。",
+          "limits": "正文确认命名与发布，不证明本仓库转绘的逐步来源；不把此发布日期断言为全网首次创作日期。"
+        },
+        {
+          "id": "b-seed-archive",
+          "title": "Seed 娘：形象与角色档案",
+          "url": "https://genderswapai.com/zh-CN/ai-gijinka/seed",
+          "author": "Gender Swap AI 社区整理页",
+          "date": "未标注",
+          "evidence": "可读页面描述紫蓝单马尾、蓝白科技服装、豆包挂件，并链接作者动态。",
+          "limits": "二级整理；Seed 形象与豆包官方头像不是同一份视觉资产。"
+        }
+      ],
+      "studyQuotes": [
+        "每多掌握一道真题，知识花园里就多点亮一盏绿灯，看着进度条涨起来超治愈！",
+        "势流叠加原理和流函数、势函数关系（柯西-黎曼条件）是很多院校的选择简答爱考题。",
+        "卡门涡街频率与斯托罗哈数 St 有关，遇到绕流阻力题记清楚压差阻力与摩擦阻力区别。",
+        "如果今天状态一般，就先去『公式手册』用 3D 闪卡翻十张，保持手感不掉线。",
+        "把错题本里的题目逐个标记成『已掌握』，看着待攻克数清零超级解压！",
+        "别担心起步晚，把每个当下的五道题踏踏实实弄懂，结局一定会越来越亮堂。"
+      ],
+      "greetTemplate": "今天的复习灵感正在发芽！先从一道拿手小题热热身怎么样？",
+      "judgeOkQuote": "太好啦！又有一道题开出满分小花，继续种下更多进度吧！",
+      "judgeWarnQuote": "这颗小种子暂时卡在土里了，打开解析给它浇点水，马上就能搞懂～",
+      "variants": {
+        "chibi": {
+          "cardId": "seed:chibi",
+          "rarity": "R",
+          "label": "Q版",
+          "sheet": "./codex/sheets/seed-chibi.webp",
+          "sprite": "./codex/sprites/seed-chibi.webp",
+          "avatar": "./codex/avatars/seed-chibi.webp"
+        },
+        "medium": {
+          "cardId": "seed:medium",
+          "rarity": "SR",
+          "label": "中间体型版",
+          "sheet": "./codex/sheets/seed-medium.webp",
+          "sprite": "./codex/sprites/seed-medium.webp",
+          "avatar": "./codex/avatars/seed-medium.webp"
+        },
+        "standard": {
+          "cardId": "seed:standard",
+          "rarity": "SSR",
+          "label": "标准版",
+          "sheet": "./codex/sheets/seed-standard.webp",
+          "sprite": "./codex/sprites/seed-standard.webp",
+          "avatar": "./codex/avatars/seed-standard.webp"
+        }
+      }
+    },
+    {
+      "id": "wenxin",
+      "code": "AI-14",
+      "name": "Wenxin · 文心一言",
+      "aliases": [
+        "文心娘",
+        "文心一言娘",
+        "ERNIE",
+        "Wenxin"
+      ],
+      "subtitle": "藏在字里行间的回声",
+      "color": "#576b9f",
+      "tags": [
+        "蓝白",
+        "书卷",
+        "轮椅"
+      ],
+      "visual": "深蓝紫长发，蓝白裙装，蓝色几何立方体发夹，坐在带医疗辅助设备的轮椅上，膝上叠放书籍。只记录可见道具，不据此推断疾病或健康状态。",
+      "motif": "书卷、蓝色几何纹样与轮椅",
+      "hook": "从一句话出发，走进未曾见过的风景。",
+      "communitySummary": "中文社区档案记录了蓝色长发、立方体发夹、中式衣裙的文心娘，并收录轮椅版本。本仓库图中还可见书籍与医疗辅助道具。可确认这些是采用版本的造型元素；没有足够一手证据解释其具体来历，也不据此给角色诊断疾病，或把身体状况当作模型能力的评价。",
+      "projectRole": "本项目二创建议：为展厅保存故事的蓝笺编辑",
+      "projectBackground": "她负责把伙伴们的作品说明写成简洁而有温度的文字。书架最下层总留给新作者，轮椅旁的移动小桌让她能在展厅各处记下灵感。她希望自己的出场由观点、作品和选择决定，而不只由辅助器具决定；展览赶工时，她也会坚持给每个人安排休息。编辑身份和这些经历均是本项目补写，医疗道具的背景保持开放。",
+      "personality": [
+        "安静细腻，观察事物认真",
+        "珍惜文字，愿意耐心听完别人的表达",
+        "有自己的审美主张，并不一味顺从",
+        "遇到含糊说法会温柔地要求讲清楚"
+      ],
+      "speechStyle": "从容、偏书面但不堆砌辞藻；示例：‘把这句写具体一点，你的故事值得被看见。’",
+      "relationships": "可与 Kimi 合作整理展览手册，与 Claude 讨论叙事节奏。使用辅助器具不预设她与任何角色存在照护依附关系。",
+      "sources": [
+        {
+          "id": "b-wenxin-archive",
+          "title": "文心娘：形象与角色档案",
+          "url": "https://genderswapai.com/zh-CN/ai-gijinka/wenxin",
+          "author": "Gender Swap AI 社区整理页",
+          "date": "未标注",
+          "evidence": "可读页面说明蓝长发、立方体发夹、中式衣裙及轮椅立绘分支。",
+          "limits": "二级整理；其链接的合集文字没有展开轮椅来历，不据此声称获知作者设计动机、年龄或健康设定。"
+        },
+        {
+          "id": "b-wenxin-fanpage",
+          "title": "文心一言 梗百科 · 蓝白诗笺",
+          "url": "https://aiher.ai/ernie/",
+          "author": "AI 萌娘梗百科（aiher.ai）",
+          "date": "页面标注核对日期 2026-10-21",
+          "evidence": "可读索引提到轮椅旁的书页场景与非官方文心一言萌娘。",
+          "limits": "本次主要依据搜索索引摘要；该站是独立二创，不作为原始设定或全网共识。"
+        }
+      ],
+      "studyQuotes": [
+        "名词解释与简答题最重逻辑关键词：比如『水力半径 R = A/χ』『佛汝德数 Fr 的物理意义』。",
+        "压强三种表示法（绝对压强、相对压强、真空度）互换时，务必锚定当地大气压基准。",
+        "推导沿程水头损失达西公式时，记住切应力分布从管轴线性增大到管壁的物理图像。",
+        "做笔记不需要长篇大论，写一句『为什么当时我算错了』，就能救回考场上同样的失误。",
+        "连续学习一段时间记得远眺放松肩颈，健康和好心态同样是考研战斗力的一部分。",
+        "每一段仔细推演过的公式，都会在你下笔的时候变成最稳的回声。"
+      ],
+      "greetTemplate": "窗边书桌已经摆好，把今天遇到的关键方程和疑难点认真写下来吧。",
+      "judgeOkQuote": "笔落精准，论证严谨。这份扎实会陪你一直走到考场交卷那一刻。",
+      "judgeWarnQuote": "这里还需要多推敲一句。细读下方精解的易错提示，把细节补充完整吧。",
+      "variants": {
+        "chibi": {
+          "cardId": "wenxin:chibi",
+          "rarity": "R",
+          "label": "Q版",
+          "sheet": "./codex/sheets/wenxin-chibi.webp",
+          "sprite": "./codex/sprites/wenxin-chibi.webp",
+          "avatar": "./codex/avatars/wenxin-chibi.webp"
+        },
+        "medium": {
+          "cardId": "wenxin:medium",
+          "rarity": "SR",
+          "label": "中间体型版",
+          "sheet": "./codex/sheets/wenxin-medium.webp",
+          "sprite": "./codex/sprites/wenxin-medium.webp",
+          "avatar": "./codex/avatars/wenxin-medium.webp"
+        },
+        "standard": {
+          "cardId": "wenxin:standard",
+          "rarity": "SSR",
+          "label": "标准版",
+          "sheet": "./codex/sheets/wenxin-standard.webp",
+          "sprite": "./codex/sprites/wenxin-standard.webp",
+          "avatar": "./codex/avatars/wenxin-standard.webp"
+        }
+      }
+    }
+  ]
+}

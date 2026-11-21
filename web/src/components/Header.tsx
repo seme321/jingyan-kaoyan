@@ -9,6 +9,7 @@ import {
   ChevronDown,
   Compass,
   FileSpreadsheet,
+  Fish,
   Info,
   Layers,
   Megaphone,
@@ -22,6 +23,7 @@ import {
 } from 'lucide-react';
 import { useStudy } from '../context/StudyContext';
 import { useData } from '../context/DataContext';
+import { useCompanionOptional } from '../context/CompanionContext';
 import { BRAND } from '../brand';
 import { WhaleLogo } from './WhaleLogo';
 
@@ -34,6 +36,7 @@ const MATRIX_PATHS = ['/chapters', '/methods', '/dashboard'];
 export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
   const { state, resolvedTheme, updateSettings } = useStudy();
   const { courses, currentCourse, setCourseId, questionsById, hasUnreadAnnouncement } = useData();
+  const companionCtx = useCompanionOptional();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [switcherOpen, setSwitcherOpen] = useState(false);
   const [matrixOpen, setMatrixOpen] = useState(false);
@@ -242,6 +245,19 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
         </nav>
 
         <div className="header-actions">
+          {companionCtx && (
+            <NavLink
+              to="/companion"
+              className={({ isActive }) => `nav-fish-chip ${isActive ? 'active' : ''}`}
+              title="小鱼干补给站 · 每日任务、兑换商店与角色图鉴"
+            >
+              <Fish size={14} />
+              <span>{companionCtx.companion.fish}</span>
+              {companionCtx.claimableCount > 0 && (
+                <span className="nav-fish-badge">{companionCtx.claimableCount}</span>
+              )}
+            </NavLink>
+          )}
           <NavLink
             to="/progress"
             className={({ isActive }) => `nav-util-chip ${isActive ? 'active' : ''}`}
@@ -330,6 +346,14 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
           <NavLink to="/progress" className="mobile-nav-link">
             <Activity size={16} /> 我的进度与掌握热力图
           </NavLink>
+          {companionCtx && (
+            <NavLink to="/companion" className="mobile-nav-link">
+              <Fish size={16} /> 补给站 · 小鱼干 ({companionCtx.companion.fish}) 与角色图鉴
+              {companionCtx.claimableCount > 0 && (
+                <span className="nav-fish-badge">{companionCtx.claimableCount}</span>
+              )}
+            </NavLink>
+          )}
           <NavLink to="/board" className="mobile-nav-link">
             <Megaphone size={16} /> 站点公告与考研留言板
             {hasUnreadAnnouncement && <span className="nav-dot" />}

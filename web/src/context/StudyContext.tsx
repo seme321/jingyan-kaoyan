@@ -1,12 +1,14 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import type {
   ActiveMockSession,
   AppSettings,
+  CompanionState,
   CourseStudySlice,
   MasteryStatus,
   MockAttempt,
   MultiCourseStudyState,
   QuestionRecord,
+  StudyEvent,
 } from '../types';
 import { useData } from './DataContext';
 
@@ -48,6 +50,7 @@ function loadInitialMultiState(): MultiCourseStudyState {
       return {
         courses: parsed.courses ?? {},
         settings: { ...DEFAULT_SETTINGS, ...(parsed.settings ?? {}) },
+        ...(parsed.companion ? { companion: parsed.companion } : {}),
       };
     }
     // Seamless migration from single-course v1 ('hhu-814')
@@ -79,6 +82,10 @@ interface ScopedStudyState extends CourseStudySlice {
 
 interface StudyContextValue {
   state: ScopedStudyState;
+  allCourses: Record<string, CourseStudySlice>;
+  companionState: CompanionState | undefined;
+  setCompanionState: (updater: (prev: CompanionState | undefined) => CompanionState) => void;
+  subscribeStudyEvent: (listener: (ev: StudyEvent) => void) => () => void;
   resolvedTheme: 'dark' | 'light';
   getRecord: (qid: string) => QuestionRecord;
   recordAttempt: (
@@ -105,9 +112,41 @@ interface StudyContextValue {
 const StudyContext = createContext<StudyContextValue | null>(null);
 
 export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { currentCourse } = useData();
+  const { currentCourse, questionsById } = useData();
   const cid = currentCourse.id;
   const [multi, setMulti] = useState<MultiCourseStudyState>(loadInitialMultiState);
+  const multiRef = useRef(multi);
+  multiRef.current = multi;
+  const listenersRef = useRef<Set<(ev: StudyEvent) => void>>(new Set());
+
+  const subscribeStudyEvent = useCallback((listener: (ev: StudyEvent) => void) => {
+    listenersRef.current.add(listener);
+    return () => {
+      listenersRef.current.delete(listener);
+    };
+  }, []);
+
+  const emitStudyEvent = useCallback((ev: StudyEvent) => {
+    queueMicrotask(() => {
+      listenersRef.current.forEach((fn) => {
+        try {
+          fn(ev);
+        } catch {
+          // ignore subscriber errors
+        }
+      });
+    });
+  }, []);
+
+  const setCompanionState = useCallback(
+    (updater: (prev: CompanionState | undefined) => CompanionState) => {
+      setMulti((prev) => ({
+        ...prev,
+        companion: updater(prev.companion),
+      }));
+    },
+    []
+  );
 
   useEffect(() => {
     try {
@@ -177,6 +216,10 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       extra?: { judgeChoice?: boolean | null; choice?: string; draft?: string }
     ) => {
       const now = Date.now();
+      const prevStatus: MasteryStatus =
+        multiRef.current.courses[cid]?.records?.[qid]?.status ?? 'unseen';
+      const q = questionsById[qid];
+      const isBigQuestion = q?.type === 'calc' || q?.type === 'proof';
       updateSlice((slice) => {
         const cur = slice.records[qid] ?? { ...EMPTY_RECORD };
         const isWrongOrPartial = status === 'wrong' || status === 'partial';
@@ -203,8 +246,16 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           practiceLogs: [logEntry, ...slice.practiceLogs].slice(0, 300),
         };
       });
+      emitStudyEvent({
+        type: 'attempt',
+        courseId: cid,
+        qid,
+        status,
+        prevStatus,
+        isBigQuestion,
+      });
     },
-    [updateSlice]
+    [cid, emitStudyEvent, questionsById, updateSlice]
   );
 
   const toggleFavorite = useCallback(
@@ -224,6 +275,7 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const removeFromWrongBook = useCallback(
     (qid: string, markMastered = true) => {
       const now = Date.now();
+      const wasInWrongBook = Boolean(multiRef.current.courses[cid]?.records?.[qid]?.inWrongBook);
       updateSlice((slice) => {
         const cur = slice.records[qid] ?? { ...EMPTY_RECORD };
         return {
@@ -239,8 +291,11 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           },
         };
       });
+      if (wasInWrongBook) {
+        emitStudyEvent({ type: 'wrong_cleared', courseId: cid, qid });
+      }
     },
-    [updateSlice]
+    [cid, emitStudyEvent, updateSlice]
   );
 
   const addToWrongBook = useCallback(
@@ -274,8 +329,11 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           records: { ...slice.records, [qid]: { ...cur, note, updatedAt: Date.now() } },
         };
       });
+      if (note.trim().length >= 8) {
+        emitStudyEvent({ type: 'note_saved', courseId: cid, qid });
+      }
     },
-    [updateSlice]
+    [cid, emitStudyEvent, updateSlice]
   );
 
   const saveQuestionDraft = useCallback(
@@ -325,8 +383,9 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         activeMock: null,
         mockHistory: [attempt, ...slice.mockHistory].slice(0, 50),
       }));
+      emitStudyEvent({ type: 'mock_saved', courseId: cid, year: attempt.year });
     },
-    [updateSlice]
+    [cid, emitStudyEvent, updateSlice]
   );
 
   const updateSettings = useCallback((patch: Partial<AppSettings>) => {
@@ -354,14 +413,24 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const payload = parsed.data ?? parsed;
       // Support both v2 multi-course backup and v1 single-course backup!
       if (payload && typeof payload.courses === 'object') {
-        setMulti({
+        const hasValidCompanion =
+          payload.companion &&
+          typeof payload.companion === 'object' &&
+          !Array.isArray(payload.companion);
+        setMulti((prev) => ({
           courses: payload.courses,
           settings: { ...DEFAULT_SETTINGS, ...(payload.settings ?? {}) },
-        });
-        return { ok: true, message: '全部专业课板块的学习记录与笔记已成功恢复！' };
+          ...(hasValidCompanion
+            ? { companion: payload.companion }
+            : prev.companion
+              ? { companion: prev.companion }
+              : {}),
+        }));
+        return { ok: true, message: '全部专业课板块的学习记录、笔记与养成图鉴已成功恢复！' };
       }
       if (payload && typeof payload.records === 'object') {
         setMulti((prev) => ({
+          ...prev,
           courses: {
             ...prev.courses,
             [cid]: {
@@ -395,6 +464,10 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     <StudyContext.Provider
       value={{
         state: scopedState,
+        allCourses: multi.courses,
+        companionState: multi.companion,
+        setCompanionState,
+        subscribeStudyEvent,
         resolvedTheme,
         getRecord,
         recordAttempt,

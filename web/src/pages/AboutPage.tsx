@@ -121,9 +121,14 @@ export const AboutPage: React.FC = () => {
               感谢以下创作者与 AI 伙伴对本站题库整理、工程配图重绘与前端研发的支持 —— 点击立绘可放大查看高清角色形象。
             </p>
           </div>
-          <Link to="/board" className="btn btn-secondary btn-sm">
-            <MessageSquare size={14} /> 前往公告与留言板
-          </Link>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <Link to="/companion?tab=codex" className="btn btn-tactical btn-sm">
+              <Sparkles size={14} /> 进入完整 14 角色图鉴与补给站 →
+            </Link>
+            <Link to="/board" className="btn btn-secondary btn-sm">
+              <MessageSquare size={14} /> 前往公告与留言板
+            </Link>
+          </div>
         </div>
 
         <div className="codex-grid">
@@ -318,6 +323,9 @@ export const AboutPage: React.FC = () => {
             <li>
               角色图鉴中特别鸣谢角色「Gemini」为本站通过 AI 自行生成的非商业致谢插图，不主张官方关联，亦不主张上游 CC 授权。
             </li>
+            <li>
+              补给站角色图鉴中收录的 14 位 AI 拟人角色与三视图设定资料，参考整理自开源非商业展览企划 <strong>AI MUSE（AI_2Dgirls_Gallery）</strong>（特别致谢「Creeper-北极之光」提供初始形象参考，以及 ZipZipPipe、上善无形 等社区创作者的公开二创设定）。上述形象仅用于本站非商业考研陪伴与图鉴展示，不代表对应 AI 模型厂商官方设定。
+            </li>
             <li>如原作者或相关权利人不同意本站使用，请通过下方联系方式告知，站长将在 <strong>48 小时内</strong>核实并替换或删除。</li>
             <li>站名“{BRAND.name}”、矢量小胖鲸标志、网站代码与界面为本站独立设计开发。</li>
           </ul>
@@ -357,6 +365,9 @@ export const AboutPage: React.FC = () => {
           </Link>
           <Link to="/board" className="btn btn-secondary btn-sm">
             <MessageSquare size={14} /> 前往公告与留言板
+          </Link>
+          <Link to="/companion" className="btn btn-secondary btn-sm">
+            <Sparkles size={14} /> 小鱼干补给站
           </Link>
         </div>
       </section>

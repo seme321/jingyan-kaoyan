@@ -12,12 +12,14 @@ import {
 } from 'lucide-react';
 import { useData } from '../context/DataContext';
 import { useStudy } from '../context/StudyContext';
+import { useCompanionOptional } from '../context/CompanionContext';
 import { Mascot } from '../components/Mascot';
 import { KaTeXFormula, MathText } from '../components/MathText';
 
 export const FormulasPage: React.FC = () => {
   const { currentCourse, formulas, chapters, chapterMap } = useData();
   const { state, toggleFavoriteFormula } = useStudy();
+  const companionCtx = useCompanionOptional();
 
   const [chapterFilter, setChapterFilter] = useState<number>(0);
   const [onlyFav, setOnlyFav] = useState(false);
@@ -69,6 +71,12 @@ export const FormulasPage: React.FC = () => {
 
   const activeCard = filtered[cardIdx] ?? null;
   const cardProgressPct = filtered.length > 0 ? Math.round(((cardIdx + 1) / filtered.length) * 100) : 0;
+
+  useEffect(() => {
+    if (cardMode && cardFlipped && activeCard && companionCtx) {
+      companionCtx.trackFormulaFlip(activeCard.id);
+    }
+  }, [cardMode, cardFlipped, activeCard, companionCtx]);
 
   return (
     <div className="page-container reading-narrow">

@@ -218,9 +218,153 @@ export interface CourseStudySlice {
   activeMock: ActiveMockSession | null;
 }
 
+export type CardVariant = 'chibi' | 'medium' | 'standard';
+export type CardRarity = 'R' | 'SR' | 'SSR' | 'SP';
+export type StageFrameId = 'default' | 'abyssal' | 'starlight' | 'hazard';
+
+export interface CodexSource {
+  id: string;
+  title: string;
+  url: string;
+  author: string;
+  date: string;
+  evidence: string;
+  limits: string;
+}
+
+export interface CodexVariantAsset {
+  cardId: string;
+  rarity: 'R' | 'SR' | 'SSR';
+  label: string;
+  sheet: string;
+  sprite: string;
+  avatar: string;
+}
+
+export interface CodexCharacter {
+  id: string;
+  code: string;
+  name: string;
+  aliases: string[];
+  subtitle: string;
+  color: string;
+  tags: string[];
+  visual: string;
+  motif: string;
+  hook: string;
+  communitySummary: string;
+  projectRole: string;
+  projectBackground: string;
+  personality: string[];
+  speechStyle: string;
+  relationships: string;
+  sources: CodexSource[];
+  studyQuotes: string[];
+  greetTemplate: string;
+  judgeOkQuote: string;
+  judgeWarnQuote: string;
+  variants: Record<CardVariant, CodexVariantAsset>;
+}
+
+export interface CodexSpCard {
+  id: string;
+  code: string;
+  name: string;
+  subtitle: string;
+  role: string;
+  color: string;
+  tags: string[];
+  rarity: 'SP';
+  sprite: string;
+  avatar: string;
+  bio: string;
+  credit: string;
+  greetTemplate: string;
+  judgeOkQuote: string;
+  judgeWarnQuote: string;
+  studyQuotes: string[];
+}
+
+export interface CodexCatalog {
+  version: number;
+  updated: string;
+  spCards: CodexSpCard[];
+  characters: CodexCharacter[];
+}
+
+export interface DailyCompanionProgress {
+  date: string;
+  checkedIn: boolean;
+  practicedQids: string[];
+  masteredQids: string[];
+  bigQuestionQids: string[];
+  wrongClearedQids: string[];
+  noteQids: string[];
+  formulaFlippedIds: string[];
+  microDropQids: string[];
+  microDropEarned: number;
+  bondDropQids: string[];
+  bondDropEarned: number;
+  mascotInteracted: boolean;
+  claimedMissions: string[];
+}
+
+export interface WeeklyCompanionProgress {
+  weekKey: string;
+  practicedQids: string[];
+  mockCount: number;
+  activeDays: string[];
+  claimedMissions: string[];
+}
+
+export interface CompanionState {
+  version: number;
+  fish: number;
+  vouchers: number;
+  totalPacksOpened: number;
+  pityCounter: number;
+  checkInStreak: number;
+  lastCheckInDate: string;
+  ownedCards: Record<string, number>;
+  bonds: Record<string, number>;
+  equippedCardId: string;
+  applyGlobally: boolean;
+  ownedFrames: StageFrameId[];
+  equippedFrame: StageFrameId;
+  daily: DailyCompanionProgress;
+  weekly: WeeklyCompanionProgress;
+  claimedAchievements: string[];
+}
+
+export type StudyEvent =
+  | {
+      type: 'attempt';
+      courseId: string;
+      qid: string;
+      status: MasteryStatus;
+      prevStatus: MasteryStatus;
+      isBigQuestion: boolean;
+    }
+  | {
+      type: 'wrong_cleared';
+      courseId: string;
+      qid: string;
+    }
+  | {
+      type: 'note_saved';
+      courseId: string;
+      qid: string;
+    }
+  | {
+      type: 'mock_saved';
+      courseId: string;
+      year: number;
+    };
+
 export interface MultiCourseStudyState {
   courses: Record<string, CourseStudySlice>;
   settings: AppSettings;
+  companion?: CompanionState;
 }
 
 export interface AnnouncementItem {

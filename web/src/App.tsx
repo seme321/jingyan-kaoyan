@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { HashRouter, Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { DataProvider, useData } from './context/DataContext';
 import { StudyProvider } from './context/StudyContext';
+import { CompanionProvider, useCompanion } from './context/CompanionContext';
 import { Header } from './components/Header';
 import { SettingsModal } from './components/SettingsModal';
+import { RewardToastHost } from './components/RewardToastHost';
 import { Mascot } from './components/Mascot';
 import { TacticalBackground } from './components/TacticalBackground';
 import { RouteTransitionHUD } from './components/RouteTransitionHUD';
@@ -20,9 +22,11 @@ import { DashboardPage } from './pages/DashboardPage';
 import { FormulasPage } from './pages/FormulasPage';
 import { BoardPage } from './pages/BoardPage';
 import { AboutPage } from './pages/AboutPage';
+import { CompanionPage } from './pages/CompanionPage';
 
 const AppShell: React.FC = () => {
   const { loading, error, currentCourse } = useData();
+  const { companion, activeMascot } = useCompanion();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const location = useLocation();
 
@@ -43,7 +47,7 @@ const AppShell: React.FC = () => {
             <Mascot pose="study" size={140} float />
             <span className="loading-code">SYS // SYNCING COURSE MODULE [{currentCourse.id.toUpperCase()}]</span>
             <p>
-              {BRAND.mascotName}正在加载「{currentCourse.name}」真题与公式库…
+              {companion.applyGlobally ? activeMascot.name : BRAND.mascotName}正在加载「{currentCourse.name}」真题与公式库…
             </p>
           </div>
         ) : error ? (
@@ -70,7 +74,8 @@ const AppShell: React.FC = () => {
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/formulas" element={<FormulasPage />} />
               <Route path="/board" element={<BoardPage />} />
-              <Route path="/gallery" element={<Navigate to="/about?section=codex" replace />} />
+              <Route path="/companion" element={<CompanionPage />} />
+              <Route path="/gallery" element={<Navigate to="/companion?tab=codex" replace />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
@@ -92,12 +97,16 @@ const AppShell: React.FC = () => {
             </span>
           </div>
           <div className="footer-links">
+            <Link to="/companion" className="footer-link">
+              小鱼干补给站
+            </Link>
+            <span aria-hidden="true">/</span>
             <Link to="/board" className="footer-link">
               公告与留言板
             </Link>
             <span aria-hidden="true">/</span>
-            <Link to="/about?section=codex" className="footer-link">
-              鸣谢 Gemini · 角色图鉴
+            <Link to="/companion?tab=codex" className="footer-link">
+              鸣谢与角色图鉴
             </Link>
             <span aria-hidden="true">/</span>
             <Link to="/about" className="footer-link">
@@ -106,6 +115,7 @@ const AppShell: React.FC = () => {
           </div>
         </div>
       </footer>
+      <RewardToastHost />
       <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </div>
   );
@@ -114,9 +124,11 @@ const AppShell: React.FC = () => {
 export const App: React.FC = () => (
   <DataProvider>
     <StudyProvider>
-      <HashRouter>
-        <AppShell />
-      </HashRouter>
+      <CompanionProvider>
+        <HashRouter>
+          <AppShell />
+        </HashRouter>
+      </CompanionProvider>
     </StudyProvider>
   </DataProvider>
 );

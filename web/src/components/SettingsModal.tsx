@@ -205,7 +205,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) =
           <div className="backup-box">
             <div className="setting-label">全量备份与恢复（JSON）</div>
             <div className="setting-desc">
-              一次导出即可备份所有院校专业课板块的做题记录、错题本、收藏与私人笔记。
+              一次导出即可备份所有院校专业课板块的做题记录、错题本、收藏、私人笔记，以及小鱼干、角色图鉴与养成进度。
             </div>
             <div className="backup-actions">
               <button type="button" className="btn btn-secondary btn-sm" onClick={handleDownloadBackup}>

@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { useData } from '../context/DataContext';
 import { useStudy } from '../context/StudyContext';
+import { useCompanionOptional } from '../context/CompanionContext';
 import { Mascot, MascotTip } from '../components/Mascot';
 import { MathText } from '../components/MathText';
 import { FigureGallery } from '../components/FigureGallery';
@@ -36,6 +37,7 @@ export const PracticePage: React.FC = () => {
     saveQuestionDraft,
     updateSettings,
   } = useStudy();
+  const companionCtx = useCompanionOptional();
   const [searchParams, setSearchParams] = useSearchParams();
   const railRef = useRef<HTMLDivElement | null>(null);
 
@@ -585,8 +587,16 @@ export const PracticePage: React.FC = () => {
                       className="judge-mascot-tip"
                     >
                       {judgePicked === currentQuestion.judgeAnswer
-                        ? '判断正确！本题已归档为已掌握，继续保持节奏～'
-                        : '判断失误！已自动同步至错题本，展开下方精解核查陷阱吧。'}
+                        ? companionCtx &&
+                          !companionCtx.activeMascot.isDefaultDafeyu &&
+                          companionCtx.companion.applyGlobally
+                          ? companionCtx.activeMascot.judgeOkQuote
+                          : '判断正确！本题已归档为已掌握，继续保持节奏～'
+                        : companionCtx &&
+                            !companionCtx.activeMascot.isDefaultDafeyu &&
+                            companionCtx.companion.applyGlobally
+                          ? companionCtx.activeMascot.judgeWarnQuote
+                          : '判断失误！已自动同步至错题本，展开下方精解核查陷阱吧。'}
                     </MascotTip>
                   )}
                 </div>
