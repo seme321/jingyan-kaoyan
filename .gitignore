@@ -1,0 +1,18 @@
+# === 敏感 / 原始真题与含水印参考资料（严禁推入公开仓库）===
+河海大学已整理真题/
+扬州大学待处理数据/
+河海大学已整理数据/
+扬州大学已整理数据/
+assets_src/handdrawn_backup/
+assets_src/mascot_raw/
+
+# === 构建产物与依赖 ===
+web/node_modules/
+web/dist/
+web/tsconfig.tsbuildinfo
+
+# === Python / 系统缓存 ===
+**/__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db

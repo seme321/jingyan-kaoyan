@@ -1,0 +1,722 @@
+# -*- coding: utf-8 -*-
+"""
+Generate solution schematic figures (q*_sol.png) and standardized 2024.json
+for Yangzhou University 849 Hydraulics (2024) in `扬州大学已整理数据/2024/`.
+"""
+
+import json
+from pathlib import Path
+import numpy as np
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+
+plt.rcParams["font.sans-serif"] = ["Microsoft YaHei", "SimHei", "DejaVu Sans"]
+plt.rcParams["axes.unicode_minus"] = False
+
+ROOT = Path(__file__).resolve().parent.parent
+OUT_DIR = ROOT / "扬州大学已整理数据" / "2024"
+FIG_DIR = OUT_DIR / "figures"
+FIG_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def draw_q01_sol():
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9.6, 4.0), gridspec_kw={"width_ratios": [1.55, 1.0]})
+    fig.patch.set_facecolor("white")
+
+    r = np.linspace(-1.0, 1.0, 200)
+    u = 1.6 * (1.0 - r**2)
+    ax1.plot([-0.2, 3.8], [1.0, 1.0], color="#1e293b", lw=2.2)
+    ax1.plot([-0.2, 3.8], [-1.0, -1.0], color="#1e293b", lw=2.2)
+    for xh in np.linspace(-0.15, 3.7, 28):
+        ax1.plot([xh, xh + 0.1], [1.0, 1.12], color="#64748b", lw=0.9)
+        ax1.plot([xh, xh - 0.1], [-1.0, -1.12], color="#64748b", lw=0.9)
+
+    ax1.axhline(0, color="#94a3b8", ls="-.", lw=1.0)
+    ax1.plot(u, r, color="#0284c7", lw=2.2)
+    ax1.axvline(0, ymin=0.08, ymax=0.92, color="#334155", lw=1.2)
+    for ri in np.linspace(-0.8, 0.8, 9):
+        ui = 1.6 * (1.0 - ri**2)
+        ax1.annotate("", xy=(ui, ri), xytext=(0, ri),
+                     arrowprops=dict(arrowstyle="->", color="#0284c7", lw=1.1))
+
+    blocks = [
+        ("A", 0.72, 0.90, "left", "right"),
+        ("B", -0.09, 0.09, "left", "left"),
+        ("C", -0.78, -0.60, "right", "left"),
+    ]
+    bx0, bw = 2.35, 0.68
+    for name, y_bot, y_top, top_dir, bot_dir in blocks:
+        rect = patches.Rectangle((bx0, y_bot), bw, y_top - y_bot,
+                                 facecolor="#e0f2fe", edgecolor="#0f172a", lw=1.5, hatch="///")
+        ax1.add_patch(rect)
+        ax1.text(bx0 - 0.18, 0.5 * (y_bot + y_top), f"${name}$", fontsize=12, va="center", ha="right", fontweight="bold")
+        if top_dir == "left":
+            ax1.annotate("", xy=(bx0 + 0.05, y_top + 0.06), xytext=(bx0 + bw - 0.05, y_top + 0.06),
+                         arrowprops=dict(arrowstyle="->", color="#dc2626", lw=1.8))
+        else:
+            ax1.annotate("", xy=(bx0 + bw - 0.05, y_top + 0.06), xytext=(bx0 + 0.05, y_top + 0.06),
+                         arrowprops=dict(arrowstyle="->", color="#16a34a", lw=1.8))
+        if bot_dir == "left":
+            ax1.annotate("", xy=(bx0 + 0.05, y_bot - 0.06), xytext=(bx0 + bw - 0.05, y_bot - 0.06),
+                         arrowprops=dict(arrowstyle="->", color="#dc2626", lw=1.8))
+        else:
+            ax1.annotate("", xy=(bx0 + bw - 0.05, y_bot - 0.06), xytext=(bx0 + 0.05, y_bot - 0.06),
+                         arrowprops=dict(arrowstyle="->", color="#16a34a", lw=1.8))
+
+    ax1.text(2.7, 1.18, "红箭头：慢层阻滞（向左）　绿箭头：快层拖曳（向右）", fontsize=9.5, ha="center", color="#334155")
+    ax1.text(-0.12, -0.08, "$O$", fontsize=11)
+    ax1.set_xlim(-0.3, 3.9)
+    ax1.set_ylim(-1.28, 1.32)
+    ax1.axis("off")
+    ax1.set_title("（a）微元水体上下表面切应力方向", fontsize=11, pad=6)
+
+    ax2.plot([-0.1, 1.35], [1.0, 1.0], color="#1e293b", lw=2.0)
+    ax2.plot([-0.1, 1.35], [-1.0, -1.0], color="#1e293b", lw=2.0)
+    ax2.axhline(0, color="#94a3b8", ls="-.", lw=1.0)
+    ax2.axvline(0, ymin=0.1, ymax=0.9, color="#334155", lw=1.2)
+    tau_mag = np.abs(r)
+    ax2.plot(tau_mag, r, color="#ea580c", lw=2.2)
+    ax2.fill_betweenx(r, 0, tau_mag, color="#fed7aa", alpha=0.45)
+    ax2.scatter([0.90, 0.0, 1.0], [0.90, 0.0, 1.0], color=["#dc2626", "#0284c7", "#7c2d12"], zorder=5, s=28)
+    ax2.text(1.03, 0.92, r"壁面 $\tau_{\max}$", fontsize=10, color="#7c2d12")
+    ax2.text(0.86, 0.76, r"$A$ 上表面最大", fontsize=9.5, color="#dc2626")
+    ax2.text(0.10, 0.04, r"轴线 $\tau=0$（$B$ 最小）", fontsize=9.5, color="#0369a1")
+    ax2.set_xlim(-0.15, 1.55)
+    ax2.set_ylim(-1.28, 1.32)
+    ax2.axis("off")
+    ax2.set_title(r"（b）切应力大小 $|\tau| = \mu|\mathrm{d}u/\mathrm{d}r|$ 分布", fontsize=11, pad=6)
+
+    plt.tight_layout()
+    fig.savefig(FIG_DIR / "q01_sol.png", dpi=220, facecolor="white")
+    plt.close(fig)
+
+
+def draw_q03_sol():
+    fig, ax = plt.subplots(figsize=(8.2, 4.2))
+    fig.patch.set_facecolor("white")
+
+    # Tank: x in [0.9, 3.5], y in [1.1, 4.1]; overflow weir at x=1.65, height y=3.45
+    ax.plot([0.9, 0.9, 3.5, 3.5], [4.1, 1.1, 1.1, 4.1], color="#0f172a", lw=2.2)
+    ax.plot([1.65, 1.65], [1.1, 3.45], color="#0f172a", lw=2.2)
+    ax.add_patch(patches.Rectangle((1.67, 1.12), 1.81, 2.33, facecolor="#bae6fd", alpha=0.65))
+    ax.plot([1.65, 3.48], [3.45, 3.45], color="#0284c7", lw=2.0)
+
+    # Water level symbol shifted slightly left so it doesn't touch supply pipe at x=3.15
+    ax.plot([2.30, 2.40, 2.20, 2.30], [3.45, 3.63, 3.63, 3.45], color="#0f172a", lw=1.3)
+    ax.text(2.30, 3.72, "恒定自由液面", fontsize=10, ha="center", color="#0369a1", fontweight="bold")
+
+    # Overflow sheet over weir to left compartment
+    ax.plot([1.65, 1.45], [3.45, 3.25], color="#0284c7", lw=2.0)
+    ax.add_patch(patches.Rectangle((0.92, 1.12), 0.71, 0.42, facecolor="#bae6fd", alpha=0.55))
+    ax.plot([1.18, 1.18], [1.1, 0.4], color="#0f172a", lw=1.8)
+    ax.plot([1.36, 1.36], [1.1, 0.4], color="#0f172a", lw=1.8)
+    ax.annotate("", xy=(1.27, 0.25), xytext=(1.27, 0.85),
+                arrowprops=dict(arrowstyle="->", color="#0284c7", lw=1.6))
+    ax.text(1.27, 0.05, r"溢流管排走多余水 ($Q_0 - Q$)", fontsize=9.5, ha="center", color="#334155")
+    ax.text(1.56, 2.35, "溢流堰板", fontsize=9.5, rotation=90, va="center", ha="right", color="#0f172a")
+
+    # Supply pipe at top right of tank (x=3.18)
+    ax.plot([2.15, 3.18, 3.18], [4.45, 4.45, 3.98], color="#0f172a", lw=2.2)
+    ax.annotate("", xy=(3.18, 3.55), xytext=(3.18, 3.98),
+                arrowprops=dict(arrowstyle="->", color="#0284c7", lw=1.8))
+    ax.text(2.65, 4.58, r"进水管持续供水 ($Q_0 > Q$)", fontsize=10, ha="center", color="#0f172a")
+
+    # Outlet experimental pipe on right wall
+    ax.add_patch(patches.Rectangle((3.48, 1.34), 3.42, 0.22, facecolor="#bae6fd", edgecolor="none", alpha=0.65))
+    ax.plot([3.5, 6.9], [1.56, 1.56], color="#0f172a", lw=2.0)
+    ax.plot([3.5, 6.9], [1.34, 1.34], color="#0f172a", lw=2.0)
+    ax.plot([3.5, 3.5], [1.35, 1.55], color="#e0f2fe", lw=2.6)
+
+    # Piezometer tubes shifted right of H=const label
+    for px, ph, lbl in [(4.95, 3.05, "测压管 1"), (5.75, 2.55, "测压管 2")]:
+        ax.plot([px - 0.05, px - 0.05], [1.56, 3.35], color="#334155", lw=1.2)
+        ax.plot([px + 0.05, px + 0.05], [1.56, 3.35], color="#334155", lw=1.2)
+        ax.add_patch(patches.Rectangle((px - 0.04, 1.56), 0.08, ph - 1.56, facecolor="#38bdf8", alpha=0.7))
+        ax.text(px, 3.42, lbl, fontsize=9, ha="center", color="#334155")
+
+    # Fixed-opening control valve near outlet x=6.45
+    vx = 6.45
+    ax.plot([vx - 0.16, vx + 0.16, vx + 0.16, vx - 0.16, vx - 0.16],
+            [1.64, 1.26, 1.64, 1.26, 1.64], color="#dc2626", lw=1.6)
+    ax.plot([vx, vx], [1.45, 1.82], color="#dc2626", lw=1.6)
+    ax.plot([vx - 0.12, vx + 0.12], [1.82, 1.82], color="#dc2626", lw=1.8)
+    ax.text(vx, 1.94, "阀门开度固定", fontsize=9.5, ha="center", color="#b91c1c")
+
+    # Outflow arrow
+    ax.annotate("", xy=(7.55, 1.45), xytext=(6.92, 1.45),
+                arrowprops=dict(arrowstyle="->", color="#0284c7", lw=2.0))
+    ax.text(7.28, 1.68, r"恒定出流 $Q=\mathrm{const}$", fontsize=10, ha="center", color="#0369a1")
+
+    # Dimension H = const
+    ax.plot([3.55, 3.92], [3.45, 3.45], color="#64748b", ls="--", lw=1.0)
+    ax.annotate("", xy=(3.78, 3.45), xytext=(3.78, 1.45),
+                arrowprops=dict(arrowstyle="<->", color="#0f172a", lw=1.3))
+    ax.text(3.86, 2.45, r"$H = \mathrm{const}$", fontsize=10.5, va="center", color="#0f172a")
+
+    ax.set_xlim(0.55, 7.85)
+    ax.set_ylim(-0.1, 4.85)
+    ax.axis("off")
+    plt.tight_layout()
+    fig.savefig(FIG_DIR / "q03_sol.png", dpi=220, facecolor="white")
+    plt.close(fig)
+
+
+def draw_q07_sol():
+    fig, ax = plt.subplots(figsize=(5.8, 4.8))
+    fig.patch.set_facecolor("white")
+
+    # Tank walls & water
+    ax.plot([0.65, 0.65, 2.15], [3.8, 0.8, 0.8], color="#334155", lw=1.8)
+    ax.plot([2.85, 4.35, 4.35], [0.8, 0.8, 3.8], color="#334155", lw=1.8)
+    ax.add_patch(patches.Rectangle((0.67, 0.82), 3.66, 2.50, facecolor="#e0f2fe", alpha=0.55))
+    ax.plot([0.65, 1.85], [3.32, 3.32], color="#0284c7", lw=1.8)
+    ax.plot([3.15, 4.35], [3.32, 3.32], color="#0284c7", lw=1.8)
+
+    # Half-submerged cylinder float
+    ax.add_patch(patches.Rectangle((1.85, 2.32), 1.30, 2.00, facecolor="#fffbeb", edgecolor="#0f172a", lw=2.0, zorder=4))
+    ax.add_patch(patches.Rectangle((1.87, 2.34), 1.26, 0.98, facecolor="#bae6fd", alpha=0.55, zorder=4))
+    ax.plot([1.85, 3.15], [3.32, 3.32], color="#0284c7", ls="--", lw=1.3, zorder=5)
+
+    # Connecting rod
+    ax.plot([2.5, 2.5], [0.92, 2.32], color="#0f172a", lw=2.0, zorder=4)
+
+    # Conical plug
+    plug = patches.Polygon([[2.02, 0.92], [2.98, 0.92], [2.78, 0.68], [2.22, 0.68]],
+                           closed=True, facecolor="#cbd5e1", edgecolor="#0f172a", lw=1.8, zorder=5)
+    ax.add_patch(plug)
+
+    # Force vectors
+    ax.annotate("", xy=(2.5, 4.88), xytext=(2.5, 3.65),
+                arrowprops=dict(arrowstyle="->", color="#16a34a", lw=2.5), zorder=6)
+    ax.text(2.58, 4.65, r"浮力 $F_b = \rho g V_s$", fontsize=11, color="#15803d", fontweight="bold")
+
+    ax.annotate("", xy=(2.18, 1.40), xytext=(2.18, 2.15),
+                arrowprops=dict(arrowstyle="->", color="#ea580c", lw=2.2), zorder=6)
+    ax.text(2.08, 1.75, r"自重 $G$", fontsize=10.5, ha="right", color="#c2410c", fontweight="bold")
+
+    ax.annotate("", xy=(2.5, 0.12), xytext=(2.5, 0.88),
+                arrowprops=dict(arrowstyle="->", color="#dc2626", lw=2.5), zorder=6)
+    ax.text(2.62, 0.25, r"静水压力 $P = \rho g h \cdot \frac{\pi}{4}d^2$", fontsize=10.5, color="#b91c1c", fontweight="bold")
+    ax.text(2.5, 0.50, r"大气 $p_a$（表压 $0$）", fontsize=9, ha="center", color="#64748b")
+
+    # Dimensions h inside water clearly separated from left wall
+    ax.annotate("", xy=(1.55, 3.32), xytext=(1.55, 0.80),
+                arrowprops=dict(arrowstyle="<->", color="#334155", lw=1.2))
+    ax.text(1.48, 2.06, r"$h=25\,\mathrm{cm}$", fontsize=9.5, ha="right", va="center", color="#0f172a")
+
+    ax.annotate("", xy=(3.38, 3.32), xytext=(3.38, 2.32),
+                arrowprops=dict(arrowstyle="<->", color="#0369a1", lw=1.2))
+    ax.text(3.46, 2.82, r"$\frac{l}{2}=10\,\mathrm{cm}$", fontsize=9.5, va="center", color="#0369a1")
+
+    ax.set_xlim(0.4, 5.0)
+    ax.set_ylim(-0.05, 5.1)
+    ax.axis("off")
+    plt.tight_layout()
+    fig.savefig(FIG_DIR / "q07_sol.png", dpi=220, facecolor="white")
+    plt.close(fig)
+
+
+def draw_q08_sol():
+    fig, ax = plt.subplots(figsize=(7.8, 4.2))
+    fig.patch.set_facecolor("white")
+
+    ax.plot([0.8, 1.8, 1.8], [3.6, 3.6, 4.1], color="#0f172a", lw=2.0)
+    ax.plot([0.8, 1.8, 1.8], [0.5, 0.5, 0.85], color="#0f172a", lw=2.0)
+    ax.add_patch(patches.Rectangle((0.8, 0.52), 1.0, 3.08, facecolor="#bae6fd", alpha=0.55))
+    ax.add_patch(patches.Rectangle((1.78, 0.85), 4.42, 0.25, facecolor="#bae6fd", alpha=0.55))
+    ax.plot([1.8, 1.8], [1.10, 3.95], color="#0f172a", lw=2.0)
+    ax.plot([1.8, 6.2], [1.10, 1.10], color="#0f172a", lw=2.0)
+    ax.plot([1.8, 6.2], [0.85, 0.85], color="#0f172a", lw=2.0)
+
+    gx = 4.9
+    ax.plot([gx, gx], [1.10, 1.32], color="#0f172a", lw=1.8)
+    circ = patches.Circle((gx, 1.50), 0.18, facecolor="white", edgecolor="#0f172a", lw=1.6, zorder=5)
+    ax.add_patch(circ)
+    ax.annotate("", xy=(gx + 0.22, 1.68), xytext=(gx - 0.15, 1.36),
+                arrowprops=dict(arrowstyle="->", color="#0f172a", lw=1.4), zorder=6)
+
+    vx = 6.2
+    ax.plot([vx, vx + 0.36, vx + 0.36, vx, vx], [1.18, 0.77, 1.18, 0.77, 1.18], color="#0f172a", lw=1.8)
+
+    y_surf = 3.60
+    sc = 0.52
+
+    ax.plot([1.8, 6.3], [y_surf, y_surf], color="#64748b", ls="--", lw=1.6)
+    ax.text(3.35, y_surf + 0.10, r"关阀静水总水头线：$p_0/(\rho g) = 5.0\,\mathrm{m}$", fontsize=9.8, ha="center", color="#334155")
+
+    y_egl_g = y_surf - 1.0 * sc
+    ax.plot([1.8, gx], [y_surf - 0.12, y_egl_g], color="#dc2626", lw=2.0, label="开阀总水头线 (E.G.L.)")
+    y_hgl_g = 1.20
+    ax.plot([1.8, gx], [y_surf - 0.12 - (y_egl_g - y_hgl_g), y_hgl_g], color="#0284c7", ls="-.", lw=1.8, label="开阀测压管水头线 (H.G.L.)")
+
+    ax.annotate("", xy=(gx + 0.55, y_surf), xytext=(gx + 0.55, y_egl_g),
+                arrowprops=dict(arrowstyle="<->", color="#dc2626", lw=1.4))
+    ax.text(gx + 0.63, 0.5 * (y_surf + y_egl_g), r"$h_w = 1.0\,\mathrm{m}$", fontsize=9.5, va="center", color="#dc2626")
+
+    ax.annotate("", xy=(gx + 0.55, y_egl_g), xytext=(gx + 0.55, y_hgl_g),
+                arrowprops=dict(arrowstyle="<->", color="#7c3aed", lw=1.5))
+    ax.text(gx + 0.63, 0.5 * (y_egl_g + y_hgl_g), r"$\dfrac{v^2}{2g} = 3.90\,\mathrm{m}$", fontsize=10, va="center", color="#6d28d9", fontweight="bold")
+
+    ax.text(gx - 0.05, 1.82, r"开阀表压水头 $p_1/(\rho g)=0.10\,\mathrm{m}$", fontsize=9, ha="right", color="#0369a1")
+
+    ax.legend(loc="lower left", frameon=True, fontsize=9, bbox_to_anchor=(0.25, 0.01))
+    ax.set_xlim(0.6, 7.65)
+    ax.set_ylim(0.0, 4.25)
+    ax.axis("off")
+    plt.tight_layout()
+    fig.savefig(FIG_DIR / "q08_sol.png", dpi=220, facecolor="white")
+    plt.close(fig)
+
+
+def draw_q09_sol():
+    fig, ax = plt.subplots(figsize=(7.6, 4.2))
+    fig.patch.set_facecolor("white")
+
+    ax.plot([0.5, 7.0], [0.8, 0.8], color="#0f172a", lw=2.5)
+    for xh in np.linspace(0.6, 6.8, 32):
+        ax.plot([xh, xh - 0.12], [0.8, 0.62], color="#64748b", lw=1.0)
+
+    ax.add_patch(patches.Rectangle((3.95, 1.35), 0.14, 2.60, facecolor="#334155", edgecolor="#0f172a", lw=1.5, zorder=5))
+
+    xs_cv = [1.8, 3.95, 3.95, 4.35, 4.75, 5.3, 5.3, 1.8]
+    ys_cv = [3.4, 3.4, 1.35, 1.18, 1.12, 1.12, 0.8, 0.8]
+    ax.add_patch(patches.Polygon(list(zip(xs_cv, ys_cv)), closed=True, facecolor="#bae6fd", alpha=0.65))
+    ax.plot([0.7, 3.95], [3.4, 3.4], color="#0284c7", lw=2.0)
+    ax.plot([3.95, 4.35, 4.75, 6.4], [1.35, 1.18, 1.12, 1.13], color="#0284c7", lw=2.0)
+
+    ax.plot([1.8, 1.8], [0.7, 3.7], color="#dc2626", ls="--", lw=1.6)
+    ax.text(1.8, 3.80, "1—1 断面", fontsize=10, ha="center", color="#dc2626")
+    ax.plot([5.3, 5.3], [0.7, 1.9], color="#dc2626", ls="--", lw=1.6)
+    ax.text(5.3, 2.00, "$c$—$c$ 断面", fontsize=10, ha="center", color="#dc2626")
+
+    ax.add_patch(patches.Polygon([[1.0, 0.8], [1.8, 0.8], [1.8, 3.4]], closed=True,
+                                 facecolor="#fde68a", edgecolor="#d97706", alpha=0.6, lw=1.3))
+    ax.annotate("", xy=(1.8, 1.67), xytext=(1.15, 1.67),
+                arrowprops=dict(arrowstyle="->", color="#b45309", lw=2.2))
+    ax.text(0.95, 2.05, r"$P_1 = \frac{1}{2}\rho g H^2 b$" + "\n" + r"$=156.80\,\mathrm{kN}$", fontsize=9.5, color="#92400e", ha="center")
+
+    ax.add_patch(patches.Polygon([[5.3, 0.8], [5.75, 0.8], [5.3, 1.12]], closed=True,
+                                 facecolor="#fde68a", edgecolor="#d97706", alpha=0.6, lw=1.3))
+    ax.annotate("", xy=(5.3, 0.92), xytext=(5.95, 0.92),
+                arrowprops=dict(arrowstyle="->", color="#b45309", lw=2.0))
+    ax.text(6.15, 0.95, r"$P_c = 2.45\,\mathrm{kN}$", fontsize=9.5, color="#92400e", va="center")
+
+    ax.annotate("", xy=(3.15, 2.35), xytext=(3.95, 2.35),
+                arrowprops=dict(arrowstyle="->", color="#dc2626", lw=2.5))
+    ax.text(3.08, 2.35, r"闸门反力 $R$", fontsize=10.5, ha="right", va="center", color="#dc2626", fontweight="bold")
+
+    ax.annotate("", xy=(2.65, 1.85), xytext=(2.05, 1.85),
+                arrowprops=dict(arrowstyle="->", color="#0369a1", lw=1.8))
+    ax.text(2.35, 1.98, r"$v_1=1.0\,\mathrm{m/s}$", fontsize=9.5, ha="center", color="#0369a1")
+
+    ax.annotate("", xy=(5.15, 0.96), xytext=(4.35, 0.96),
+                arrowprops=dict(arrowstyle="->", color="#0369a1", lw=1.8))
+    ax.text(4.78, 1.32, r"$v_c=8.0\,\mathrm{m/s}$", fontsize=9.5, ha="center", color="#0369a1")
+
+    ax.set_xlim(0.3, 7.1)
+    ax.set_ylim(0.45, 4.1)
+    ax.axis("off")
+    plt.tight_layout()
+    fig.savefig(FIG_DIR / "q09_sol.png", dpi=220, facecolor="white")
+    plt.close(fig)
+
+
+def draw_q11_sol():
+    fig, ax = plt.subplots(figsize=(7.4, 4.2))
+    fig.patch.set_facecolor("white")
+
+    y = np.linspace(0, 1.0, 200)
+    u_couette = y
+    u_fav = y + 1.4 * y * (1.0 - y)
+    u_adv = y - 1.4 * y * (1.0 - y)
+
+    ax.axhline(0, color="#0f172a", lw=2.4)
+    ax.axhline(1.0, color="#0f172a", lw=2.4)
+    ax.axvline(0, ymin=0.10, ymax=0.90, color="#64748b", ls="--", lw=1.2)
+
+    ax.plot(u_couette, y, color="#0284c7", ls="--", lw=2.0, label=r"$\dfrac{\mathrm{d}p}{\mathrm{d}x} = 0$（纯库埃特剪切流）")
+    ax.plot(u_fav, y, color="#16a34a", lw=2.3, label=r"$\dfrac{\mathrm{d}p}{\mathrm{d}x} < 0$（顺压梯度助流）")
+    ax.plot(u_adv, y, color="#dc2626", lw=2.3, label=r"$\dfrac{\mathrm{d}p}{\mathrm{d}x} > 0$（逆压梯度阻流）")
+
+    ax.annotate("", xy=(1.35, 1.08), xytext=(0.35, 1.08),
+                arrowprops=dict(arrowstyle="->", color="#0f172a", lw=2.0))
+    ax.text(0.85, 1.12, r"上板运动速度 $U$", fontsize=10.5, ha="center")
+    ax.text(0.65, -0.14, r"下板静止（$y=0,\;u=0$）", fontsize=10, ha="center", color="#334155")
+
+    ax.set_xlabel(r"无量纲流速 $u(y)/U$", fontsize=10.5)
+    ax.set_ylabel(r"无量纲高度 $y/h$", fontsize=10.5)
+    ax.set_xlim(-0.45, 1.85)
+    ax.set_ylim(-0.22, 1.25)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.legend(loc="lower right", frameon=True, fontsize=9.2)
+    plt.tight_layout()
+    fig.savefig(FIG_DIR / "q11_sol.png", dpi=220, facecolor="white")
+    plt.close(fig)
+
+
+def build_json():
+    paper = {
+        "year": 2024,
+        "code": "849",
+        "subject": "水力学（水）",
+        "school": "扬州大学",
+        "totalScore": 150,
+        "durationMinutes": 180,
+        "calculatorAllowed": True,
+        "examNotes": [
+            "满分 150 分，考试时间 180 分钟，闭卷笔试。",
+            "全卷共 11 道大题：第 1～5 题为机理分析与实验设计简答题（5×10=50 分），第 6～11 题为综合计算与方程推导题（4×15 + 2×20 = 100 分）。",
+            "结合题干参数协调关系，计算统一取重力加速度 $g = 9.80\\,\\mathrm{m/s^2}$，水的密度 $\\rho = 1000\\,\\mathrm{kg/m^3}$（解析同步附 $g = 9.81\\,\\mathrm{m/s^2}$ 对照结果）。"
+        ],
+        "sections": [
+            {
+                "id": "short",
+                "title": "一、机理分析与简答题",
+                "description": "第 1～5 题，每题 10 分，共 50 分。",
+                "range": [1, 5],
+                "scorePerQuestion": 10,
+                "totalScore": 50
+            },
+            {
+                "id": "calc",
+                "title": "二、计算与推导题",
+                "description": "第 6～11 题（15×4 + 20×2 分），共 100 分。",
+                "range": [6, 11],
+                "totalScore": 100
+            }
+        ],
+        "questions": [
+            {
+                "id": "yzu-849-2024-01",
+                "year": 2024,
+                "no": 1,
+                "type": "short",
+                "score": 10,
+                "title": "平行平板间流速分布与微元水体切应力方向及大小分析",
+                "stem": "液体在两块平板间流动，流速分布如图所示，从中取出 $A$、$B$、$C$ 三块水体，试分析：\n\n（1）各水体上下两平面上所受切应力的方向；\n\n（2）定性指出哪个面上的切应力最大？哪个最小？为什么？",
+                "note": "",
+                "figures": [
+                    {"src": "figures/q01_orig.png", "caption": "题 1 图　平板间流速分布与微元水体位置"}
+                ],
+                "shortAnswer": "（1）A 上左、下右；B 上左、下左（对称中心面 τ=0）；C 上右、下左。（2）上下固定壁面处最大（三水体中 A 上平面最大），中心对称轴面处最小为零（三水体中 B 上下平面最小）。",
+                "judgeAnswer": None,
+                "answer": "（1）水体 $A$：上平面向左，下平面向右；水体 $B$（跨中心对称轴分布）：上平面向左，下平面向左（其中心对称轴面处 $\\tau=0$）；水体 $C$：上平面向右，下平面向左。\n\n（2）全流场中贴近上、下固定平板壁面处切应力最大，中心对称轴面（$r=0$）处切应力最小（为 $0$）；就 $A$、$B$、$C$ 三块水体的六个水平表面而言，距上壁最近的 $A$ 上平面切应力最大，距对称轴 $O$ 最近的 $B$ 上、下平面切应力最小。",
+                "analysis": "**（1）各微元水体上、下平面切应力方向判别**\n\n流体自左向右流动，中心轴线 $O$（$r=0$）处流速最大，向上、下固定壁面流速单调递减至零。根据液体黏性相互作用规律：**相邻流层间，快速流层对慢速流层施以向前（向右）的拖曳切应力，慢速流层对快速流层施以向后（向左）的阻滞切应力**：\n\n1. **水体 $A$（位于上半槽道）**：其上平面外侧邻层更靠近上壁、流速更慢，故对 $A$ 上平面产生**向左**的阻滞切应力；其下平面外侧邻层更靠近中心轴、流速更快，故对 $A$ 下平面产生**向右**的拖曳切应力。\n2. **水体 $B$（对称跨于中心轴线 $O$ 两侧）**：其上平面位于 $r > 0$ 处，上方外侧流体比该面慢，受切应力**向左**；其下平面位于 $r < 0$ 处，下方外侧流体同样比该面慢，受切应力也**向左**（两侧向后的黏性阻力合力正好与推动水体向右流动的压差力相平衡；而在中心对称面 $r=0$ 上切应力为 $0$）。\n3. **水体 $C$（位于下半槽道）**：其上平面外侧邻层更靠近中心轴、流速更快，受切应力**向右**；其下平面外侧邻层更靠近下壁、流速更慢，受切应力**向左**。\n\n**（2）切应力最大面与最小面定性分析**\n\n由牛顿内摩擦定律：\n\n$$\n\\tau = \\mu \\left| \\frac{\\mathrm{d}u}{\\mathrm{d}r} \\right|\n$$\n\n对于平行平板间恒定层流（泊肃叶流），流速呈抛物线分布 $u(r) = u_{\\max}\\left(1 - \\frac{r^2}{r_0^2}\\right)$，速度梯度绝对值 $\\left|\\frac{\\mathrm{d}u}{\\mathrm{d}r}\\right| = \\frac{2 u_{\\max}}{r_0^2}|r|$ 随距中心轴距离 $|r|$ 线性增大：\n\n- **最大处**：在上下固定平板壁面（$|r| = r_0$）处速度曲线最陡（$|\\mathrm{d}u/\\mathrm{d}r|$ 最大），切应力达到最大值；在 $A$、$B$、$C$ 的六个水平面中，**水体 $A$ 的上平面**距离上固定壁面最近（$|r|$ 最大），故其切应力最大。\n- **最小处**：在中心对称轴面（$r = 0$）处流速取极值，$\\mathrm{d}u/\\mathrm{d}r = 0$，切应力最小且等于 $0$；在六个水平面中，**水体 $B$ 的上、下两平面**距离中心轴线最近（$|r|$ 最小），故其切应力最小。",
+                "analysisFigures": [
+                    {"src": "figures/q01_sol.png", "caption": "解图 1　微元水体 A、B、C 上下表面切应力方向与切应力分布"}
+                ],
+                "pitfalls": "水体 $B$ 跨对称轴线取出时，切勿误认为 $B$ 下平面受向右切应力！因为对称轴线处流速是极大值，$B$ 下平面下方的流体流速比 $B$ 下平面更慢，故对 $B$ 下平面同样施加向左的阻滞力。",
+                "chapter": 1,
+                "kps": ["牛顿内摩擦定律", "微元水体切应力方向"],
+                "method": "牛顿内摩擦快拖慢方向判别法",
+                "difficulty": 2,
+                "rubric": [
+                    {"label": "正确判出 A（上左、下右）、B（上左、下左）、C（上右、下左）六个面的切应力方向", "pts": 5},
+                    {"label": "结合牛顿内摩擦定律 τ = μ|du/dr| 说明壁面（A 上平面）最大、对称轴（B 上下平面）最小及原因", "pts": 5}
+                ]
+            },
+            {
+                "id": "yzu-849-2024-02",
+                "year": 2024,
+                "no": 2,
+                "type": "short",
+                "score": 10,
+                "title": "分叉管路加接水平支管与倾斜延长管后各支管流量变化分析",
+                "stem": "如图所示为一分叉管路的立面图。由管路计算已知管 $A$、管 $B$ 的流量分别为 $Q_1$、$Q_2$，试分析：\n\n（1）如果在管 $B$ 上接一水平管（虚线所示），而其它条件不变，$Q_1$、$Q_2$ 怎样变化？为什么？\n\n（2）如果在管 $B$ 延长线上接一管段（虚线所示），而其它条件不变，$Q_1$、$Q_2$ 又怎样变化？为什么？",
+                "note": "",
+                "figures": [
+                    {"src": "figures/q02_orig.png", "caption": "题 2 图　分叉管路立面图及两种加接方案"}
+                ],
+                "shortAnswer": "（1）Q1 增大、Q2 减小；（2）取决于管 B 水力坡度 JB 与 sin45° 的大小：当 JB < sin45° 时 Q2 增大、Q1 减小；当 JB = sin45° 时 Q1、Q2 均不变；当 JB > sin45° 时 Q2 减小、Q1 增大。",
+                "judgeAnswer": None,
+                "answer": "（1）加接水平管后：**$Q_1$ 增大，$Q_2$ 减小**。\n\n（2）沿 $45^{\\circ}$ 延长线加接管段后，需比较原支管 $B$ 的水力坡度 $J_B$ 与管轴倾角正弦 $\\sin 45^{\\circ}$：\n- 若 $J_B < \\sin 45^{\\circ}$（一般管流最常见情况）：**$Q_2$ 增大，$Q_1$ 减小**；\n- 若 $J_B = \\sin 45^{\\circ}$：**$Q_1$、$Q_2$ 均保持不变**；\n- 若 $J_B > \\sin 45^{\\circ}$：**$Q_2$ 减小，$Q_1$ 增大**。",
+                "analysis": "设水箱自由液面恒定总水头为 $H_0$，分叉节点为 $J$，干管阻抗为 $S_0$，则干管总流量 $Q = Q_1 + Q_2$，分叉点总水头为：\n\n$$\nH_J = H_0 - S_0 Q^2\n$$\n\n支管 $A$ 出口位置高程 $z_A$ 与阻抗 $S_A$ 始终不变，其流量满足 $Q_1 = \\sqrt{(H_J - z_A)/S_A}$，仅随分叉点水头 $H_J$ 同向增减。\n\n**（1）在管 $B$ 末端加接一段水平管**\n\n- 加接水平管后，支管 $B$ 出口断面高程 $z_B$ **不变**（有效位能差未增加），但管长增加且新增弯折局部阻力，使支路 $B$ 的总阻抗 $S_B$ **增大**。\n- 管系总等效阻抗随之增大，导致干管总流量 $Q$ **减小**，干管水头损失 $h_{w0} = S_0 Q^2$ 减小，因此分叉节点总水头 $H_J = H_0 - h_{w0}$ **升高**。\n- 因 $H_J$ 升高而支管 $A$ 条件未变，故 **$Q_1$ 增大**；又因总流量 $Q = Q_1 + Q_2$ 减小而 $Q_1$ 增大，故 **$Q_2 = Q - Q_1$ 必然减小**。\n\n**（2）在管 $B$ 延长线上（倾角 $45^{\\circ}$）向下加接一管段 $\\Delta l$**\n\n设原流量 $Q_2$ 下管 $B$ 的单位管长沿程水头损失（水力坡度）为 $J_B = \\frac{\\lambda}{d_B}\\frac{v_B^2}{2g}$。加接同径倾斜管段 $\\Delta l$ 后，一方面出口高程降低了 $\\Delta z = \\Delta l \\sin 45^{\\circ}$（使支路 $B$ 作用水头增加 $\\Delta z$）；另一方面在原流量下新增沿程摩阻损失 $\\Delta h_f = J_B \\Delta l$。对比两者大小：\n\n1. **当 $J_B < \\sin 45^{\\circ}$（即 $\\Delta z > \\Delta h_f$）时**：新增管段重力位能降大于自身摩阻，在原出口处形成负压抽吸作用，支路 $B$ 过流能力增强，**$Q_2$ 增大**；干管总流量 $Q$ 随之增大，干管水头损失 $S_0 Q^2$ 增大，分叉点水头 $H_J$ 降低，故 **$Q_1$ 减小**。\n2. **当 $J_B = \\sin 45^{\\circ}$（即 $\\Delta z = \\Delta h_f$）时**：新增位能降恰好抵消新增沿程水头损失，原出口处仍维持零表压，节点水头 $H_J$ 不变，故 **$Q_1$、$Q_2$ 均不变**。\n3. **当 $J_B > \\sin 45^{\\circ}$（即 $\\Delta z < \\Delta h_f$）时**：新增管段摩阻大于新增位能降，等效于支路 $B$ 净阻力增大，故与第（1）问同理，**$Q_2$ 减小、$Q_1$ 增大**。",
+                "analysisFigures": [],
+                "pitfalls": "第（2）问极易漏掉按水力坡度 $J_B$ 与 $\\sin 45^{\\circ}$ 分类讨论而直接只答“$Q_2$ 增大、$Q_1$ 减小”。只有当加接斜管的位能降 $\\Delta l \\sin 45^{\\circ}$ 大于新增摩阻 $J_B \\Delta l$ 时才会起抽吸增流作用！",
+                "chapter": 6,
+                "kps": ["分叉管改装流量变化分析", "长管水力坡度与节点水头"],
+                "method": "长管并联分流与节点水头平衡分析",
+                "difficulty": 3,
+                "rubric": [
+                    {"label": "分析加接水平管阻抗增大、干管损失减小、分叉点水头升高，得出 Q1 增大、Q2 减小", "pts": 5},
+                    {"label": "比较倾斜延长管新增位能降 Δl·sin45° 与新增沿程损失 JB·Δl，分三种情况给出 Q1、Q2 变化规律", "pts": 5}
+                ]
+            },
+            {
+                "id": "yzu-849-2024-03",
+                "year": 2024,
+                "no": 3,
+                "type": "short",
+                "score": 10,
+                "title": "产生恒定流的实验装置设计与恒定流判别依据",
+                "stem": "试设计一个产生恒定流的装置，画出装置简图，并说明流动为恒定流的依据。",
+                "note": "",
+                "figures": [],
+                "shortAnswer": "采用设溢流堰板的高位恒水头水箱（进水流量大于出流流量并排走溢流）接固定开度出流管；因上下游水位与管路边界均不随时间变化，各空间点运动要素 ∂u/∂t=0、∂p/∂t=0，故为恒定流。",
+                "judgeAnswer": None,
+                "answer": "**装置设计**：采用带溢流隔板的高位恒水头供水水箱连接固定开度的出流实验管路（装置简图见解图 3）。进水管持续向水箱供水且保持供水流量 $Q_0$ 略大于实验管出流流量 $Q$，多余水量翻越溢流堰板由底部溢流管排走，从而将水箱自由液面严格锁定在堰顶高程；实验管末端控制阀门调定某一开度后保持不动，出口通大气自由出流。\n\n**恒定流依据**：恒定流的定义是流场中任意固定空间点上的所有运动要素（流速、压强、密度等）均不随时间 $t$ 变化，即 $\\frac{\\partial u}{\\partial t}=0$、$\\frac{\\partial p}{\\partial t}=0$。本装置中上游作用水头 $H$ 恒定、下游大气压恒定、管径与壁面粗糙度及阀门局部阻力系数均不随时间改变，由恒定总流能量方程 $H = \\left(\\alpha + \\lambda\\frac{l}{d} + \\sum\\zeta\\right)\\frac{v^2}{2g}$ 可知管内流量 $Q$、各断面流速分布及各点动水压强均保持恒定（测压管液面稳定不动），满足恒定流条件。",
+                "analysis": "**1. 装置构造与运行要点（见解图 3）**\n\n- **高位溢流水箱**：水箱内设置铅直溢流堰板，将水箱分隔为主供水室与溢流室；水源经进水管连续注入主供水室，控制进水流量 $Q_0 > Q$，使液面始终保持微量溢流状态，液面高程即稳定在溢流堰顶高程（消除水源微幅波动影响）。\n- **实验管段与控制阀**：主供水室侧下部引出刚性实验管道，管上可装设测压管以直观观测水头稳定情况，末端设调节阀门。待水流稳定且阀门开度固定后，管内即形成恒定流动（此外，小型实验亦可采用密闭进气管的马氏瓶 Mariotte bottle 实现恒水头供水）。\n\n**2. 流动为恒定流的理论依据**\n\n- 在欧拉描述下，若流场各空间点 $(x,y,z)$ 处的流速 $\\vec{u}$ 和压强 $p$ 满足：\n\n$$\n\\frac{\\partial \\vec{u}}{\\partial t} = 0, \\qquad \\frac{\\partial p}{\\partial t} = 0\n$$\n\n则该流动称为恒定流。\n- 本装置中，由于溢流稳压使上游水头边界条件 $H(t) = \\text{const}$，出口通大气使下游压强边界条件 $p_{\\text{出}}(t) = 0$，管道几何尺寸与阀门开度固定使系统总阻抗 $S = \\text{const}$，故管内流量 $Q = \\sqrt{H/S}$ 不随时间变化，任意空间点流速与测压管水头均不随时间改变，从物理边界与实验现象（各测压管液面高度恒定不变）两方面均证实流动为恒定流。",
+                "analysisFigures": [
+                    {"src": "figures/q03_sol.png", "caption": "解图 3　溢流恒水头水箱产生恒定流装置简图"}
+                ],
+                "pitfalls": "画简图时切忌只画一个普通开口水箱接水管而不画“持续进水管 + 溢流堰/溢流管”！若无持续补水与溢流稳压，水箱出流时液面会不断下降（$\\partial H/\\partial t < 0$），产生的将是变水头非恒定流。",
+                "chapter": 3,
+                "kps": ["恒定流装置设计", "欧拉法恒定流定义", "恒定总流能量方程"],
+                "method": "溢流恒水头边界控制实验设计法",
+                "difficulty": 2,
+                "rubric": [
+                    {"label": "画出包含持续进水管、溢流稳压结构（溢流板/溢流管）及出流控制阀的完整装置简图", "pts": 4},
+                    {"label": "说明保持 Q进 > Q出 实现恒定作用水头 H 及固定阀门开度保持管路阻抗不变的操作条件", "pts": 3},
+                    {"label": "紧扣恒定流定义（∂u/∂t=0、∂p/∂t=0）结合能量方程阐明流速与压强不随时间变化的依据", "pts": 3}
+                ]
+            },
+            {
+                "id": "yzu-849-2024-04",
+                "year": 2024,
+                "no": 4,
+                "type": "short",
+                "score": 10,
+                "title": "平板平行于来流与垂直于来流时的绕流阻力对比分析",
+                "stem": "如图所示，（a）中的平板平行于来流，（b）中的平板垂直于来流，两种情况的平板形状尺寸相同、来流速度相同，试分析哪种情况平板受到的水流阻力大？为什么？",
+                "note": "",
+                "figures": [
+                    {"src": "figures/q04_orig.png", "caption": "题 4 图　（a）平板平行于来流与（b）平板垂直于来流"}
+                ],
+                "shortAnswer": "（b）垂直于来流的平板所受水流阻力远大于（a）。因（a）不发生边界层分离，仅受较小的表面黏性摩擦阻力；（b）在板缘发生剧烈边界层分离并在板后形成低压旋涡尾迹区，前后表面产生极大的压差阻力（形状阻力）。",
+                "judgeAnswer": None,
+                "answer": "**结论**：图（b）中垂直于来流的平板受到的水流阻力远大于图（a）中平行于来流的平板。\n\n**原因**：绕流物体所受总水流阻力由**摩擦阻力**（黏性切应力沿流向积分）和**压差阻力 / 形状阻力**（法向动水压强沿流向积分）两部分组成：\n1. 图（a）平板平行于来流时，迎流截面积极小，流线平顺贴附板面流动，不发生边界层分离，前后压差阻力趋近于零，总阻力几乎全部为薄边界层内的表面摩擦阻力，数值很小；\n2. 图（b）平板垂直于来流时，迎流面积最大，前表面形成驻点高压区，而水流绕过平板上下锐缘时流线急剧弯曲并发生剧烈的**边界层分离**，在背水面形成大范围低压旋涡尾流区，消耗大量流体机械能，使平板前后表面产生悬殊的正负压强差，形成比摩擦阻力大几个数量级的压差阻力（而板面切应力垂直于来流，对流向阻力贡献为零），故（b）所受水流阻力远大于（a）。",
+                "analysis": "设来流密度为 $\\rho$、流速为 $U_{\\infty}$，绕流总阻力可分解为表面切应力 $\\tau_0$ 与表面压强 $p$ 在来流方向（$x$ 向）的投影积分：\n\n$$\nF_D = F_f + F_p = \\int_A \\tau_0 \\cos\\alpha\\,\\mathrm{d}A + \\int_A p \\cos\\beta\\,\\mathrm{d}A = C_D A \\frac{\\rho U_{\\infty}^2}{2}\n$$\n\n**1. 图（a）平板平行于来流（流线型薄板绕流）**\n\n- 流体沿平板上、下两表面顺畅流过，除极薄的板厚端面外不产生边界层分离，尾迹极窄，压差阻力 $F_p \\approx 0$；\n- 板面切应力方向平行于来流（$\\cos\\alpha = 1$），总阻力完全由壁面黏性剪切主导（$F_D \\approx F_f$），其阻力系数 $C_D$ 极小（一般仅为 $10^{-3}\\sim 10^{-2}$ 量级）。\n\n**2. 图（b）平板垂直于来流（钝体分离绕流）**\n\n- 板面与来流正交，板面上黏性切应力方向垂直于来流（$\\cos\\alpha = 0$），摩擦阻力分量 $F_f = 0$；\n- 来流在平板迎水面受阻滞减速，中心驻点处增压达 $\\Delta p = \\frac{1}{2}\\rho U_{\\infty}^2$（高压区）；水流绕过平板上、下尖锐边缘时无法紧贴折回，发生强烈的**边界层分离**，在平板背面卷起大量交替脱落的旋涡（低压尾迹区，相对压强为负），漩涡混掺耗散巨大动能；\n- 平板迎水面高压与背水面低压叠加在最大迎流面积上，产生巨大的压差阻力 $F_p$（二维垂直平板阻力系数 $C_D \\approx 2.0$，比平行平板高出两个数量级以上），因此（b）所受水流阻力远大于（a）。",
+                "analysisFigures": [],
+                "pitfalls": "分析绕流阻力时必须明确区分“摩擦阻力”与“压差阻力（形状阻力）”两类物理机制，并点明核心关键词——**边界层分离**与**背水面低压旋涡尾迹区**，切勿仅笼统回答“撞击面积大”。",
+                "chapter": 4,
+                "kps": ["摩擦阻力与压差阻力", "边界层分离", "绕流阻力机理"],
+                "method": "边界层分离与摩擦压差阻力对比分析",
+                "difficulty": 2,
+                "rubric": [
+                    {"label": "明确指出（b）垂直于来流的平板所受水流阻力远大于（a）", "pts": 2},
+                    {"label": "说明绕流总阻力由摩擦阻力与压差阻力组成，且（a）贴体流动无分离、仅受很小的摩擦阻力", "pts": 4},
+                    {"label": "阐明（b）迎水面驻点增压、边缘发生边界层分离形成背面低压旋涡区，产生巨大压差阻力", "pts": 4}
+                ]
+            },
+            {
+                "id": "yzu-849-2024-05",
+                "year": 2024,
+                "no": 5,
+                "type": "short",
+                "score": 10,
+                "title": "明渠均匀流的特点及天然河道水流流态属性分析",
+                "stem": "明渠均匀流有何特点？天然河道中的水流通常是均匀流吗？为什么？",
+                "note": "",
+                "figures": [],
+                "shortAnswer": "特点：断面形状尺寸与水深沿程不变、流速分布与平均流速沿程不变、动水压强按静水压强分布、总水头线/水面线/渠底线三线平行（J=Jp=i）、重力流向分力与摩阻力平衡。天然河道通常不是均匀流，因其为非棱柱体弯曲河道，断面、底坡、糙率及流量沿程与随时间多变且受局部障碍干扰。",
+                "judgeAnswer": None,
+                "answer": "**（1）明渠均匀流的主要水力特点**：\n① 过水断面的形状、尺寸及水深 $h$（正常水深 $h_0$）沿程不变；\n② 过水断面上的流速分布、断面平均流速 $v$ 及流速水头 $\\frac{\\alpha v^2}{2g}$ 沿程不变，流线为平行于渠底的直线；\n③ 同一过水断面上动水压强服从静水压强分布规律（$z + \\frac{p}{\\rho g} = \\text{const}$）；\n④ 总水头线坡度 $J$、测压管水头线（自由水面线）坡度 $J_p$ 与渠底坡度 $i$ 三者相等，即总水头线、水面线、渠底线三线互相平行（$J = J_p = i > 0$）；\n⑤ 水体沿流向的重力分力与渠壁及渠底的摩擦阻力处处相等（$\\gamma A L \\sin\\theta = \\tau_0 \\chi L$），断面比能 $E_s$ 沿程不变。\n\n**（2）天然河道中的水流通常不是均匀流（一般为非均匀流，甚至非恒定非均匀流）**。\n**原因**：明渠均匀流的形成必须同时满足：恒定流、流量沿程不变、长直顺坡（$i>0$）棱柱形渠道且壁面糙率恒定、无局部阻水建筑物干扰。而天然河道横断面宽窄深浅沿程不断变化（属非棱柱体河道），纵剖面底坡起伏不平甚至局部出现平坡或逆坡，河道蜿蜒弯曲，河床泥沙与植被糙率 $n$ 沿程不均，且常有支流汇入/分出、桥墩洲滩等局部干扰及来水流量随时间变化，不具备均匀流形成条件。",
+                "analysis": "**1. 从力学与能量角度理解明渠均匀流特点**\n\n在明渠恒定均匀流中，因水深 $h$ 和断面平均流速 $v$ 沿程不变（$\\frac{\\mathrm{d}h}{\\mathrm{d}s} = 0$，$\\frac{\\mathrm{d}v}{\\mathrm{d}s} = 0$），断面比能 $E_s = h + \\frac{\\alpha v^2}{2g} = \\text{const}$。对相距 $L$ 的两断面列能量方程：\n\n$$\nz_1 + h_1 + \\frac{\\alpha v_1^2}{2g} = z_2 + h_2 + \\frac{\\alpha v_2^2}{2g} + h_f \\implies z_1 - z_2 = h_f \\implies i = J = J_p\n$$\n\n表明明渠均匀流消耗的沿程水头损失完全由渠底降低所释放的位置势能补偿，因此只能在正坡（顺坡 $i > 0$）渠道中产生。\n\n**2. 天然河道不满足明渠均匀流四大形成条件**\n\n对照均匀流形成条件逐一检验天然河道：\n1. **几何边界条件不满足**：天然河道断面极不规则，宽窄、深浅沿程变化剧烈（非棱柱体），且平面上弯曲多汊，不可能保持水深与流速沿程恒定；\n2. **底坡与糙率条件不满足**：天然河床深槽与浅滩交替，底坡 $i$ 沿程变化甚至局部出现逆坡（$i < 0$），床面卵石、沙波、滩地水草使糙率 $n$ 沿程差异显著；\n3. **流量与恒定性条件不满足**：沿途常有支流汇入、分洪引水、河床渗漏，且天然径流受降雨和调蓄影响随时间涨落；\n4. **局部干扰条件不满足**：丁坝、桥墩、拦河闸坝、弯道环流等均引起局部壅水或跌水。故天然河道水流通常按明渠非均匀流（或非恒定流）处理，仅在顺直规整的局部河段作工程近似时才按均匀流估算。",
+                "analysisFigures": [],
+                "pitfalls": "回答第一问时切勿漏掉“三线平行（$J = J_p = i$）”和“重力沿流向分力与边界摩阻力相平衡”这两条核心力学特征；回答第二问时应先列出均匀流的形成条件，再对照天然河道的非棱柱、变底坡、变糙率特征作答，逻辑最严密。",
+                "chapter": 7,
+                "kps": ["明渠均匀流特点", "明渠均匀流形成条件"],
+                "method": "明渠均匀流特征与形成条件判别法",
+                "difficulty": 2,
+                "rubric": [
+                    {"label": "完整答出明渠均匀流的水力特点（等水深等流速、静水压强分布、三线平行 J=Jp=i、重力分力平衡摩阻力）", "pts": 5},
+                    {"label": "明确回答天然河道通常不是均匀流，并结合均匀流形成条件指出天然河道非棱柱、变底坡、变糙率与弯曲干扰等原因", "pts": 5}
+                ]
+            },
+            {
+                "id": "yzu-849-2024-06",
+                "year": 2024,
+                "no": 6,
+                "type": "calc",
+                "score": 15,
+                "title": "活塞加载油水双层圆筒容器与 U 形水银计高度差计算",
+                "stem": "如图所示，在盛有油和水的圆柱形容器的盖上加载 $F = 5788\\,\\mathrm{N}$，已知 $h_1 = 50\\,\\mathrm{cm}$，$h_2 = 30\\,\\mathrm{cm}$，$d = 0.4\\,\\mathrm{m}$，油的密度为 $800\\,\\mathrm{kg/m^3}$，水银的密度为 $13600\\,\\mathrm{kg/m^3}$，求 U 形管中水银柱的高度差 $H$。",
+                "note": "",
+                "figures": [
+                    {"src": "figures/q06_orig.png", "caption": "题 6 图　加载圆柱形油水容器与 U 形水银计"}
+                ],
+                "shortAnswer": "0.40 m（或 40 cm）",
+                "judgeAnswer": None,
+                "answer": "$H = 0.40\\,\\mathrm{m}$（即 $40\\,\\mathrm{cm}$）",
+                "analysis": "**1. 求活塞顶盖下表面传递至油层顶部的相对压强 $p_0$**\n\n圆柱形容器横截面积为：\n\n$$\nA = \\frac{\\pi}{4} d^2 = \\frac{\\pi}{4} \\times 0.4^2 = 0.04\\pi \\approx 0.12566\\,\\mathrm{m^2}\n$$\n\n活塞加载力 $F = 5788\\,\\mathrm{N}$ 在油层顶面产生的附加相对压强为：\n\n$$\np_0 = \\frac{F}{A} = \\frac{5788}{0.04\\pi} \\approx 46059.44\\,\\mathrm{Pa}\n$$\n\n**2. 选取等压面列静水压强平衡方程求 $H$**\n\n由题 6 图可知，U 形管左支水—汞分界面至油—水分界面的铅直高度为 $h_1 = 0.50\\,\\mathrm{m}$，油层厚度为 $h_2 = 0.30\\,\\mathrm{m}$，U 形管右支顶端通大气（相对压强为 $0$）。在下方连通的静止水银中，过左支水—汞分界面作水平面 $1\\text{—}1$，该平面为等压面（左右两支同高程处水银压强相等）：\n\n$$\np_0 + \\rho_{\\text{油}} g h_2 + \\rho_{\\text{水}} g h_1 = \\rho_{\\text{汞}} g H\n$$\n\n代入已知数据（取 $\\rho_{\\text{水}} = 1000\\,\\mathrm{kg/m^3}$，$g = 9.80\\,\\mathrm{m/s^2}$）：\n\n$$\np_{\\text{左}} = 46059.44 + 800 \\times 9.80 \\times 0.30 + 1000 \\times 9.80 \\times 0.50 = 46059.44 + 2352 + 4900 = 53311.44\\,\\mathrm{Pa}\n$$\n\n解得 U 形管中水银柱高度差：\n\n$$\nH = \\frac{p_{\\text{左}}}{\\rho_{\\text{汞}} g} = \\frac{53311.44}{13600 \\times 9.80} = \\frac{53311.44}{133280} = 0.4000\\,\\mathrm{m} = 40.0\\,\\mathrm{cm}\n$$\n\n（注：若取 $g = 9.81\\,\\mathrm{m/s^2}$，算得 $H = 0.3996\\,\\mathrm{m} \\approx 0.40\\,\\mathrm{m}$，结果一致。）",
+                "analysisFigures": [],
+                "pitfalls": "1. 容器直径 $d = 0.4\\,\\mathrm{m}$ 求圆面积时切勿误把直径当半径代入 $\\pi d^2$；\n2. 认准题图中 $h_1$ 标注的是油水交界面到左支水—汞交界面的水柱高度（而非到容器底部的高度），切勿多加或漏算液柱层。",
+                "chapter": 2,
+                "kps": ["多液层压差计", "等压面性质", "静水压强基本方程"],
+                "method": "等压面静水压强递推法",
+                "difficulty": 2,
+                "rubric": [
+                    {"label": "计算圆柱容器断面积 A = πd²/4 及活塞传给油顶面的相对压强 p0 = F/A ≈ 46.06 kPa", "pts": 5},
+                    {"label": "取左支水-汞交界面为等压面，正确列出多液层静水压强递推方程 p0 + ρ油gh2 + ρ水gh1 = ρ汞gH", "pts": 6},
+                    {"label": "代入各流体密度与高度解得水银柱高度差 H = 0.40 m（40 cm）", "pts": 4}
+                ]
+            },
+            {
+                "id": "yzu-849-2024-07",
+                "year": 2024,
+                "no": 7,
+                "type": "calc",
+                "score": 15,
+                "title": "自动泄水阀圆柱形与圆球形浮标尺寸设计",
+                "stem": "设计自动泄水阀如图所示，要求当水深 $h = 25\\,\\mathrm{cm}$ 时，用沉没一半的圆柱形浮标将细杆所连接的堵塞提起。已知堵塞直径 $d = 6\\,\\mathrm{cm}$，浮标长 $l = 20\\,\\mathrm{cm}$，活动部件的重量 $G = 0.98\\,\\mathrm{N}$，试求浮标直径 $D$ 为多少？如果浮标改用圆球形，其它条件不变，其半径 $R$ 应为多少？（堵塞的厚度相对于水深可以忽略不计）",
+                "note": "",
+                "figures": [
+                    {"src": "figures/q07_orig.png", "caption": "题 7 图　自动泄水阀结构示意图"}
+                ],
+                "shortAnswer": "圆柱浮标直径 D = 10.14 cm（0.1014 m）；圆球浮标半径 R = 7.28 cm（0.0728 m）",
+                "judgeAnswer": None,
+                "answer": "圆柱形浮标直径 $D \\approx 10.14\\,\\mathrm{cm}$（或 $0.1014\\,\\mathrm{m}$）；改用圆球形浮标时半径 $R \\approx 7.28\\,\\mathrm{cm}$（或 $0.0728\\,\\mathrm{m}$）。",
+                "analysis": "**1. 活动部件临界开启时的竖向受力平衡分析**\n\n以“浮标 + 细连杆 + 底部堵塞”整体为隔离体（受力见解图 7）。当水深达到 $h = 0.25\\,\\mathrm{m}$ 恰好将堵塞提起的临界瞬间，阀座对堵塞的接触支持力为零，细杆体积忽略不计，堵塞厚度相对水深忽略不计，底部孔口（直径 $d = 0.06\\,\\mathrm{m}$）下表面通大气（相对压强为 $0$），上表面承受水深 $h$ 处的静水压强 $p = \\rho g h$：\n\n- 堵塞所受向下的净静水总压力：\n\n$$\nP = \\rho g h \\cdot \\frac{\\pi}{4}d^2 = 1000 \\times 9.80 \\times 0.25 \\times \\frac{\\pi}{4} \\times 0.06^2 = 2.205\\pi \\approx 6.9272\\,\\mathrm{N}\n$$\n\n- 活动部件总向下荷载（静水压力 + 自重 $G = 0.98\\,\\mathrm{N}$）：\n\n$$\nF_b = G + P = 0.98 + 6.9272 = 7.9072\\,\\mathrm{N}\n$$\n\n由阿基米德浮力定律 $F_b = \\rho g V_{\\text{排}}$，所需浮标排开水的体积为：\n\n$$\nV_{\\text{排}} = \\frac{G + P}{\\rho g} = \\frac{0.98}{1000 \\times 9.80} + h \\cdot \\frac{\\pi}{4}d^2 = 1.0 \\times 10^{-4} + 7.0686 \\times 10^{-4} = 8.0686 \\times 10^{-4}\\,\\mathrm{m^3} = 806.86\\,\\mathrm{cm^3}\n$$\n\n**2. 求沉没一半的圆柱形浮标直径 $D$**\n\n圆柱形浮标长 $l = 0.20\\,\\mathrm{m}$，沉没一半时排开水体积为 $V_{\\text{排}} = \\frac{1}{2} \\left(\\frac{\\pi}{4} D^2 l\\right) = \\frac{\\pi}{8} D^2 l$，故：\n\n$$\nD = \\sqrt{\\frac{8 V_{\\text{排}}}{\\pi l}} = \\sqrt{\\frac{8 \\times 8.0686 \\times 10^{-4}}{\\pi \\times 0.20}} = \\sqrt{0.010273} \\approx 0.10136\\,\\mathrm{m} \\approx 10.14\\,\\mathrm{cm}\n$$\n\n**3. 求改用沉没一半的圆球形浮标半径 $R$**\n\n其它条件不变（仍为水深 $h = 25\\,\\mathrm{cm}$ 时圆球沉没一半将堵塞提起），排开水体积保持不变，即 $V_{\\text{排}} = \\frac{1}{2} \\left(\\frac{4}{3}\\pi R^3\\right) = \\frac{2}{3}\\pi R^3$，解得：\n\n$$\nR = \\sqrt[3]{\\frac{3 V_{\\text{排}}}{2\\pi}} = \\sqrt[3]{\\frac{3 \\times 8.0686 \\times 10^{-4}}{2\\pi}} = \\sqrt[3]{3.8525 \\times 10^{-4}} \\approx 0.07276\\,\\mathrm{m} \\approx 7.28\\,\\mathrm{cm}\n$$\n\n（注：若取 $g = 9.81\\,\\mathrm{m/s^2}$，算得 $D = 10.14\\,\\mathrm{cm}$、$R = 7.28\\,\\mathrm{cm}$，结果完全相同。）",
+                "analysisFigures": [
+                    {"src": "figures/q07_sol.png", "caption": "解图 7　自动泄水阀临界提起状态竖向受力平衡图"}
+                ],
+                "pitfalls": "1. 底部堵塞下表面直接通大气而非浸没在静止水体内部，故堵塞不仅不受向上的阿基米德浮力，反而承受向下的静水压力 $P = \\rho g h \\cdot \\frac{\\pi}{4}d^2$！\n2. 第二问“其它条件不变”意味着圆球浮标同样是**沉没一半**（$V_{\\text{排}} = \\frac{2}{3}\\pi R^3$），切勿漏乘 $\\frac{1}{2}$。",
+                "chapter": 2,
+                "kps": ["浮力与自动泄水阀设计", "平面静水总压力", "阿基米德原理"],
+                "method": "阿基米德浮力与静水压力平衡法",
+                "difficulty": 3,
+                "rubric": [
+                    {"label": "正确分析临界提起瞬间竖向力平衡 Fb = G + ρgh(πd²/4)，求得所需排水体积 V排 ≈ 806.86 cm³", "pts": 5},
+                    {"label": "由圆柱沉没一半体积 V排 = (1/2)(πD²l/4) 解得圆柱浮标直径 D ≈ 10.14 cm", "pts": 5},
+                    {"label": "由圆球沉没一半体积 V排 = (2/3)πR³ 解得圆球浮标半径 R ≈ 7.28 cm", "pts": 5}
+                ]
+            },
+            {
+                "id": "yzu-849-2024-08",
+                "year": 2024,
+                "no": 8,
+                "type": "calc",
+                "score": 15,
+                "title": "利用阀门启闭前后压力表读数求简单管道断面平均流速",
+                "stem": "如图所示一简单管道，尾部阀门关闭时压力表读数为 $49\\,\\mathrm{kPa}$，阀门打开后压力表读数为 $0.98\\,\\mathrm{kPa}$，从管道进口到压力表处的水头损失为 $1\\,\\mathrm{m}$，求管中的断面平均流速。",
+                "note": "",
+                "figures": [
+                    {"src": "figures/q08_orig.png", "caption": "题 8 图　带压力表与尾部阀门的简单管道"}
+                ],
+                "shortAnswer": "8.74 m/s",
+                "judgeAnswer": None,
+                "answer": "管中的断面平均流速 $v \\approx 8.74\\,\\mathrm{m/s}$。",
+                "analysis": "**1. 由阀门关闭状态求上游水箱液面相对压力表基准面的总作用水头 $H_0$**\n\n以压力表中心所在水平面为基准面（$z_M = 0$，由于接压力表处管道为水平渐变流段，同一过水断面上测压管水头 $z + \\frac{p}{\\rho g} = z_M + \\frac{p_M}{\\rho g}$ 处处相等）。当尾部阀门完全关闭时，水箱与管内水体处于静止平衡状态（$v = 0$，水头损失 $h_w = 0$），上游水箱自由液面相对基准面的高程 $H_0$ 等于关阀时的压强水头（取 $g = 9.80\\,\\mathrm{m/s^2}$）：\n\n$$\nH_0 = \\frac{p_{\\text{关}}}{\\rho g} = \\frac{49 \\times 10^3}{1000 \\times 9.80} = 5.00\\,\\mathrm{m}\n$$\n\n**2. 由阀门打开恒定流状态列伯努利方程求管内平均流速 $v$**\n\n阀门打开后，对上游大水箱自由液面 $0\\text{—}0$（$z_0 = H_0$，$p_0 = 0$，$v_0 \\approx 0$）与压力表所在管道过水断面 $1\\text{—}1$（动能修正系数取 $\\alpha_1 = 1.0$）列实际液体恒定总流能量方程（水头关系见解图 8）：\n\n$$\nH_0 + 0 + 0 = \\frac{p_{\\text{开}}}{\\rho g} + \\frac{\\alpha_1 v^2}{2g} + h_{w0\\text{-}1}\n$$\n\n其中开阀时压力表压强水头为：\n\n$$\n\\frac{p_{\\text{开}}}{\\rho g} = \\frac{0.98 \\times 10^3}{1000 \\times 9.80} = 0.10\\,\\mathrm{m}\n$$\n\n已知进口至压力表断面水头损失 $h_{w0\\text{-}1} = 1.0\\,\\mathrm{m}$，代入得管内流速水头：\n\n$$\n\\frac{v^2}{2g} = H_0 - \\frac{p_{\\text{开}}}{\\rho g} - h_{w0\\text{-}1} = 5.00 - 0.10 - 1.00 = 3.90\\,\\mathrm{m}\n$$\n\n解得管中断面平均流速：\n\n$$\nv = \\sqrt{2 g \\times 3.90} = \\sqrt{2 \\times 9.80 \\times 3.90} = \\sqrt{76.44} \\approx 8.743\\,\\mathrm{m/s} \\approx 8.74\\,\\mathrm{m/s}\n$$\n\n（注：若取 $g = 9.81\\,\\mathrm{m/s^2}$，则 $H_0 = 4.9949\\,\\mathrm{m}$，$p_{\\text{开}}/(\\rho g) = 0.0999\\,\\mathrm{m}$，$v = \\sqrt{2\\times 9.81\\times 3.8950} = 8.742\\,\\mathrm{m/s} \\approx 8.74\\,\\mathrm{m/s}$，结果完全一致。）",
+                "analysisFigures": [
+                    {"src": "figures/q08_sol.png", "caption": "解图 8　阀门关、开两种状态下的总水头线与测压管水头线关系"}
+                ],
+                "pitfalls": "无需纠结压力表表盘高度 $z_M$ 与管道轴线高差未知！因为无论关阀还是开阀，压力表测量的都是同一基准点 $z_M$ 处的压强，联立两态方程时位置高度 $z_M$ 自动严格抵消：$\\frac{p_{\\text{关}} - p_{\\text{开}}}{\\rho g} = \\frac{v^2}{2g} + h_w$。",
+                "chapter": 3,
+                "kps": ["伯努利方程测流", "恒定总流能量方程", "静水压强与动水压强转换"],
+                "method": "启闭阀门静动水压差伯努利测速法",
+                "difficulty": 2,
+                "rubric": [
+                    {"label": "由关阀静水状态求得水箱液面相对压力表基准面的静水头 H0 = p关/(ρg) = 5.0 m", "pts": 5},
+                    {"label": "对水箱液面与压力表所在管道断面列恒定总流能量方程 H0 = p开/(ρg) + v²/(2g) + hw", "pts": 6},
+                    {"label": "求得流速水头 v²/(2g) = 3.90 m 并解出管内断面平均流速 v ≈ 8.74 m/s", "pts": 4}
+                ]
+            },
+            {
+                "id": "yzu-849-2024-09",
+                "year": 2024,
+                "no": 9,
+                "type": "calc",
+                "score": 15,
+                "title": "平板闸门自由出流作用于闸门上的动水总压力计算",
+                "stem": "图示一平板闸门门宽 $b$ 为 $2\\,\\mathrm{m}$，当通过流量 $Q$ 为 $8\\,\\mathrm{m^3/s}$ 时，闸前水深 $H$ 为 $4\\,\\mathrm{m}$，闸孔后收缩断面水深 $h_c$ 为 $0.5\\,\\mathrm{m}$，求作用于平板闸门上的动水总压力（不计摩擦力）。",
+                "note": "",
+                "figures": [
+                    {"src": "figures/q09_orig.png", "caption": "题 9 图　平板闸门闸孔出流"}
+                ],
+                "shortAnswer": "98.35 kN，方向水平向右（指向下游；若取 g=9.81 m/s² 则为 98.51 kN）",
+                "judgeAnswer": None,
+                "answer": "作用于平板闸门上的动水总压力大小为 $98.35\\,\\mathrm{kN}$（若取 $g = 9.81\\,\\mathrm{m/s^2}$ 则为 $98.51\\,\\mathrm{kN}$），方向水平向右（指向下游）。",
+                "analysis": "**1. 由连续性方程计算闸前断面与收缩断面平均流速**\n\n选取闸前渐变流断面 $1\\text{—}1$（水深 $H = 4\\,\\mathrm{m}$）和闸后收缩断面 $c\\text{—}c$（水深 $h_c = 0.5\\,\\mathrm{m}$）：\n\n$$\nv_1 = \\frac{Q}{b H} = \\frac{8}{2 \\times 4} = 1.0\\,\\mathrm{m/s}, \\qquad v_c = \\frac{Q}{b h_c} = \\frac{8}{2 \\times 0.5} = 8.0\\,\\mathrm{m/s}\n$$\n\n**2. 计算两渐变流断面上的动水总压力 $P_1$ 与 $P_c$**\n\n断面 $1\\text{—}1$ 与收缩断面 $c\\text{—}c$ 处流线平直，动水压强均符合静水压强分布规律（取 $g = 9.80\\,\\mathrm{m/s^2}$）：\n\n$$\nP_1 = \\frac{1}{2}\\rho g H^2 b = \\frac{1}{2} \\times 1000 \\times 9.80 \\times 4^2 \\times 2 = 156800\\,\\mathrm{N} = 156.80\\,\\mathrm{kN}\n$$\n\n$$\nP_c = \\frac{1}{2}\\rho g h_c^2 b = \\frac{1}{2} \\times 1000 \\times 9.80 \\times 0.5^2 \\times 2 = 2450\\,\\mathrm{N} = 2.45\\,\\mathrm{kN}\n$$\n\n**3. 列水平方向恒定总流动量方程求闸门受力**\n\n取 $1\\text{—}1$ 与 $c\\text{—}c$ 断面之间的水体为控制体（见解图 9），规定水平向右（顺水流方向）为 $x$ 轴正方向，设平板闸门对水体的水平反作用力为 $R$（假设方向水平向左），不计渠底及边壁摩阻力，取动量修正系数 $\\beta_1 = \\beta_c = 1.0$：\n\n$$\nP_1 - P_c - R = \\rho Q (v_c - v_1)\n$$\n\n代入数值解得：\n\n$$\nR = (156800 - 2450) - 1000 \\times 8 \\times (8.0 - 1.0) = 154350 - 56000 = 98350\\,\\mathrm{N} = 98.35\\,\\mathrm{kN}\n$$\n\n$R > 0$ 说明闸门对水体的反力确实水平向左。由牛顿第三定律，水流作用于平板闸门上的动水总压力 $R^{\\prime} = R = 98.35\\,\\mathrm{kN}$，方向**水平向右（指向下游）**。\n\n（注：若取 $g = 9.81\\,\\mathrm{m/s^2}$，则 $P_1 = 156.96\\,\\mathrm{kN}$，$P_c = 2.45\\,\\mathrm{kN}$，$R^{\\prime} = 98.51\\,\\mathrm{kN}$。）",
+                "analysisFigures": [
+                    {"src": "figures/q09_sol.png", "caption": "解图 9　平板闸门控制体水平受力与动量通量分析"}
+                ],
+                "pitfalls": "切忌直接按静水压强三角形公式对闸门受压面（水深 $4\\,\\mathrm{m}$ 减闸孔开度）积分求闸门推力！闸门迎水面靠近底缘孔口处流线急剧弯曲加速，压强显著低于静水压强（故实际动水总压力 $98.35\\,\\mathrm{kN}$ 远小于按静水估算的值），必须取渐变流断面列动量方程求解。",
+                "chapter": 3,
+                "kps": ["闸门与弯管动水总压力", "恒定总流动量方程", "恒定总流连续性方程"],
+                "method": "能量方程求流量+控制体动量方程求反力",
+                "difficulty": 3,
+                "rubric": [
+                    {"label": "由连续性方程求出闸前流速 v1 = 1.0 m/s 与收缩断面流速 vc = 8.0 m/s", "pts": 4},
+                    {"label": "按渐变流静水压强分布求出上下游断面压力 P1 = 156.80 kN、Pc = 2.45 kN", "pts": 5},
+                    {"label": "列控制体水平动量方程 P1 - Pc - R = ρQ(vc - v1)，解得动水总压力 98.35 kN 并指明水平向右", "pts": 6}
+                ]
+            },
+            {
+                "id": "yzu-849-2024-10",
+                "year": 2024,
+                "no": 10,
+                "type": "calc",
+                "score": 20,
+                "title": "离心泵最大允许安装高程与带动水泵的动力机械功率计算",
+                "stem": "如图所示用离心泵将湖水抽到水池，流量 $Q$ 为 $0.2\\,\\mathrm{m^3/s}$，湖面高程 $\\nabla_1$ 为 $85.0\\,\\mathrm{m}$，水池水面高程 $\\nabla_3$ 为 $105.0\\,\\mathrm{m}$；吸水管直径 $d_1$ 为 $500\\,\\mathrm{mm}$，长 $l_1$ 为 $10\\,\\mathrm{m}$，水泵的允许真空值 $h_v$ 为 $4.5\\,\\mathrm{m}$，吸水管底阀局部水头损失系数 $\\zeta_e = 2.5$，$90^{\\circ}$ 弯头局部水头损失系数 $\\zeta_b = 0.3$，水泵入口前的渐变收缩段局部水头损失系数 $\\zeta_g = 0.1$，吸水管沿程水头损失系数 $\\lambda = 0.022$；压力管道采用铸铁管，其直径 $d_2$ 为 $500\\,\\mathrm{mm}$，长度 $l_2$ 为 $1000\\,\\mathrm{m}$，$n = 0.013$，压力管按长管计算，水泵效率 $\\eta = 70\\%$。试确定：\n\n（1）水泵最大允许安装高程 $\\nabla_2$；\n\n（2）带动水泵的动力机械功率。",
+                "note": "",
+                "figures": [
+                    {"src": "figures/q10_orig.png", "caption": "题 10 图　离心泵抽水装置管路布置图"}
+                ],
+                "shortAnswer": "（1）最大允许安装高程 ∇2 = 89.27 m；（2）动力机械功率 N = 64.35 kW（若压力管外不计吸水管损失近似为 63.86 kW；若取 g=9.81 m/s² 则为 64.42 kW）",
+                "judgeAnswer": None,
+                "answer": "（1）水泵最大允许安装高程 $\\nabla_2 = 89.27\\,\\mathrm{m}$；\n\n（2）带动水泵的动力机械功率 $N \\approx 64.35\\,\\mathrm{kW}$（若取 $g = 9.81\\,\\mathrm{m/s^2}$ 则为 $64.42\\,\\mathrm{kW}$）。",
+                "analysis": "**（1）确定水泵最大允许安装高程 $\\nabla_2$**\n\n吸水管内径 $d_1 = 0.50\\,\\mathrm{m}$，过水断面积及管内平均流速为：\n\n$$\nA_1 = \\frac{\\pi}{4}d_1^2 = \\frac{\\pi}{4} \\times 0.50^2 \\approx 0.19635\\,\\mathrm{m^2}, \\qquad v_1 = \\frac{Q}{A_1} = \\frac{0.2}{0.19635} \\approx 1.0186\\,\\mathrm{m/s}\n$$\n\n吸水管流速水头（取 $g = 9.80\\,\\mathrm{m/s^2}$，$\\alpha = 1.0$）：\n\n$$\n\\frac{v_1^2}{2g} = \\frac{1.0186^2}{2 \\times 9.80} \\approx 0.05294\\,\\mathrm{m}\n$$\n\n吸水管段总水头损失 $h_{w1}$（含沿程损失与底阀、弯头、渐缩段局部损失）：\n\n$$\nh_{w1} = \\left(\\lambda \\frac{l_1}{d_1} + \\zeta_e + \\zeta_b + \\zeta_g\\right)\\frac{v_1^2}{2g} = \\left(0.022 \\times \\frac{10}{0.50} + 2.5 + 0.3 + 0.1\\right) \\times 0.05294 = 3.34 \\times 0.05294 \\approx 0.1768\\,\\mathrm{m}\n$$\n\n对湖面 $1\\text{—}1$（$z_1 = \\nabla_1 = 85.0\\,\\mathrm{m}$，$p_1 = 0$，$v_0 \\approx 0$）与水泵进口断面 $s\\text{—}s$（高程 $\\nabla_2$，最大允许真空度 $h_v = -\\frac{p_s}{\\rho g} = 4.5\\,\\mathrm{m}$）列能量方程：\n\n$$\n\\nabla_1 = \\nabla_2 - h_v + \\frac{v_1^2}{2g} + h_{w1}\n$$\n\n解得水泵最大允许吸水地形高度 $z_{s,\\max}$ 与最大允许安装高程 $\\nabla_2$：\n\n$$\nz_{s,\\max} = h_v - \\left(\\frac{v_1^2}{2g} + h_{w1}\\right) = 4.5 - (0.05294 + 0.1768) = 4.2703\\,\\mathrm{m} \\approx 4.27\\,\\mathrm{m}\n$$\n\n$$\n\\nabla_2 = \\nabla_1 + z_{s,\\max} = 85.0 + 4.27 = 89.27\\,\\mathrm{m}\n$$\n\n**（2）计算水泵总扬程 $H_p$ 与动力机械功率 $N$**\n\n压力管道直径 $d_2 = 0.50\\,\\mathrm{m}$，断面积 $A_2 = A_1 = 0.19635\\,\\mathrm{m^2}$，满管水力半径 $R_2 = \\frac{d_2}{4} = 0.125\\,\\mathrm{m}$，糙率 $n = 0.013$。压力管按长管计算（忽略压力管局部损失与出口流速水头），由曼宁公式求流量模数 $K_2$ 与沿程水头损失 $h_{f2}$：\n\n$$\nK_2 = \\frac{1}{n} A_2 R_2^{2/3} = \\frac{1}{0.013} \\times 0.19635 \\times 0.125^{2/3} = 15.1038 \\times 0.25 = 3.7760\\,\\mathrm{m^3/s}\n$$\n\n$$\nh_{f2} = \\frac{Q^2}{K_2^2} l_2 = \\left(\\frac{0.2}{3.7760}\\right)^2 \\times 1000 \\approx 2.8055\\,\\mathrm{m} \\approx 2.81\\,\\mathrm{m}\n$$\n\n对上下游湖面与水池水面列装置总能量方程，水泵所需提供的总扬程为净扬程 $\\Delta Z = \\nabla_3 - \\nabla_1 = 20.0\\,\\mathrm{m}$ 加上吸水管与压力管水头损失之和：\n\n$$\nH_p = (\\nabla_3 - \\nabla_1) + h_{w1} + h_{f2} = (105.0 - 85.0) + 0.1768 + 2.8055 = 22.9823\\,\\mathrm{m} \\approx 22.98\\,\\mathrm{m}\n$$\n\n已知水泵效率 $\\eta = 70\\%$，带动水泵所需的动力机械轴功率为：\n\n$$\nN = \\frac{\\rho g Q H_p}{1000\\,\\eta} = \\frac{1000 \\times 9.80 \\times 0.2 \\times 22.9823}{1000 \\times 0.70} = \\frac{45.045}{0.70} \\approx 64.35\\,\\mathrm{kW}\n$$\n\n（注：若取 $g = 9.81\\,\\mathrm{m/s^2}$，得 $N = 64.42\\,\\mathrm{kW}$；若全系统忽略吸水管损失仅计 $H_p \\approx 20 + 2.81 = 22.81\\,\\mathrm{m}$，则 $N \\approx 63.86\\,\\mathrm{kW}$。既然第（1）问已精确算出 $h_{w1} = 0.18\\,\\mathrm{m}$，标准解法应将其计入总扬程。）",
+                "analysisFigures": [],
+                "pitfalls": "1. 水泵进口处允许真空度 $h_v = 4.5\\,\\mathrm{m}$ 对应相对压强水头 $\\frac{p_s}{\\rho g} = -4.5\\,\\mathrm{m}$（负号切勿写反）；且吸水高度公式中除了减 $h_{w1}$ 外，千万不要漏减水泵进口断面的流速水头 $\\frac{v_1^2}{2g}$！\n2. 铸铁压力管给出的是曼宁糙率 $n = 0.013$（而非达西 $\\lambda$），应使用有压圆管曼宁公式 $K = \\frac{1}{n}AR^{2/3}$ 或 $h_f = \\frac{10.29 n^2 l}{d^{16/3}}Q^2$ 求解。",
+                "chapter": 6,
+                "kps": ["水泵最大允许安装高程", "水泵扬程与轴功率", "曼宁公式"],
+                "method": "允许真空度定安装高程+长管扬程求功率",
+                "difficulty": 4,
+                "rubric": [
+                    {"label": "求出吸水管流速 v1 ≈ 1.02 m/s、流速水头 0.053 m 及吸水管总水头损失 hw1 ≈ 0.177 m", "pts": 5},
+                    {"label": "列湖面至泵入口能量方程求得最大允许吸水高度 zs ≈ 4.27 m 及安装高程 ∇2 = 89.27 m", "pts": 5},
+                    {"label": "应用曼宁公式求得铸铁压力长管沿程水头损失 hf2 ≈ 2.81 m 及水泵总扬程 Hp ≈ 22.98 m", "pts": 5},
+                    {"label": "由轴功率公式 N = ρgQHp / η 求得带动水泵的动力机械功率 N ≈ 64.35 kW", "pts": 5}
+                ]
+            },
+            {
+                "id": "yzu-849-2024-11",
+                "year": 2024,
+                "no": 11,
+                "type": "proof",
+                "score": 20,
+                "title": "应用 N-S 方程推导平行平板库埃特—泊肃叶层流流速分布与单宽流量公式",
+                "stem": "如图所示的由上下两平行平板所组成的槽道内，充满了密度为 $\\rho$、动力粘度为 $\\mu$ 的不可压缩流体，流体作二维恒定层流运动，上平板以速度 $U$ 相对于下平板运动，下平板处于静止状态，两平板间距为 $h$，设槽道中沿 $x$ 方向的压强梯度为 $\\mathrm{d}p/\\mathrm{d}x$，试应用纳维-斯托克斯方程推求槽道内流体的流速分布和单宽流量公式。",
+                "note": "",
+                "figures": [
+                    {"src": "figures/q11_orig.png", "caption": "题 11 图　上下平行平板间二维恒定层流槽道"}
+                ],
+                "shortAnswer": "u(y) = (U/h)y - [1/(2μ)](dp/dx)y(h - y)；q = Uh/2 - [h³/(12μ)](dp/dx)",
+                "judgeAnswer": None,
+                "answer": "流速分布公式：\n\n$$\nu(y) = \\frac{U}{h}y - \\frac{1}{2\\mu}\\frac{\\mathrm{d}p}{\\mathrm{d}x}y(h - y)\n$$\n\n单宽流量公式：\n\n$$\nq = \\frac{1}{2}Uh - \\frac{h^3}{12\\mu}\\frac{\\mathrm{d}p}{\\mathrm{d}x}\n$$",
+                "analysis": "**1. 建立控制方程并依物理条件逐项简化**\n\n取如题 11 图所示直角坐标系：下固定平板内表面为 $x$ 轴（$y=0$），垂直平板向上为 $y$ 轴。不可压缩黏性流体二维流动的连续性微分方程与 $x$ 方向纳维—斯托克斯（N-S）微分方程为：\n\n$$\n\\frac{\\partial u_x}{\\partial x} + \\frac{\\partial u_y}{\\partial y} = 0\n$$\n\n$$\n\\frac{\\partial u_x}{\\partial t} + u_x\\frac{\\partial u_x}{\\partial x} + u_y\\frac{\\partial u_x}{\\partial y} = f_x - \\frac{1}{\\rho}\\frac{\\partial p}{\\partial x} + \\nu\\left(\\frac{\\partial^2 u_x}{\\partial x^2} + \\frac{\\partial^2 u_x}{\\partial y^2}\\right)\n$$\n\n根据题设流动特征逐项简化：\n- **恒定流动**：当地加速度项 $\\frac{\\partial u_x}{\\partial t} = 0$；\n- **平行平板间充分发展层流**：流线平行于 $x$ 轴，法向速度分量处处为零，即 $u_y = 0$；\n- 代入连续性方程得 $\\frac{\\partial u_x}{\\partial x} = 0$，说明水平流速 $u_x = u(y)$ 仅为纵向坐标 $y$ 的函数，进而 $\\frac{\\partial^2 u_x}{\\partial x^2} = 0$，且迁移加速度项 $u_x\\frac{\\partial u_x}{\\partial x} + u_y\\frac{\\partial u_x}{\\partial y} = 0$；\n- **水平槽道质量力**：重力沿水平 $x$ 轴方向分力 $f_x = 0$（由 $y$ 向方程知同一过水断面上动水压强沿 $y$ 按静水规律分布，$\\frac{\\partial p}{\\partial x} = \\frac{\\mathrm{d}p}{\\mathrm{d}x}$ 与 $y$ 无关）。\n\n将上述条件及 $\\nu = \\frac{\\mu}{\\rho}$ 代入 $x$ 方向 N-S 方程，化简为二阶常微分方程：\n\n$$\n0 = -\\frac{1}{\\rho}\\frac{\\mathrm{d}p}{\\mathrm{d}x} + \\frac{\\mu}{\\rho}\\frac{\\mathrm{d}^2 u}{\\mathrm{d}y^2} \\implies \\frac{\\mathrm{d}^2 u}{\\mathrm{d}y^2} = \\frac{1}{\\mu}\\frac{\\mathrm{d}p}{\\mathrm{d}x}\n$$\n\n**2. 积分并代入固壁无滑移边界条件求流速分布 $u(y)$**\n\n视沿程压强梯度 $\\frac{\\mathrm{d}p}{\\mathrm{d}x}$ 为沿 $y$ 不变的常量，对 $y$ 连续积分两次：\n\n$$\n\\frac{\\mathrm{d}u}{\\mathrm{d}y} = \\frac{1}{\\mu}\\frac{\\mathrm{d}p}{\\mathrm{d}x}y + C_1\n$$\n\n$$\nu(y) = \\frac{1}{2\\mu}\\frac{\\mathrm{d}p}{\\mathrm{d}x}y^2 + C_1 y + C_2\n$$\n\n由黏性流体固壁无滑移边界条件：\n1. 下平板静止（$y = 0$ 时 $u = 0$）：代入得 $C_2 = 0$；\n2. 上平板以速度 $U$ 运动（$y = h$ 时 $u = U$）：\n\n$$\nU = \\frac{1}{2\\mu}\\frac{\\mathrm{d}p}{\\mathrm{d}x}h^2 + C_1 h \\implies C_1 = \\frac{U}{h} - \\frac{h}{2\\mu}\\frac{\\mathrm{d}p}{\\mathrm{d}x}\n$$\n\n将 $C_1$、$C_2$ 代回整理，得到槽道内流体的流速分布公式（见解图 11）：\n\n$$\nu(y) = \\frac{U}{h}y + \\frac{1}{2\\mu}\\frac{\\mathrm{d}p}{\\mathrm{d}x}(y^2 - hy) = \\frac{U}{h}y - \\frac{1}{2\\mu}\\frac{\\mathrm{d}p}{\\mathrm{d}x}y(h - y)\n$$\n\n**3. 沿槽道高度积分求单宽流量公式 $q$**\n\n通过单位宽度槽道过水断面的体积流量（单宽流量 $q$）为：\n\n$$\nq = \\int_0^h u(y)\\,\\mathrm{d}y = \\int_0^h \\left[\\frac{U}{h}y - \\frac{1}{2\\mu}\\frac{\\mathrm{d}p}{\\mathrm{d}x}(hy - y^2)\\right]\\mathrm{d}y\n$$\n\n逐项求定积分：\n\n$$\nq = \\frac{U}{h}\\left[\\frac{y^2}{2}\\right]_0^h - \\frac{1}{2\\mu}\\frac{\\mathrm{d}p}{\\mathrm{d}x}\\left[\\frac{hy^2}{2} - \\frac{y^3}{3}\\right]_0^h = \\frac{1}{2}Uh - \\frac{1}{2\\mu}\\frac{\\mathrm{d}p}{\\mathrm{d}x}\\cdot\\frac{h^3}{6} = \\frac{1}{2}Uh - \\frac{h^3}{12\\mu}\\frac{\\mathrm{d}p}{\\mathrm{d}x}\n$$\n\n（物理校核：当 $\\mathrm{d}p/\\mathrm{d}x = 0$ 时退化为纯剪切库埃特流 $u = \\frac{U}{h}y$、$q = \\frac{1}{2}Uh$；当 $U = 0$ 且顺压梯度 $\\mathrm{d}p/\\mathrm{d}x < 0$ 时退化为固定平板泊肃叶流 $q = -\\frac{h^3}{12\\mu}\\frac{\\mathrm{d}p}{\\mathrm{d}x} > 0$，量纲与符号均完全自洽。）",
+                "analysisFigures": [
+                    {"src": "figures/q11_sol.png", "caption": "解图 11　不同压强梯度下平行平板库埃特—泊肃叶层流无量纲流速分布"}
+                ],
+                "pitfalls": "1. 严禁跳过 N-S 方程简化说明而直接默写最终抛物线结论！阅卷采分重点在于写出完整 $x$ 向 N-S 方程并利用“恒定（$\\partial/\\partial t=0$）、平行流（$u_y=0$）、不可压连续性（$\\partial u_x/\\partial x=0$）、水平无重力分量（$f_x=0$）”四步消项得到 $\\mathrm{d}^2 u/\\mathrm{d}y^2 = (1/\\mu)(\\mathrm{d}p/\\mathrm{d}x)$；\n2. 注意保留 $\\mathrm{d}p/\\mathrm{d}x$ 本身的代数符号：顺流降压时 $\\mathrm{d}p/\\mathrm{d}x < 0$，故 $-\\frac{h^3}{12\\mu}\\frac{\\mathrm{d}p}{\\mathrm{d}x} > 0$ 正好表示压差助流使流量增大，切勿反号写成加号！",
+                "chapter": 5,
+                "kps": ["纳维-斯托克斯(N-S)方程", "平板槽道层流流速推导", "不可压缩连续性微分方程"],
+                "method": "N-S微分方程简化与边界条件积分法",
+                "difficulty": 4,
+                "rubric": [
+                    {"label": "正确写出不可压缩流体连续性方程与 x 方向 N-S 微分方程完整形式", "pts": 5},
+                    {"label": "利用恒定流、平行层流 uy=0、连续性 ∂ux/∂x=0 及 fx=0 逐步化简得 d²u/dy² = (1/μ)(dp/dx)", "pts": 5},
+                    {"label": "两次积分并代入 y=0, u=0 与 y=h, u=U 边界条件求得流速分布 u(y)", "pts": 5},
+                    {"label": "对流速沿 [0, h] 积分求得单宽流量公式 q = Uh/2 - [h³/(12μ)](dp/dx)", "pts": 5}
+                ]
+            }
+        ]
+    }
+
+    out_json = OUT_DIR / "2024.json"
+    out_json.write_text(json.dumps(paper, ensure_ascii=False, indent=2), encoding="utf-8")
+    print("Wrote standardized exam JSON:", out_json)
+
+
+if __name__ == "__main__":
+    draw_q01_sol()
+    draw_q03_sol()
+    draw_q07_sol()
+    draw_q08_sol()
+    draw_q09_sol()
+    draw_q11_sol()
+    build_json()

@@ -1,0 +1,157 @@
+{
+  "availableYears": [
+    {
+      "year": 2024,
+      "title": "2024 年扬州大学 849 水力学（水）考研真题",
+      "questionCount": 11,
+      "totalScore": 150,
+      "figureCount": 15,
+      "status": "ready",
+      "dataFile": "2024.json"
+    },
+    {
+      "year": 2023,
+      "title": "2023 年扬州大学 849 水力学（水）考研真题",
+      "questionCount": 13,
+      "totalScore": 150,
+      "figureCount": 11,
+      "status": "ready",
+      "dataFile": "2023.json"
+    },
+    {
+      "year": 2022,
+      "title": "2022 年扬州大学 849 水力学（水）考研真题",
+      "questionCount": 15,
+      "totalScore": 150,
+      "figureCount": 9,
+      "status": "ready",
+      "dataFile": "2022.json"
+    },
+    {
+      "year": 2021,
+      "title": "2021 年扬州大学 849 水力学（水）考研真题",
+      "questionCount": 13,
+      "totalScore": 150,
+      "figureCount": 10,
+      "status": "ready",
+      "dataFile": "2021.json"
+    },
+    {
+      "year": 2020,
+      "title": "2020 年扬州大学 849 水力学（水）考研真题",
+      "questionCount": 13,
+      "totalScore": 150,
+      "figureCount": 14,
+      "status": "ready",
+      "dataFile": "2020.json"
+    },
+    {
+      "year": 2019,
+      "title": "2019 年扬州大学 849 水力学（水）考研真题",
+      "questionCount": 12,
+      "totalScore": 150,
+      "figureCount": 12,
+      "status": "ready",
+      "dataFile": "2019.json"
+    },
+    {
+      "year": 2018,
+      "title": "2018 年扬州大学 849 水力学（水）考研真题",
+      "questionCount": 13,
+      "totalScore": 150,
+      "figureCount": 13,
+      "status": "ready",
+      "dataFile": "2018.json"
+    },
+    {
+      "year": 2017,
+      "title": "2017 年扬州大学 849 水力学（水）考研真题",
+      "questionCount": 14,
+      "totalScore": 150,
+      "figureCount": 11,
+      "status": "ready",
+      "dataFile": "2017.json"
+    },
+    {
+      "year": 2016,
+      "title": "2016 年扬州大学 849 水力学（水）考研真题",
+      "questionCount": 15,
+      "totalScore": 150,
+      "figureCount": 15,
+      "status": "ready",
+      "dataFile": "2016.json"
+    },
+    {
+      "year": 2015,
+      "title": "2015 年扬州大学 849 水力学（水）考研真题",
+      "questionCount": 21,
+      "totalScore": 150,
+      "figureCount": 10,
+      "status": "ready",
+      "dataFile": "2015.json"
+    },
+    {
+      "year": 2014,
+      "title": "2014 年扬州大学 849 水力学（水）考研真题",
+      "questionCount": 30,
+      "totalScore": 150,
+      "figureCount": 15,
+      "status": "ready",
+      "dataFile": "2014.json"
+    },
+    {
+      "year": 2013,
+      "title": "2013 年扬州大学 849 水力学（水）考研真题",
+      "questionCount": 30,
+      "totalScore": 150,
+      "figureCount": 14,
+      "status": "ready",
+      "dataFile": "2013.json"
+    },
+    {
+      "year": 2012,
+      "title": "2012 年扬州大学 849 水力学（水）考研真题",
+      "questionCount": 27,
+      "totalScore": 150,
+      "figureCount": 9,
+      "status": "ready",
+      "dataFile": "2012.json"
+    },
+    {
+      "year": 2011,
+      "title": "2011 年扬州大学 849 水力学（水）考研真题",
+      "questionCount": 12,
+      "totalScore": 150,
+      "figureCount": 13,
+      "status": "ready",
+      "dataFile": "2011.json"
+    },
+    {
+      "year": 2010,
+      "title": "2010 年扬州大学 849 水力学（水）考研真题",
+      "questionCount": 11,
+      "totalScore": 150,
+      "figureCount": 13,
+      "status": "ready",
+      "dataFile": "2010.json"
+    },
+    {
+      "year": 2008,
+      "title": "2008 年扬州大学 849 水力学（水）考研真题",
+      "questionCount": 27,
+      "totalScore": 150,
+      "figureCount": 9,
+      "status": "ready",
+      "dataFile": "2008.json"
+    },
+    {
+      "year": 2007,
+      "title": "2007 年扬州大学 849 水力学（水）考研真题",
+      "questionCount": 13,
+      "totalScore": 150,
+      "figureCount": 12,
+      "status": "ready",
+      "dataFile": "2007.json"
+    }
+  ]
+}

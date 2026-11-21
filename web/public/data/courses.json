@@ -1,0 +1,29 @@
+{
+  "defaultCourseId": "hhu-814",
+  "courses": [
+    {
+      "id": "hhu-814",
+      "name": "河海大学 · 814 水力学",
+      "shortLabel": "河海 814",
+      "school": "河海大学",
+      "code": "814",
+      "subject": "水力学",
+      "category": "水利 / 土木考研专业课",
+      "examMetaBadge": "科目代码 814 · 闭卷 · 禁用计算器",
+      "status": "ready",
+      "description": "已上线 2013–2026 共 14 套真题精解（433 道题 / 2100 分，274 幅高清配图与解析示意图），全部通过 KaTeX 零错校验。"
+    },
+    {
+      "id": "yzu-849",
+      "name": "扬州大学 · 849 水力学",
+      "shortLabel": "扬大 849",
+      "school": "扬州大学",
+      "code": "849",
+      "subject": "水力学（水）",
+      "category": "水利 / 土木考研专业课",
+      "examMetaBadge": "科目代码 849 · 满分 150 分 · 闭卷",
+      "status": "ready",
+      "description": "已上线 2007–2008、2010–2024 共 17 套真题精解（290 道题 / 2550 分，205 幅高清原图与解析示意图）及 32 组核心公式库（2009 年无试卷）。"
+    }
+  ]
+}

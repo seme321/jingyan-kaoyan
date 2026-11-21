@@ -1,0 +1,983 @@
+{
+  "year": 2026,
+  "code": "814",
+  "subject": "水力学",
+  "school": "河海大学",
+  "totalScore": 150,
+  "durationMinutes": 180,
+  "calculatorAllowed": false,
+  "examNotes": [
+    "满分 150 分，考试时间 180 分钟（3 小时），闭卷笔试。",
+    "河海大学 814 水力学近年不允许使用计算器，模考建议全程手算。",
+    "除特别说明外，统一取重力加速度 g = 9.81 m/s²，水的密度 ρ = 1000 kg/m³，运动黏度 ν = 1.0×10⁻⁶ m²/s。",
+    "分值按 814 标准题型结构配置：一、判断题（10×2=20 分）；二、填空与简答题（15×2=30 分）；三、计算题（5×20=100 分）。"
+  ],
+  "sections": [
+    {
+      "id": "judge",
+      "title": "一、判断题",
+      "description": "共 10 小题，每小题 2 分，共 20 分。判断下列说法正误。",
+      "range": [
+        1,
+        10
+      ],
+      "scorePerQuestion": 2,
+      "totalScore": 20
+    },
+    {
+      "id": "fill",
+      "title": "二、填空与简答题",
+      "description": "共 15 小题，每小题 2 分，共 30 分。",
+      "range": [
+        11,
+        25
+      ],
+      "scorePerQuestion": 2,
+      "totalScore": 30
+    },
+    {
+      "id": "calc",
+      "title": "三、计算题",
+      "description": "共 5 小题，每小题 20 分，共 100 分。需写出完整公式、推导步骤与单位。",
+      "range": [
+        26,
+        30
+      ],
+      "scorePerQuestion": 20,
+      "totalScore": 100
+    }
+  ],
+  "questions": [
+    {
+      "id": "2026-01",
+      "year": 2026,
+      "no": 1,
+      "type": "judge",
+      "score": 2,
+      "title": "静水压强基本方程中位置水头的物理意义",
+      "stem": "静水压强基本方程 $z+p/\\gamma =C$ 中，$z$ 的物理意义是单位体积液体的位置势能。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "×",
+      "judgeAnswer": false,
+      "answer": "错误（×）",
+      "analysis": "在静水压强基本方程 $z+\\frac{p}{\\gamma}=C$ 中，各项量纲均为长度（$\\mathrm{m}$），其物理意义表征单位重量液体所具有的机械能：\n\n1. $z$ 为位置水头，物理意义是单位重量液体具有的位置势能（位能）；\n\n2. $\\frac{p}{\\gamma}$ 为压强水头，物理意义是单位重量液体具有的压强势能（压能）；\n\n3. 而单位体积液体的位置势能应为 $\\gamma z=\\rho gz$（量纲为 ${\\mathrm{J/m}}^{3}={\\mathrm{N/m}}^{2}$）。题干将“单位重量”偷换为“单位体积”，故错误。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 2,
+      "kps": [
+        "静水压强基本方程",
+        "水头与能量量纲"
+      ],
+      "method": "单位重量与单位体积量纲辨析",
+      "difficulty": 2
+    },
+    {
+      "id": "2026-02",
+      "year": 2026,
+      "no": 2,
+      "type": "judge",
+      "score": 2,
+      "title": "明渠恒定流沿程断面单位能量的变化规律",
+      "stem": "明渠恒定流沿程的断面单位能量 $E_{s}$ 可以增加、保持不变或减小。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "√",
+      "judgeAnswer": true,
+      "answer": "正确（√）",
+      "analysis": "明渠断面单位能量（又称断面比能）是以当地渠底为基准面计量的单位重量液体机械能，定义为 $E_{s}=h+\\frac{\\alpha v^{2}}{2g}$。对明渠恒定渐变流，沿程变化率为：\n\n$$\n\\frac{\\mathrm{d}E_{s}}{\\mathrm{d}s}=i-J\n$$\n\n其中 $i$ 为渠底底坡，$J > 0$ 为水力坡度（总水头线坡度）。由此可见：\n\n（1）当 $i > J$ 时（如顺坡上 $h > h_{0}$ 的 $M_{1}$、$S_{1}$ 型壅水曲线及 $S_{2}$ 型降水曲线），$\\frac{\\mathrm{d}E_{s}}{\\mathrm{d}s} > 0$，$E_{s}$ 沿程增加；\n\n（2）当 $i=J$ 时（明渠恒定均匀流），$\\frac{\\mathrm{d}E_{s}}{\\mathrm{d}s}=0$，$E_{s}$ 沿程保持不变；\n\n（3）当 $i < J$ 时（如平坡 $i=0$、逆坡 $i < 0$，或正坡上 $h < h_{0}$ 的 $M_{2}$、$M_{3}$、$S_{3}$ 型水面曲线，以及发生水跃的急变流段），$\\frac{\\mathrm{d}E_{s}}{\\mathrm{d}s} < 0$，$E_{s}$ 沿程减小。",
+      "analysisFigures": [
+        {
+          "src": "figures/2026/q09_sol.webp",
+          "caption": "解图 1　断面比能曲线与缓坡明渠 M1、M2、M3 水面线（同步图解第 2、4、9 题）"
+        }
+      ],
+      "pitfalls": "切勿与总水头 $H=z+h+\\frac{\\alpha v^{2}}{2g}$ 混淆！实际液体总水头 $H$ 必然沿程减小（$\\frac{\\mathrm{d}H}{\\mathrm{d}s}=-J < 0$），但 $E_{s}=H-z$ 会因渠底高程 $z$ 下降而得到位能补充，故 $E_{s}$ 可增、可减、可不变。图示参见第 9 题下方解图 1。",
+      "chapter": 8,
+      "kps": [
+        "断面单位能量(比能)",
+        "明渠渐变流能量变化"
+      ],
+      "method": "比能沿程导数判别法",
+      "difficulty": 2
+    },
+    {
+      "id": "2026-03",
+      "year": 2026,
+      "no": 3,
+      "type": "judge",
+      "score": 2,
+      "title": "紊流区沿程水头损失与流速的次方关系",
+      "stem": "紊流区沿程水头损失与断面最大流速的 $1.75\\text{～}2$ 次方成正比。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "×",
+      "judgeAnswer": false,
+      "answer": "错误（×）",
+      "analysis": "水力学中的经典规律是：紊流区沿程水头损失 $h_{f}$ 与断面平均流速 $v$ 的 $1.75\\text{～}2$ 次方成正比（而非“断面最大流速” $u_{\\max}$）：\n\n$$\nh_{f}=\\lambda \\frac{l}{d}\\frac{v^{2}}{2g}\n$$\n\n在紊流光滑区，由布拉休斯公式 $\\lambda =0.3164Re^{-0.25}\\propto v^{-0.25}$，代入达西公式得 $h_{f}\\propto v^{1.75}$；在紊流粗糙区（阻力平方区），$\\lambda$ 与 $Re$ 无关，得 $h_{f}\\propto v^{2}$；在紊流过渡区，指数介于 $1.75\\text{～}2$ 之间。\n\n此外，紊流管流中断面最大流速 $u_{\\max}$ 与断面平均流速 $v$ 满足 $\\frac{u_{\\max}}{v}=1+3.75\\sqrt{\\frac{\\lambda}{8}}=1+1.326\\sqrt{\\lambda}$。在紊流光滑区和过渡区，$\\lambda$ 随雷诺数（即随流速）变化，故 $u_{\\max}/v$ 并非定值，因此不能将“断面平均流速”偷换为“断面最大流速”。故本题错误。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 4,
+      "kps": [
+        "达西-韦斯巴赫公式",
+        "紊流阻力分区",
+        "断面流速分布"
+      ],
+      "method": "概念偷换词辨析",
+      "difficulty": 3
+    },
+    {
+      "id": "2026-04",
+      "year": 2026,
+      "no": 4,
+      "type": "judge",
+      "score": 2,
+      "title": "明渠无水跃时水面线沿程升高的可能性",
+      "stem": "明渠中即使不发生水跃，水面线也可能沿程升高。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "√",
+      "judgeAnswer": true,
+      "answer": "正确（√）",
+      "analysis": "设水面高程为 $z+h$，对棱柱形明渠恒定渐变流（取 $\\alpha =1$），由能量方程微分形式及明渠渐变流微分方程 $\\frac{\\mathrm{d}h}{\\mathrm{d}s}=\\frac{i-J}{1-Fr^{2}}$，可得水面线高程沿程坡度为：\n\n$$\n\\frac{\\mathrm{d}(z+h)}{\\mathrm{d}s}=\\frac{\\mathrm{d}z}{\\mathrm{d}s}+\\frac{\\mathrm{d}h}{\\mathrm{d}s}=-i+\\frac{i-J}{1-Fr^{2}}=\\frac{iFr^{2}-J}{1-Fr^{2}}\n$$\n\n在不发生水跃的渐变流条件下，当水流为减速急流（$Fr > 1$，如平坡 $H_{3}$、逆坡 $A_{3}$ 曲线，以及缓坡 $M_{3}$ 曲线接近临界水深段）时，分母 $1-Fr^{2} < 0$，分子 $iFr^{2}-J < 0$，从而 $\\frac{\\mathrm{d}(z+h)}{\\mathrm{d}s} > 0$——由于高速水流动能急剧转化为势能（动能减幅超过沿程水头损失），自由水面高程及水深均沿程升高。此外，在非棱柱明渠渐扩段或渠道减速段，即使处于缓流且无水跃，水面线也可能沿程升高。故本题正确。",
+      "analysisFigures": [
+        {
+          "src": "figures/2026/q09_sol.webp",
+          "caption": "解图 1　断面比能曲线与缓坡明渠 M1、M2、M3 水面线（同步图解第 2、4、9 题）"
+        }
+      ],
+      "pitfalls": "",
+      "chapter": 8,
+      "kps": [
+        "明渠水面曲线定性分析",
+        "急流减速水面线"
+      ],
+      "method": "渐变流微分方程符号判别",
+      "difficulty": 3
+    },
+    {
+      "id": "2026-05",
+      "year": 2026,
+      "no": 5,
+      "type": "judge",
+      "score": 2,
+      "title": "由速度场判断均匀流与恒定流",
+      "stem": "已知速度场 $u_{x}=4y$，$u_{y}=3x$，$u_{z}=4t$，则该流动既不是均匀流，也不是恒定流。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "√",
+      "judgeAnswer": true,
+      "answer": "正确（√）",
+      "analysis": "给定速度场 $u_{x}=4y$，$u_{y}=3x$，$u_{z}=4t$：\n\n（1）恒定性判断：计算当地加速度 $\\frac{\\partial u_{z}}{\\partial t}=4\\neq 0$，流速随时间 $t$ 变化，故不是恒定流（为非恒定流）；\n\n（2）均匀性判断：流速分量 $u_{x}\\text{、}u_{y}$ 随空间坐标变化，且迁移加速度分量为 $a_{cx}=u_{y}\\frac{\\partial u_{x}}{\\partial y}=12x\\neq 0$、$a_{cy}=u_{x}\\frac{\\partial u_{y}}{\\partial x}=12y\\neq 0$，沿流线流速大小和方向不断改变，故不是均匀流（为非均匀流）。因此题干结论正确。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 5,
+      "kps": [
+        "欧拉法速度场",
+        "当地加速度与迁移加速度",
+        "恒定流与均匀流判别"
+      ],
+      "method": "速度场偏导数判别法",
+      "difficulty": 2
+    },
+    {
+      "id": "2026-06",
+      "year": 2026,
+      "no": 6,
+      "type": "judge",
+      "score": 2,
+      "title": "有压渐扩管沿程动水压强的变化规律",
+      "stem": "有压管道沿程管径逐渐增大时，其动水压强一定沿程增大。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "×",
+      "judgeAnswer": false,
+      "answer": "错误（×）",
+      "analysis": "对有压管径增大段取断面 1—1、2—2（$d_{2} > d_{1}$），列恒定总流能量方程并整理得：\n\n$$\n\\frac{p_{2}-p_{1}}{\\gamma}=(z_{1}-z_{2})+\\left( \\frac{{\\alpha}_{1}v_1^{2}}{2g}-\\frac{{\\alpha}_{2}v_2^{2}}{2g} \\right)-h_{w}\n$$\n\n虽然管径增大导致 $v_{2} < v_{1}$，流速水头减少项为正，但动水压强 $p_{2}$ 与 $p_{1}$ 的大小还取决于高程差 $(z_{1}-z_{2})$ 和水头损失 $h_{w}$。若管道向上倾斜（$z_{2} > z_{1}$），或长距离沿程损失与扩管局部损失 $h_{w}$ 较大，使得 $(z_{2}-z_{1})+h_{w} > \\frac{{\\alpha}_{1}v_1^{2}-{\\alpha}_{2}v_2^{2}}{2g}$，则动水压强反而沿程减小（$p_{2} < p_{1}$）。故“一定沿程增大”的说法错误。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 6,
+      "kps": [
+        "恒定总流能量方程",
+        "有压渐扩管压强变化"
+      ],
+      "method": "伯努利方程多因素反例法",
+      "difficulty": 2
+    },
+    {
+      "id": "2026-07",
+      "year": 2026,
+      "no": 7,
+      "type": "judge",
+      "score": 2,
+      "title": "理想液体的切应力与变形特征",
+      "stem": "理想液体不承受切应力，但仍可发生形状变形。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "√",
+      "judgeAnswer": true,
+      "answer": "正确（√）",
+      "analysis": "理想液体是指绝对没有黏滞性（$\\mu =0$）且不可压缩的假想液体。因为 $\\mu =0$，由牛顿内摩擦定律 $\\tau =\\mu \\frac{\\mathrm{d}u}{\\mathrm{d}y}=0$，理想液体无论静止还是运动均不承受切应力；但液体本身具有易流动性、无固定形状，运动过程中在速度梯度作用下流体微团仍可发生角变形（剪切变形）与线变形，即仍可发生形状变形。故正确。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 1,
+      "kps": [
+        "理想液体假设",
+        "牛顿内摩擦定律"
+      ],
+      "method": "物理概念定义辨析",
+      "difficulty": 2
+    },
+    {
+      "id": "2026-08",
+      "year": 2026,
+      "no": 8,
+      "type": "judge",
+      "score": 2,
+      "title": "断面平均流速的定义",
+      "stem": "断面平均流速等于单位过流面积所通过的流量。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "√",
+      "judgeAnswer": true,
+      "answer": "正确（√）",
+      "analysis": "断面平均流速的定义为 $v=\\frac{Q}{A}$，其中 $Q$ 为通过过水断面的总流量，$A$ 为过水断面面积（过流面积）。显然，$v$ 在数值上恰好等于单位过流面积所通过的流量。故正确。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 3,
+      "kps": [
+        "断面平均流速",
+        "流量与过水断面"
+      ],
+      "method": "物理概念定义辨析",
+      "difficulty": 1
+    },
+    {
+      "id": "2026-09",
+      "year": 2026,
+      "no": 9,
+      "type": "judge",
+      "score": 2,
+      "title": "缓坡渠道中断面单位能量的沿程变化",
+      "stem": "缓坡渠道中，断面单位能量 $E_{s}$ 沿程可增加、可减小，也可保持不变。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "√",
+      "judgeAnswer": true,
+      "answer": "正确（√）",
+      "analysis": "缓坡渠道满足 $0 < i < i_{c}$，正常水深大于临界水深（$h_{0} > h_{c}$）。由 $\\frac{\\mathrm{d}E_{s}}{\\mathrm{d}s}=i-J$ 可得三种情形（见解图 1）：\n\n（1）$M_{1}$ 型壅水曲线（$h > h_{0} > h_{c}$）：因 $h > h_{0}$，流速偏小，水力坡度 $J < i$，故 $\\frac{\\mathrm{d}E_{s}}{\\mathrm{d}s} > 0$，$E_{s}$ 沿程增加；\n\n（2）均匀流（$h=h_{0}$）：$J=i$，故 $\\frac{\\mathrm{d}E_{s}}{\\mathrm{d}s}=0$，$E_{s}$ 沿程保持不变；\n\n（3）$M_{2}$ 型降水曲线（$h_{c} < h < h_{0}$）或 $M_{3}$ 型壅水曲线（$h < h_{c} < h_{0}$）：因 $h < h_{0}$，流速偏大，水力坡度 $J > i$，故 $\\frac{\\mathrm{d}E_{s}}{\\mathrm{d}s} < 0$，$E_{s}$ 沿程减小。\n\n因此缓坡渠道中 $E_{s}$ 沿程可增加、可减小、也可保持不变，判断正确。",
+      "analysisFigures": [
+        {
+          "src": "figures/2026/q09_sol.webp",
+          "caption": "解图 1　断面比能曲线与缓坡明渠 M1、M2、M3 水面线（同步图解第 2、4、9 题）"
+        }
+      ],
+      "pitfalls": "",
+      "chapter": 8,
+      "kps": [
+        "缓坡水面曲线(M1/M2/M3)",
+        "断面单位能量(比能)"
+      ],
+      "method": "比能沿程导数判别法",
+      "difficulty": 2
+    },
+    {
+      "id": "2026-10",
+      "year": 2026,
+      "no": 10,
+      "type": "judge",
+      "score": 2,
+      "title": "恒定流中流线与迹线的关系",
+      "stem": "在恒定流中，流线与迹线重合。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "√",
+      "judgeAnswer": true,
+      "answer": "正确（√）",
+      "analysis": "在恒定流中，流场内任一点的流速矢量不随时间变化，流线的形状与空间位置恒定不变。流体质点在运动时，其每一瞬时的速度方向都与该瞬时通过该点的流线相切；由于流线位置固定不随时间迁移，质点将始终沿着同一条流线运动，故其运动轨迹（迹线）与流线完全重合。故正确。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 3,
+      "kps": [
+        "流线与迹线",
+        "恒定流运动特征"
+      ],
+      "method": "物理概念定义辨析",
+      "difficulty": 1
+    },
+    {
+      "id": "2026-11",
+      "year": 2026,
+      "no": 11,
+      "type": "fill",
+      "score": 2,
+      "title": "水力学最基本且贯穿始终的假设",
+      "stem": "水力学中最基本且贯穿始终的假设是____________________。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "连续介质假设",
+      "judgeAnswer": null,
+      "answer": "连续介质假设（将液体视为连续充满空间、毫无空隙的连续介质）。",
+      "analysis": "液体宏观上由大量不断做无规则热运动的分子组成，分子间存在空隙。为避免复杂的微观分子动力学分析并能够运用微积分建立流体力学控制方程，水力学提出并贯穿始终采用连续介质假设：将液体抽象为由无数连续分布、毫无空隙的“液体质点”组成的连续体，使压强、流速、密度等运动与动力要素均成为空间坐标 $(x,y,z)$ 与时间 $t$ 的连续可微函数。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 1,
+      "kps": [
+        "连续介质假设"
+      ],
+      "method": "核心基本概念记忆",
+      "difficulty": 1,
+      "subType": "blank"
+    },
+    {
+      "id": "2026-12",
+      "year": 2026,
+      "no": 12,
+      "type": "fill",
+      "score": 2,
+      "title": "梯形渠道铅直平板闸门静水总压力",
+      "stem": "平底棱柱形梯形渠道的底宽 $b=2.0\\, \\mathrm{m}$，边坡系数 $m=1.0$，闸前水深 $h_{0}=2.0\\, \\mathrm{m}$，闸后水深可近似取 $0$。渠道中设置与水流方向垂直的铅直平板闸门，求闸门所受静水总压力（水的重度取 $\\gamma =9.81\\, {\\mathrm{kN/m}}^{3}$）。",
+      "note": "",
+      "figures": [
+        {
+          "src": "figures/2026/q12_orig.webp",
+          "caption": "图 12　梯形渠道铅直平板闸门示意图"
+        }
+      ],
+      "shortAnswer": "$P=65.4\\, \\mathrm{kN}$（水平指向下游）",
+      "judgeAnswer": null,
+      "answer": "$P=65.4\\, \\mathrm{kN}$，方向水平指向下游（压心水深 $h_{D}=1.20\\, \\mathrm{m}$）。",
+      "analysis": "梯形明渠为下窄上宽的棱柱形断面：底宽 $b=2.0\\, \\mathrm{m}$，边坡系数 $m=1.0$，水深 $h_{0}=2.0\\, \\mathrm{m}$。\n\n方法一：形心压强公式法\n\n（1）自由水面处闸门顶宽（水面宽）：$B=b+2mh_{0}=2.0+2\\times 1.0\\times 2.0=6.0\\, \\mathrm{m}$；\n\n（2）闸门受水面积：$A=\\frac{b+B}{2}h_{0}=(b+mh_{0})h_{0}=(2.0+1.0\\times 2.0)\\times 2.0=8.0\\, {\\mathrm{m}}^{2}$；\n\n（3）梯形形心淹没深度（距自由水面）：\n\n$$\nh_{c}=\\frac{h_{0}}{3}\\cdot \\frac{B+2b}{B+b}=\\frac{2.0}{3}\\times \\frac{6.0+2\\times 2.0}{6.0+2.0}=\\frac{5}{6}\\, \\mathrm{m}\\approx 0.8333\\, \\mathrm{m}\n$$\n\n（4）闸后水深为 $0$，闸门所受静水总压力：\n\n$$\nP=\\gamma h_{c}A=9.81\\times \\frac{5}{6}\\times 8.0=9.81\\times \\frac{20}{3}=65.4\\, \\mathrm{kN}\n$$\n\n方法二：几何分解法（校核）　将梯形分解为中间矩形（宽 $b=2.0\\, \\mathrm{m}$、高 $h_{0}=2.0\\, \\mathrm{m}$）与两侧两个倒置直角三角形（合并为顶宽 $2mh_{0}=4.0\\, \\mathrm{m}$、高 $h_{0}=2.0\\, \\mathrm{m}$ 的倒三角形，形心在距水面 $\\frac{h_{0}}{3}$ 处）：\n\n$$\nP=P_{\\text{矩}}+P_{\\text{三}}=\\frac{1}{2}\\gamma bh_0^{2}+\\frac{1}{3}\\gamma mh_0^{3}=\\frac{1}{2}\\times 9.81\\times 2.0\\times {2.0}^{2}+\\frac{1}{3}\\times 9.81\\times 1.0\\times {2.0}^{3}=39.24+26.16=65.4\\, \\mathrm{kN}\n$$\n\n（补充：压力中心距水面深度 $h_{D}=\\frac{\\int_0^{h_{0}} y^{2}[b+2m(h_{0}-y)]\\, \\mathrm{d}y}{\\int_0^{h_{0}} y[b+2m(h_{0}-y)]\\, \\mathrm{d}y}=\\frac{8}{20/3}=1.20\\, \\mathrm{m}$，即距渠底 $0.80\\, \\mathrm{m}$。）",
+      "analysisFigures": [
+        {
+          "src": "figures/2026/q12_sol.webp",
+          "caption": "解图 2　梯形闸门受水面积分解、形心/压心位置及静水压强分布图"
+        }
+      ],
+      "pitfalls": "原回忆版试卷附图误将梯形画成上窄下宽，同时又把“顶宽 $b+2mh$”标在底部。根据题干“梯形渠道底宽 $b=2.0\\, \\mathrm{m}$、边坡系数 $m=1.0$”，明渠断面必然是上宽（水面宽 $6.0\\, \\mathrm{m}$）下窄（底宽 $2.0\\, \\mathrm{m}$），切勿被倒画示意图误导，否则会错把 $h_{c}$ 算成 $\\frac{7}{6}\\, \\mathrm{m}$！",
+      "chapter": 2,
+      "kps": [
+        "平面静水总压力",
+        "梯形断面静水压力计算"
+      ],
+      "method": "平面总压力形心法/分块合成法",
+      "difficulty": 2,
+      "subType": "mini-calc"
+    },
+    {
+      "id": "2026-13",
+      "year": 2026,
+      "no": 13,
+      "type": "fill",
+      "score": 2,
+      "title": "弗劳德相似准则求模型流量",
+      "stem": "堰流模型试验采用重力相似（弗劳德相似）。已知原型与模型的长度比尺 ${\\lambda}_{L}=25$，原型流量 $Q_{p}=1000\\, {\\mathrm{m}}^{3}/\\mathrm{s}$，求模型流量 $Q_{m}$。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "$Q_{m}=0.32\\, {\\mathrm{m}}^{3}/\\mathrm{s}$",
+      "judgeAnswer": null,
+      "answer": "$Q_{m}=0.32\\, {\\mathrm{m}}^{3}/\\mathrm{s}$",
+      "analysis": "堰流模型试验按重力相似（弗劳德相似准则 $Fr_{p}=Fr_{m}$）设计，原型与模型各物理量比尺与长度比尺 ${\\lambda}_{L}$ 的关系为：\n\n$$\n{\\lambda}_{v}={\\lambda}_L^{1/2},\\, {\\lambda}_{A}={\\lambda}_L^{2},\\, {\\lambda}_{Q}={\\lambda}_{A}{\\lambda}_{v}={\\lambda}_L^{5/2}\n$$\n\n已知 ${\\lambda}_{L}=25$，则流量比尺为 ${\\lambda}_{Q}={25}^{5/2}=5^{5}=3125$，故模型流量为：\n\n$$\nQ_{m}=\\frac{Q_{p}}{{\\lambda}_{Q}}=\\frac{1000}{3125}=0.32\\, {\\mathrm{m}}^{3}/\\mathrm{s}\n$$",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 13,
+      "kps": [
+        "弗劳德相似准则",
+        "流量比尺换算"
+      ],
+      "method": "弗劳德比尺幂次换算法",
+      "difficulty": 2,
+      "subType": "mini-calc"
+    },
+    {
+      "id": "2026-14",
+      "year": 2026,
+      "no": 14,
+      "type": "fill",
+      "score": 2,
+      "title": "90° 等断面弯管动量变化矢量及其大小",
+      "stem": "如图，水以流量 $Q$ 流经等断面 ${90}^{\\circ}$ 弯管，由 1—1 断面竖直向下流入，在 2—2 断面水平向右流出；两断面平均流速大小均为 $V$。求单位时间内水流由 1—1 到 2—2 的动量变化矢量及其大小。",
+      "note": "",
+      "figures": [
+        {
+          "src": "figures/2026/q14_orig.webp",
+          "caption": "图 14　等断面 90° 弯管示意图"
+        }
+      ],
+      "shortAnswer": "$\\Delta \\vec{M}=\\rho QV\\vec{i}+\\rho QV\\vec{j}$，大小 $\\sqrt{2}\\rho QV$（右上方 ${45}^{\\circ}$）",
+      "judgeAnswer": null,
+      "answer": "动量变化矢量 $\\Delta \\vec{M}=\\rho QV\\vec{i}+\\rho QV\\vec{j}$（取水平向右为 $x$ 轴正向、竖直向上为 $y$ 轴正向）；大小 $|\\Delta \\vec{M}|=\\sqrt{2}\\rho QV$，方向指向右上方、与水平向右方向成 ${45}^{\\circ}$ 角。",
+      "analysis": "建立平面直角坐标系：取水平向右为 $x$ 轴正方向（单位矢量 $\\vec{i}$），竖直向上为 $y$ 轴正方向（单位矢量 $\\vec{j}$）。\n\n（1）进口 1—1 断面竖直向下流入：${\\vec{v}}_{1}=-V\\vec{j}$；出口 2—2 断面水平向右流出：${\\vec{v}}_{2}=V\\vec{i}$；\n\n（2）单位时间内流经控制体的水流质量流量为 $\\rho Q$，取动量修正系数 ${\\beta}_{1}={\\beta}_{2}=1$，则单位时间内水流由 1—1 到 2—2 的动量变化矢量（出口动量流率减进口动量流率）为：\n\n$$\n\\Delta \\vec{M}=\\rho Q({\\vec{v}}_{2}-{\\vec{v}}_{1})=\\rho Q\\left[ V\\vec{i}-(-V\\vec{j}) \\right]=\\rho QV\\vec{i}+\\rho QV\\vec{j}\n$$\n\n（3）其大小与方向角 $\\theta$ 分别为：\n\n$$\n\\left| \\Delta \\vec{M} \\right|=\\sqrt{(\\rho QV{)}^{2}+(\\rho QV{)}^{2}}=\\sqrt{2}\\rho QV,\\, \\tan \\theta =\\frac{\\rho QV}{\\rho QV}=1\\Longrightarrow \\theta ={45}^{\\circ}\\, (\\text{右上方})\n$$",
+      "analysisFigures": [
+        {
+          "src": "figures/2026/q14_sol.webp",
+          "caption": "解图 3　90° 弯管单位时间水流流速及动量变化矢量合成图"
+        }
+      ],
+      "pitfalls": "注意区分“水流动量变化矢量”与“水流对弯管的动水推力”：$\\Delta \\vec{M}$ 指向右上方 ${45}^{\\circ}$（与弯管给水体的合外力同向），而水流作用在弯管上的动量推力方向与之相反（左下方 ${45}^{\\circ}$）。",
+      "chapter": 3,
+      "kps": [
+        "恒定总流动量方程",
+        "弯管动量变化矢量"
+      ],
+      "method": "控制体正交分解矢量法",
+      "difficulty": 2,
+      "subType": "mini-calc"
+    },
+    {
+      "id": "2026-15",
+      "year": 2026,
+      "no": 15,
+      "type": "fill",
+      "score": 2,
+      "title": "虹吸管最高断面 A—A 的真空高度",
+      "stem": "恒定有压虹吸管从面积很大的上游水池引水并自由出流。管径 $d=0.10\\, \\mathrm{m}$；虹吸管最高断面 A—A 比上游自由水面高 $3.0\\, \\mathrm{m}$，出口中心比上游自由水面低 $4.0\\, \\mathrm{m}$；从进口至 A—A 的管长 $L_{1}=50\\, \\mathrm{m}$，从 A—A 至出口的管长 $L_{2}=100\\, \\mathrm{m}$；沿程阻力系数 $\\lambda =0.025$，不计局部水头损失。求 A—A 断面的真空高度。",
+      "note": "",
+      "figures": [
+        {
+          "src": "figures/2026/q15_orig.webp",
+          "caption": "图 15　恒定有压虹吸管示意图"
+        }
+      ],
+      "shortAnswer": "真空高度 $h_{v}=4.403\\, \\mathrm{m}$（约 $4.40\\, \\mathrm{m}$）",
+      "judgeAnswer": null,
+      "answer": "$h_{v}=4.403\\, \\mathrm{m}$（约 $4.40\\, \\mathrm{m}$）。",
+      "analysis": "上游水池面积很大，故水池自由水面流速 $v_{0}\\approx 0$；采用相对压强（表压），上游水面与自由出流出口处压强均为 $0$；不计局部水头损失，取动能修正系数 $\\alpha =1$。\n\n第一步：求管内流速水头 $\\frac{v^{2}}{2g}$　以出口中心所在水平面为基准面，对上游自由水面与管道出口列恒定总流能量方程（总管长 $L=L_{1}+L_{2}=50+100=150\\, \\mathrm{m}$，作用水头 $H=4.0\\, \\mathrm{m}$）：\n\n$$\nH=\\frac{v^{2}}{2g}+\\lambda \\frac{L_{1}+L_{2}}{d}\\frac{v^{2}}{2g}=\\left( 1+\\lambda \\frac{L}{d} \\right)\\frac{v^{2}}{2g}\n$$\n\n$$\n\\frac{v^{2}}{2g}=\\frac{4.0}{1+0.025\\times \\frac{150}{0.10}}=\\frac{4.0}{1+37.5}=\\frac{4.0}{38.5}=\\frac{8}{77}\\, \\mathrm{m}\\approx 0.1039\\, \\mathrm{m}\n$$\n\n第二步：求断面 A—A 的真空高度 $h_{v}$　以上游自由水面为基准面，对上游自由水面与最高断面 A—A（$z_{A}=3.0\\, \\mathrm{m}$）列能量方程：\n\n$$\n0=z_{A}+\\frac{p_{A}}{\\gamma}+\\frac{v^{2}}{2g}+\\lambda \\frac{L_{1}}{d}\\frac{v^{2}}{2g}\n$$\n\n由此解得断面 A—A 的真空高度 $h_{v}=-\\frac{p_{A}}{\\gamma}$ 为：\n\n$$\nh_{v}=-\\frac{p_{A}}{\\gamma}=z_{A}+\\left( 1+\\lambda \\frac{L_{1}}{d} \\right)\\frac{v^{2}}{2g}=3.0+\\left( 1+0.025\\times \\frac{50}{0.10} \\right)\\times \\frac{4.0}{38.5}=3.0+13.5\\times \\frac{4.0}{38.5}=3.0+\\frac{108}{77}\\approx 4.403\\, \\mathrm{m}\n$$\n\n（检验：$h_{v}=4.403\\, \\mathrm{m} < [h_{v}]\\approx 7\\text{～}8\\, \\mathrm{m}$，不会发生气蚀断流，虹吸管可正常工作。）",
+      "analysisFigures": [
+        {
+          "src": "figures/2026/q15_sol.webp",
+          "caption": "解图 4　虹吸管总水头线 (EGL)、测压管水头线 (HGL) 与断面 A—A 真空高度示意图"
+        }
+      ],
+      "pitfalls": "",
+      "chapter": 6,
+      "kps": [
+        "虹吸管水力计算",
+        "真空高度(真空度)",
+        "短管能量方程"
+      ],
+      "method": "两段伯努利方程联立法",
+      "difficulty": 3,
+      "subType": "mini-calc"
+    },
+    {
+      "id": "2026-16",
+      "year": 2026,
+      "no": 16,
+      "type": "fill",
+      "score": 2,
+      "title": "水库自由出流出口下移后流量的变化",
+      "stem": "面积很大的水库通过同一根管道自由出流。保持管径、管长及管路阻力特性不变，将出口由位置 1 下移到位置 2（高差为 $\\Delta h$）。出口流量如何变化？写出判断依据。",
+      "note": "",
+      "figures": [
+        {
+          "src": "figures/2026/q16_orig.webp",
+          "caption": "图 16　水库管道自由出流位置对比示意图"
+        }
+      ],
+      "shortAnswer": "出口流量增大（作用水头由 $H_{1}$ 增至 $H_{1}+\\Delta h$）",
+      "judgeAnswer": null,
+      "answer": "出口流量增大。",
+      "analysis": "对面积很大的水库自由水面和管道自由出流出口列能量方程，设出口处于位置 1 时的作用水头（出口中心在水库水面下的深度）为 $H_{1}$，则自由出流流量公式为：\n\n$$\nQ={\\mu}_{c}A\\sqrt{2gH},\\, {\\mu}_{c}=\\frac{1}{\\sqrt{\\alpha +\\lambda \\frac{L}{d}+\\sum \\zeta}}\n$$\n\n题干明确保持管径 $d$、管长 $L$ 及管路阻力特性（$\\lambda \\text{、}\\sum \\zeta$）均不变，因此过流断面面积 $A$ 与管道系统流量系数 ${\\mu}_{c}$ 保持不变。当出口由位置 1 下移高差 $\\Delta h$ 到位置 2 时，管道有效作用水头由 $H_{1}$ 增大至 $H_{2}=H_{1}+\\Delta h > H_{1}$，从而出口流量由 $Q_{1}={\\mu}_{c}A\\sqrt{2gH_{1}}$ 增大为：\n\n$$\nQ_{2}={\\mu}_{c}A\\sqrt{2g(H_{1}+\\Delta h)}=Q_{1}\\sqrt{1+\\frac{\\Delta h}{H_{1}}} > Q_{1}\n$$\n\n因此，出口流量必然增大。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 6,
+      "kps": [
+        "简单短管自由出流",
+        "作用水头与流量关系"
+      ],
+      "method": "短管自由出流流量公式判别",
+      "difficulty": 2,
+      "subType": "short-answer"
+    },
+    {
+      "id": "2026-17",
+      "year": 2026,
+      "no": 17,
+      "type": "fill",
+      "score": 2,
+      "title": "河道模型河滩粘贴小石子和细棍的目的",
+      "stem": "河道水流模型试验中，在模型河滩表面粘贴小石子和细棍，其主要目的是____________________。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "增大模型河滩糙率，满足阻力相似（糙率相似）",
+      "judgeAnswer": null,
+      "answer": "增大模型河滩表面的糙率，以满足模型与原型的阻力相似（糙率相似），从而正确模拟原型河滩的水流阻力、水面线及流速分布。",
+      "analysis": "河道水流模型通常按重力相似（弗劳德相似）设计，要求模型与原型同时满足阻力相似条件（正态模型糙率比尺 ${\\lambda}_{n}={\\lambda}_L^{1/6}$，变态模型 ${\\lambda}_{n}={\\lambda}_H^{2/3}/{\\lambda}_L^{1/2}$）。天然河滩因植被、灌木和卵石覆盖而糙率较大，按几何比尺缩小的模型表面往往过于光滑（$n_{m}$ 偏小），无法满足 $n_{m}=n_{p}/{\\lambda}_{n}$。在模型河滩粘贴小石子、细棍属于人工加糙措施，目的是增大模型河滩糙率以达到阻力相似，确保水面线、水深及滩槽流量分配与原型相似。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 13,
+      "kps": [
+        "河工模型阻力相似",
+        "糙率比尺与模型加糙"
+      ],
+      "method": "模型试验工程措施分析",
+      "difficulty": 2,
+      "subType": "blank"
+    },
+    {
+      "id": "2026-18",
+      "year": 2026,
+      "no": 18,
+      "type": "fill",
+      "score": 2,
+      "title": "用 $J_{p}$、$Fr$ 和 $i$ 表示矩形明渠能量线坡度 $J$",
+      "stem": "矩形明渠中有恒定渐变流，流量 $Q$、渠宽 $b$ 均为常数。两断面间距离为 $L$，上、下游河底高程分别为 $z_{1}$、$z_{2}$，水深分别为 $h_{1}$、$h_{2}$。定义底坡 $i=(z_{1}-z_{2})/L$，测压管水头线坡度 $J_{p}=[(z_{1}+h_{1})-(z_{2}+h_{2})]/L$。若所求断面弗劳德数为 $Fr$，试用 $J_{p}$、$Fr$ 和 $i$ 表示能量线坡度 $J$。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "$J=(1-Fr^{2})J_{p}+iFr^{2}=J_{p}+Fr^{2}(i-J_{p})$",
+      "judgeAnswer": null,
+      "answer": "$J=J_{p}+Fr^{2}(i-J_{p})=(1-Fr^{2})J_{p}+iFr^{2}$",
+      "analysis": "对矩形恒定渐变流（流量 $Q$、渠宽 $b$ 均为常数，取 $\\alpha =1$），总水头 $H=z+h+\\frac{v^{2}}{2g}$，能量线坡度 $J$ 定义为总水头沿程下降率：\n\n$$\nJ=-\\frac{\\mathrm{d}H}{\\mathrm{d}s}=-\\frac{\\mathrm{d}(z+h)}{\\mathrm{d}s}-\\frac{\\mathrm{d}}{\\mathrm{d}s}\\left( \\frac{v^{2}}{2g} \\right)\n$$\n\n（1）由题给定义，底坡 $i=\\frac{z_{1}-z_{2}}{L}=-\\frac{\\mathrm{d}z}{\\mathrm{d}s}$，测压管水头线（即明渠水面线）坡度 $J_{p}=\\frac{(z_{1}+h_{1})-(z_{2}+h_{2})}{L}=-\\frac{\\mathrm{d}(z+h)}{\\mathrm{d}s}$。两式相减得水深沿程变化率：\n\n$$\nJ_{p}=-\\frac{\\mathrm{d}z}{\\mathrm{d}s}-\\frac{\\mathrm{d}h}{\\mathrm{d}s}=i-\\frac{\\mathrm{d}h}{\\mathrm{d}s}\\Longrightarrow \\frac{\\mathrm{d}h}{\\mathrm{d}s}=i-J_{p}\n$$\n\n（2）由连续性方程 $v=\\frac{Q}{bh}$，对流速水头求沿程导数：\n\n$$\n\\frac{\\mathrm{d}}{\\mathrm{d}s}\\left( \\frac{v^{2}}{2g} \\right)=\\frac{\\mathrm{d}}{\\mathrm{d}h}\\left( \\frac{Q^{2}}{2gb^{2}h^{2}} \\right)\\frac{\\mathrm{d}h}{\\mathrm{d}s}=-\\frac{Q^{2}}{gb^{2}h^{3}}\\frac{\\mathrm{d}h}{\\mathrm{d}s}=-\\frac{v^{2}}{gh}\\frac{\\mathrm{d}h}{\\mathrm{d}s}=-Fr^{2}\\frac{\\mathrm{d}h}{\\mathrm{d}s}\n$$\n\n（3）将上述两式代入能量线坡度表达式，即得：\n\n$$\nJ=J_{p}-\\left( -Fr^{2}\\frac{\\mathrm{d}h}{\\mathrm{d}s} \\right)=J_{p}+Fr^{2}(i-J_{p})=(1-Fr^{2})J_{p}+iFr^{2}\n$$",
+      "analysisFigures": [],
+      "pitfalls": "校核：由明渠恒定渐变流基本微分方程 $\\frac{\\mathrm{d}h}{\\mathrm{d}s}=\\frac{i-J}{1-Fr^{2}}$ 直接反解 $J=i-(1-Fr^{2})\\frac{\\mathrm{d}h}{\\mathrm{d}s}$，再将 $\\frac{\\mathrm{d}h}{\\mathrm{d}s}=i-J_{p}$ 代入，立即得 $J=(1-Fr^{2})J_{p}+iFr^{2}$，且均匀流 $J_{p}=i$ 时退化为 $J=i$，100% 自洽！",
+      "chapter": 8,
+      "kps": [
+        "明渠渐变流基本微分方程",
+        "总水头坡度与测压管坡度"
+      ],
+      "method": "渐变流微分方程代数变形",
+      "difficulty": 3,
+      "subType": "mini-calc"
+    },
+    {
+      "id": "2026-19",
+      "year": 2026,
+      "no": 19,
+      "type": "fill",
+      "score": 2,
+      "title": "过堰水流下游消能设施需求判别",
+      "stem": "过堰水流在下游收缩断面的水深 $h_{1}=0.60\\, \\mathrm{m}$，该流量对应的临界水深 $h_{c}=1.60\\, \\mathrm{m}$；下游尾水深 $h_{t}=2.00\\, \\mathrm{m}$。判断是否需要设置消能设施，并说明依据。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "需要设置消能设施（$h_1^{\\prime\\prime}=3.41\\, \\mathrm{m} > h_{t}=2.00\\, \\mathrm{m}$，远驱水跃）",
+      "judgeAnswer": null,
+      "answer": "需要设置消能设施（因收缩断面跃后共轭水深 $h_1^{\\prime\\prime}=3.41\\, \\mathrm{m} > h_{t}=2.00\\, \\mathrm{m}$，下游将发生远驱式水跃，危及下游河床与建筑物安全）。",
+      "analysis": "收缩断面水深 $h_{1}=0.60\\, \\mathrm{m} < h_{c}=1.60\\, \\mathrm{m}$，说明过堰水流在收缩断面处于急流状态。按矩形平底渠道（取 $\\alpha =1$），临界水深满足 $h_c^{3}=\\frac{q^{2}}{g}$，故收缩断面弗劳德数的平方为：\n\n$$\nFr_1^{2}=\\frac{v_1^{2}}{gh_{1}}=\\frac{q^{2}}{gh_1^{3}}={\\left( \\frac{h_{c}}{h_{1}} \\right)}^{3}={\\left( \\frac{1.60}{0.60} \\right)}^{3}={\\left( \\frac{8}{3} \\right)}^{3}=\\frac{512}{27}\\approx 18.963\n$$\n\n由矩形明渠水跃共轭水深方程，求得收缩断面 $h_{1}$ 对应的跃后共轭水深 $h_1^{\\prime\\prime}$：\n\n$$\nh_1^{\\prime\\prime}=\\frac{h_{1}}{2}\\left( \\sqrt{1+8Fr_1^{2}}-1 \\right)=\\frac{0.60}{2}\\left( \\sqrt{1+8\\times \\frac{512}{27}}-1 \\right)=0.30\\times (12.357-1)\\approx 3.41\\, \\mathrm{m}\n$$\n\n判别依据：比较跃后共轭水深 $h_1^{\\prime\\prime}$ 与下游尾水深 $h_{t}$：\n\n$$\nh_1^{\\prime\\prime}=3.41\\, \\mathrm{m} > h_{t}=2.00\\, \\mathrm{m}\n$$\n\n可见下游水深不足以在堰脚收缩断面处形成临界或淹没水跃，将发生远驱式水跃（水跃被推向下游很远位置，收缩断面与跃首之间形成一段长距离高速急流段），极易冲刷下游河床并淘空护坦和堰基。因此必须设置消能防冲设施（如修建底流消力池、消力坎或挑流消能等），以人为增大跃后水深、将水跃稳定控制在加固的消力池内。",
+      "analysisFigures": [
+        {
+          "src": "figures/2026/q19_sol.webp",
+          "caption": "解图 5　过堰下游远驱式水跃纵剖面判别示意图"
+        }
+      ],
+      "pitfalls": "",
+      "chapter": 10,
+      "kps": [
+        "底流消能判别",
+        "水跃衔接形式",
+        "矩形明渠共轭水深"
+      ],
+      "method": "共轭水深与尾水深对比判据",
+      "difficulty": 3,
+      "subType": "short-answer"
+    },
+    {
+      "id": "2026-20",
+      "year": 2026,
+      "no": 20,
+      "type": "fill",
+      "score": 2,
+      "title": "平板闸门自由出流过闸流量计算",
+      "stem": "矩形渠道中闸孔宽等于渠宽，$b=8.0\\, \\mathrm{m}$；闸上作用水头 $H=5.0\\, \\mathrm{m}$，闸门开度 $e=1.0\\, \\mathrm{m}$，闸下自由出流，忽略行近流速。取自由出流流量系数 $\\mu =0.40$，求过闸流量。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "$Q=31.69\\, {\\mathrm{m}}^{3}/\\mathrm{s}$（按 $g=9.81\\, {\\mathrm{m/s}}^{2}$）",
+      "judgeAnswer": null,
+      "answer": "$Q=31.69\\, {\\mathrm{m}}^{3}/\\mathrm{s}$（按本卷规定 $g=9.81\\, {\\mathrm{m/s}}^{2}$；若取 $g=9.8\\, {\\mathrm{m/s}}^{2}$ 则为 $31.68\\, {\\mathrm{m}}^{3}/\\mathrm{s}$）。",
+      "analysis": "首先校核相对开度 $\\frac{e}{H}=\\frac{1.0}{5.0}=0.20\\le 0.65$，满足平板闸孔出流条件。因闸下自由出流且忽略行近流速（$H_{0}=H=5.0\\, \\mathrm{m}$），直接套用闸孔自由出流流量公式：\n\n$$\nQ=\\mu eb\\sqrt{2gH}=0.40\\times 1.0\\times 8.0\\times \\sqrt{2\\times 9.81\\times 5.0}=3.2\\times \\sqrt{98.1}\\approx 31.69\\, {\\mathrm{m}}^{3}/\\mathrm{s}\n$$",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 9,
+      "kps": [
+        "平板闸孔出流判别",
+        "闸孔自由出流流量公式"
+      ],
+      "method": "闸孔流量公式直代法",
+      "difficulty": 2,
+      "subType": "mini-calc"
+    },
+    {
+      "id": "2026-21",
+      "year": 2026,
+      "no": 21,
+      "type": "fill",
+      "score": 2,
+      "title": "水平圆管管轴处的切应力",
+      "stem": "水平圆管输送油液，$\\rho =830\\, {\\mathrm{kg/m}}^{3}$，动力黏度 $\\mu =0.072\\, \\mathrm{Pa\\cdot s}$，管径 $d=0.10\\, \\mathrm{m}$，流量 $Q=0.0030\\, {\\mathrm{m}}^{3}/\\mathrm{s}$。求沿半径方向距管壁 $0.050\\, \\mathrm{m}$ 处（即管轴处）的切应力。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "$\\tau =0\\, \\mathrm{Pa}$（管轴处切应力为零）",
+      "judgeAnswer": null,
+      "answer": "$\\tau =0\\, \\mathrm{Pa}$",
+      "analysis": "圆管半径 $r_{0}=\\frac{d}{2}=\\frac{0.10}{2}=0.050\\, \\mathrm{m}$。所求位置沿半径方向距管壁 $y=0.050\\, \\mathrm{m}$，即距管轴径向距离 $r=r_{0}-y=0$，恰好位于圆管轴线处。\n\n对任意圆管恒定均匀流（无论层流还是紊流），由同轴圆柱体受力平衡可得切应力沿径向呈线性分布：\n\n$$\n\\tau (r)=\\frac{\\gamma J}{2}r={\\tau}_{0}\\frac{r}{r_{0}}\n$$\n\n当 $r=0$（管轴处）时，必有 ${\\left. \\tau \\right|}_{r=0}=0\\, \\mathrm{Pa}$。\n\n（补充流态校核：断面平均流速 $v=\\frac{Q}{\\frac{\\pi}{4}d^{2}}=\\frac{0.0030}{\\frac{\\pi}{4}\\times {0.10}^{2}}\\approx 0.3820\\, \\mathrm{m/s}$，雷诺数 $Re=\\frac{\\rho vd}{\\mu}=\\frac{830\\times 0.3820\\times 0.10}{0.072}\\approx 440.3 < 2000$，为圆管层流；层流流速呈抛物面分布，管轴处流速达最大、速度梯度 ${\\left. \\frac{\\mathrm{d}u}{\\mathrm{d}r} \\right|}_{r=0}=0$，由牛顿内摩擦定律同样得 $\\tau =0\\, \\mathrm{Pa}$。管壁处切应力为 ${\\tau}_{0}=\\frac{4\\mu v}{r_{0}}\\approx 2.20\\, \\mathrm{Pa}$。）",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 4,
+      "kps": [
+        "圆管均匀流切应力分布",
+        "管轴对称边界条件"
+      ],
+      "method": "圆管切应力线性分布性质",
+      "difficulty": 2,
+      "subType": "mini-calc"
+    },
+    {
+      "id": "2026-22",
+      "year": 2026,
+      "no": 22,
+      "type": "fill",
+      "score": 2,
+      "title": "由渗流流网求闸下单宽渗流量",
+      "stem": "闸下渗流流网中共画有 13 条等势线（含上下游边界）和 6 条流线（含两侧边界）。上、下游水位分别为 $h_{1}=28\\, \\mathrm{m}$、$h_{2}=4\\, \\mathrm{m}$，渗透系数 $k=4.32\\, \\mathrm{m/d}$。求闸下单宽渗流量。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "$q=43.2\\, {\\mathrm{m}}^{3}/(\\mathrm{d}\\cdot \\mathrm{m})=5.0\\times {10}^{-4}\\, {\\mathrm{m}}^{3}/(\\mathrm{s}\\cdot \\mathrm{m})$",
+      "judgeAnswer": null,
+      "answer": "$q=43.2\\, {\\mathrm{m}}^{3}/(\\mathrm{d}\\cdot \\mathrm{m})=5.0\\times {10}^{-4}\\, {\\mathrm{m}}^{3}/(\\mathrm{s}\\cdot \\mathrm{m})$",
+      "analysis": "在标准曲边正方形流网中：\n\n（1）等势段数（水头降落段数）：共 13 条等势线（含上下游边界），故 $N_{d}=13-1=12$；\n\n（2）流槽数（渗流通道数）：共 6 条流线（含两侧不透水边界），故 $N_{f}=6-1=5$；\n\n（3）上下游总水头差：$H=h_{1}-h_{2}=28-4=24\\, \\mathrm{m}$；\n\n（4）代入流网单宽渗流量公式：\n\n$$\nq=kH\\frac{N_{f}}{N_{d}}=4.32\\times 24\\times \\frac{5}{12}=43.2\\, {\\mathrm{m}}^{3}/(\\mathrm{d}\\cdot \\mathrm{m})=\\frac{43.2}{86400}=5.0\\times {10}^{-4}\\, {\\mathrm{m}}^{3}/(\\mathrm{s}\\cdot \\mathrm{m})\n$$",
+      "analysisFigures": [],
+      "pitfalls": "流网题最常见失分点是直接用“等势线条数/流线条数”代入！切记必须各自减 1 转化为等势段数 $N_{d}$ 与流槽数 $N_{f}$。",
+      "chapter": 11,
+      "kps": [
+        "平面渗流流网",
+        "达西定律与单宽渗流量"
+      ],
+      "method": "正交流网段数减一计数法",
+      "difficulty": 2,
+      "subType": "mini-calc"
+    },
+    {
+      "id": "2026-23",
+      "year": 2026,
+      "no": 23,
+      "type": "fill",
+      "score": 2,
+      "title": "五级梯级水电站开发与沿程均匀坡降方案的水力学比较",
+      "stem": "同一河段上下游总落差相同、过流量相同。方案甲将总落差分为五级集中利用（梯级水电站），方案乙让水流沿长距离均匀坡降并主要以沿程损失消耗能量。运用水力学知识判断哪个方案更合理，并说明理由。",
+      "note": "",
+      "figures": [
+        {
+          "src": "figures/2026/q23_orig.webp",
+          "caption": "图 23　河段开发方案甲与方案乙示意图"
+        }
+      ],
+      "shortAnswer": "方案甲（五级梯级开发）更合理",
+      "judgeAnswer": null,
+      "answer": "方案甲（五级梯级开发）更合理。",
+      "analysis": "两方案上下游总落差 $\\Delta Z$ 与过流量 $Q$ 相同，总水头按能量方程分配为 $\\Delta H\\approx \\Delta Z=H_{\\text{有效}}+h_{w}$，其中沿程水头损失为：\n\n$$\nh_{f}=JL=\\frac{v^{2}}{C^{2}R}L=\\frac{n^{2}Q^{2}L}{A^{2}R^{4/3}}\n$$\n\n从水力学机理对比两方案如下：\n\n1. 水能利用率与水头损失对比（核心理由）：方案甲通过分段建坝抬高水位，形成水深大、过水断面 $A$ 大、水力半径 $R$ 大、流速 $v$ 极小的回水库区，使沿程水头损失 $h_{f}$ 显著降低；总落差集中到 5 座水电站处转化为有效发电水头 $H_{\\text{有效}}$，水能开发效率高。相反，方案乙沿长距离保持陡坡高流速，绝大部分位能均以沿程摩阻损失 $h_{f}$ 耗散为热能，水能被白白浪费。\n\n2. 河床防冲安全对比：方案乙长距离维持高流速、大水力坡度，床面水流切应力 ${\\tau}_{0}=\\gamma RJ$ 极大，极易引发全河段剧烈冲刷与岸坡失稳；方案甲将跌落与消能集中在工程加固的坝址/水电站局部，库区段水流平缓、床面剪应力小，显著减轻河床冲刷。\n\n3. 综合利用与工程风险：梯级开发还可同步实现渠化通航（水深增加、流速平缓）、防洪调蓄与灌溉引水；且分为五级开发相比单级超高坝可大幅降低单级坝高、淹没损失与地质风险。综上，方案甲远比方案乙合理。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 4,
+      "kps": [
+        "沿程水头损失规律",
+        "梯级水电站水力开发原理"
+      ],
+      "method": "能量方程与沿程损失对比分析",
+      "difficulty": 2,
+      "subType": "short-answer"
+    },
+    {
+      "id": "2026-24",
+      "year": 2026,
+      "no": 24,
+      "type": "fill",
+      "score": 2,
+      "title": "有压管道水击类型判别与最大水击压强增量计算",
+      "stem": "水管中水击波速 $c=1000\\, \\mathrm{m/s}$，管长 $L=4000\\, \\mathrm{m}$，阀门关闭时间 $T=1.6\\, \\mathrm{s}$，关阀前平均流速 $v=1.67\\, \\mathrm{m/s}$。取水的密度 $\\rho =1000\\, {\\mathrm{kg/m}}^{3}$，求最大水击压强增量，并判断属于直接水击还是间接水击。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "$\\Delta p_{\\max}=1.67\\, \\mathrm{MPa}$，属于直接水击",
+      "judgeAnswer": null,
+      "answer": "最大水击压强增量 $\\Delta p_{\\max}=1.67\\, \\mathrm{MPa}$（$1.67\\times {10}^{6}\\, \\mathrm{Pa}$），属于直接水击。",
+      "analysis": "（1）计算水击相长（水击波沿管道往返一次所需时间）$T_{r}$：\n\n$$\nT_{r}=\\frac{2L}{c}=\\frac{2\\times 4000}{1000}=8.0\\, \\mathrm{s}\n$$\n\n（2）判断水击类型：由于阀门关闭时间 $T=1.6\\, \\mathrm{s} < T_{r}=8.0\\, \\mathrm{s}$，即在进口水库反射回来的降压波尚未传回阀门时阀门就已完全关闭，故属于直接水击。\n\n（3）计算最大水击压强增量：由儒科夫斯基（Joukowsky）直接水击公式：\n\n$$\n\\Delta p_{\\max}=\\rho cv=1000\\times 1000\\times 1.67=1.67\\times {10}^{6}\\, \\mathrm{Pa}=1.67\\, \\mathrm{MPa}\n$$\n\n（对应最大水击水头增量 $\\Delta H_{\\max}=\\frac{cv}{g}=\\frac{1000\\times 1.67}{9.81}\\approx 170.2\\, \\mathrm{m}$。）",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 6,
+      "kps": [
+        "有压管道水击(水锤)",
+        "直接与间接水击判别",
+        "儒可夫斯基公式"
+      ],
+      "method": "水击相长判别与儒氏公式",
+      "difficulty": 2,
+      "subType": "mini-calc"
+    },
+    {
+      "id": "2026-25",
+      "year": 2026,
+      "no": 25,
+      "type": "fill",
+      "score": 2,
+      "title": "明渠闸门短时间不断关小时上游的水力现象",
+      "stem": "明渠闸门在较短时间内不断关小，上游将出现什么水力现象？",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "向上游传播的逆行正涌波（涨水波 / 水位壅高波动）",
+      "judgeAnswer": null,
+      "answer": "上游将出现向上游逆流传播的正涌波（逆行正波 / 涨水波 / 壅水涌波），属于明渠非恒定急变流现象。",
+      "analysis": "当明渠闸门在较短时间内不断关小时，过闸流量骤减，闸前水体受阻减速，动能迅速转化为势能，使闸前水位急剧壅高、水深增大；所形成的水位陡升波前以逆行波速（缓流时 $c_{w}=\\sqrt{gh}-v > 0$）向上游推进，导致上游沿程水位依次抬高并常伴随水面波动（或水跃状波头）。水力学中称这种“水深增加、向上游传播的明渠非恒定波”为逆行正涌波（涨水波），其机理类似于有压管中的正水击（俗称“明渠水击”）。",
+      "analysisFigures": [
+        {
+          "src": "figures/2026/q25_sol.webp",
+          "caption": "解图 6　明渠闸门快速关小时上游形成逆行正涌波示意图"
+        }
+      ],
+      "pitfalls": "",
+      "chapter": 8,
+      "kps": [
+        "明渠非恒定流涌波",
+        "逆行正波(涨水波)"
+      ],
+      "method": "闸门启闭四类涌波速判",
+      "difficulty": 2,
+      "subType": "short-answer"
+    },
+    {
+      "id": "2026-26",
+      "year": 2026,
+      "no": 26,
+      "type": "calc",
+      "score": 20,
+      "title": "双层牛顿液体平板剪切流所需水平拉力",
+      "stem": "面积 $A=1600\\, {\\mathrm{cm}}^{2}$ 的平板以 $U=0.50\\, \\mathrm{m/s}$ 沿水平方向运动。平板下方为两层互不混合的牛顿液体：上层动力黏度 ${\\mu}_{1}=1.0\\, \\mathrm{Pa\\cdot s}$、厚度 ${\\delta}_{1}=1.0\\, \\mathrm{mm}$；下层动力黏度 ${\\mu}_{2}=2.0\\, \\mathrm{Pa\\cdot s}$、厚度 ${\\delta}_{2}=1.2\\, \\mathrm{mm}$；底部为固定平板。两液层内速度均按直线分布。求维持上平板匀速运动所需的水平力。",
+      "note": "注：除特别说明外，取 $g=9.81\\, {\\mathrm{m/s}}^{2}$，水的密度 $\\rho =1000\\, {\\mathrm{kg/m}}^{3}$，水的运动黏度 $\\nu =1.0\\times {10}^{-6}\\, {\\mathrm{m}}^{2}/\\mathrm{s}$。",
+      "figures": [
+        {
+          "src": "figures/2026/q26_orig.webp",
+          "caption": "图 26　双层牛顿液体平板剪切流示意图"
+        }
+      ],
+      "shortAnswer": "$F=50.0\\, \\mathrm{N}$（界面速度 $v=0.1875\\, \\mathrm{m/s}$）",
+      "judgeAnswer": null,
+      "answer": "维持上平板匀速运动所需的水平力 $F=50.0\\, \\mathrm{N}$。",
+      "analysis": "1. 单位换算：\n\n$$\nA=1600\\, {\\mathrm{cm}}^{2}=0.16\\, {\\mathrm{m}}^{2},\\, {\\delta}_{1}=1.0\\, \\mathrm{mm}=1.0\\times {10}^{-3}\\, \\mathrm{m},\\, {\\delta}_{2}=1.2\\, \\mathrm{mm}=1.2\\times {10}^{-3}\\, \\mathrm{m}\n$$\n\n2. 列写两液层切应力方程：设两液体分界面处的水平速度为 $v$。因两液层内速度均按直线分布，固定底板处流速为 $0$，上平板流速为 $U=0.50\\, \\mathrm{m/s}$，由牛顿内摩擦定律得上、下液层的切应力分别为：\n\n$$\n{\\tau}_{1}={\\mu}_{1}\\frac{U-v}{{\\delta}_{1}},\\, {\\tau}_{2}={\\mu}_{2}\\frac{v-0}{{\\delta}_{2}}={\\mu}_{2}\\frac{v}{{\\delta}_{2}}\n$$\n\n3. 利用界面切应力连续条件求界面速度 $v$：平板作恒定匀速运动，分界面处受力平衡，必有 ${\\tau}_{1}={\\tau}_{2}=\\tau$：\n\n$$\n{\\mu}_{1}\\frac{U-v}{{\\delta}_{1}}={\\mu}_{2}\\frac{v}{{\\delta}_{2}}\\Longrightarrow 1.0\\times \\frac{0.50-v}{1.0\\times {10}^{-3}}=2.0\\times \\frac{v}{1.2\\times {10}^{-3}}\n$$\n\n$$\n0.50-v=\\frac{5}{3}v\\Longrightarrow \\frac{8}{3}v=0.50\\Longrightarrow v=\\frac{3}{16}=0.1875\\, \\mathrm{m/s}\n$$\n\n4. 计算切应力 $\\tau$ 与水平拉力 $F$：\n\n$$\n\\tau ={\\tau}_{1}=1.0\\times \\frac{0.50-0.1875}{1.0\\times {10}^{-3}}=312.5\\, \\mathrm{Pa}\\, \\left( \\text{校核：}{\\tau}_{2}=2.0\\times \\frac{0.1875}{1.2\\times {10}^{-3}}=312.5\\, \\mathrm{Pa} \\right)\n$$\n\n$$\nF=\\tau A=312.5\\times 0.16=50.0\\, \\mathrm{N}\n$$\n\n答：维持上平板匀速运动所需的水平力为 $50.0\\, \\mathrm{N}$，方向与平板运动方向一致。",
+      "analysisFigures": [
+        {
+          "src": "figures/2026/q26_sol.webp",
+          "caption": "解图 7　双层牛顿液体分段线性速度分布图"
+        }
+      ],
+      "pitfalls": "",
+      "chapter": 1,
+      "kps": [
+        "牛顿内摩擦定律",
+        "双层液体平板剪切流"
+      ],
+      "method": "分层液体切应力连续与速度叠加法",
+      "difficulty": 3,
+      "rubric": [
+        {
+          "label": "写出两液层线性速度梯度与牛顿内摩擦定律表达式",
+          "pts": 6
+        },
+        {
+          "label": "利用液-液交界面切应力相等求得界面速度 v = 0.1875 m/s",
+          "pts": 8
+        },
+        {
+          "label": "求得切应力 τ = 312.5 Pa 及所需水平拉力 F = τA = 50.0 N",
+          "pts": 6
+        }
+      ]
+    },
+    {
+      "id": "2026-27",
+      "year": 2026,
+      "no": 27,
+      "type": "calc",
+      "score": 20,
+      "title": "封闭容器水银压差计与右半圆柱曲面 AB 静水总压力",
+      "stem": "封闭容器内装水，水面上方气体压强为 $p_{0}$。左侧水银压差计一端通大气，另一端连接于点 C；水银液面差 $\\Delta h=0.36\\, \\mathrm{m}$。点 C 位于点 B 下方 $h=0.12\\, \\mathrm{m}$；点 B 距容器水面 $H=2.0\\, \\mathrm{m}$。曲面 AB 为右半圆柱面，半径 $R=0.40\\, \\mathrm{m}$，纸面方向宽度 $B=5.0\\, \\mathrm{m}$，A、B 为竖直直径的上下端。水银密度 ${\\rho}_{\\mathrm{Hg}}=13.6\\times {10}^{3}\\, {\\mathrm{kg/m}}^{3}$。求曲面 AB 所受静水总压力的大小与方向（均采用表压）。",
+      "note": "注：除特别说明外，取 $g=9.81\\, {\\mathrm{m/s}}^{2}$，水的密度 $\\rho =1000\\, {\\mathrm{kg/m}}^{3}$，水的运动黏度 $\\nu =1.0\\times {10}^{-6}\\, {\\mathrm{m}}^{2}/\\mathrm{s}$。",
+      "figures": [
+        {
+          "src": "figures/2026/q27_orig.webp",
+          "caption": "图 27　封闭容器水银压差计与右半圆柱曲面 AB 示意图"
+        }
+      ],
+      "shortAnswer": "$P=172.16\\, \\mathrm{kN}$，指向右下方，与水平成 ${4.11}^{\\circ}$，过圆心 $O$",
+      "judgeAnswer": null,
+      "answer": "静水总压力大小 $P=172.16\\, \\mathrm{kN}$；方向指向右下方，与水平向右方向夹角 $\\alpha ={4.11}^{\\circ}$，作用线通过半圆柱圆心 $O$。",
+      "analysis": "（均采用表压，取 $\\gamma =\\rho g=1000\\times 9.81=9810\\, {\\mathrm{N/m}}^{3}=9.81\\, {\\mathrm{kN/m}}^{3}$）\n\n1. 由左侧水银压差计求点 C 及圆心 O 处表压（及液面气体压强 $p_{0}$）：\n\n取通过右侧水银液面（即与点 C 同高程）的水平面为等压面。左侧水银面通大气（表压为 $0$）且高出右侧水银面 $\\Delta h=0.36\\, \\mathrm{m}$，由静水压强基本方程得：\n\n$$\np_{C}={\\rho}_{\\mathrm{Hg}}g\\Delta h=13.6\\times {10}^{3}\\times 9.81\\times 0.36=48029.76\\, \\mathrm{Pa}\\approx 48.03\\, \\mathrm{kPa}\n$$\n\n其对应的水柱压强水头为 $\\frac{p_{C}}{\\gamma}=\\frac{{\\rho}_{\\mathrm{Hg}}}{\\rho}\\Delta h=13.6\\times 0.36=4.896\\, \\mathrm{m}$。点 C 位于容器水面下方 $H+h=2.0+0.12=2.12\\, \\mathrm{m}$ 处，故容器水面上方气体表压为：\n\n$$\np_{0}=p_{C}-\\gamma (H+h)=9.81\\times (4.896-2.12)=9.81\\times 2.776\\approx 27.23\\, \\mathrm{kPa}\n$$\n\n等效自由液面高出容器实际水面的高度为 $H_{\\mathrm{eq}}=\\frac{p_{0}}{\\gamma}=2.776\\, \\mathrm{m}$。\n\n2. 计算静水总压力水平分力 $P_{x}$：\n\n曲面 AB 在铅直面上的投影为高 $2R=0.80\\, \\mathrm{m}$、宽 $B=5.0\\, \\mathrm{m}$ 的矩形，面积 $A_{x}=2RB=2\\times 0.40\\times 5.0=4.0\\, {\\mathrm{m}}^{2}$。投影面形心即半圆圆心 O，位于点 C 上方 $h+R=0.12+0.40=0.52\\, \\mathrm{m}$（或容器水面下方 $H-R=1.60\\, \\mathrm{m}$）处，故形心压强水头及压强为：\n\n$$\n\\frac{p_{O}}{\\gamma}=\\frac{p_{C}}{\\gamma}-(h+R)=4.896-0.52=4.376\\, \\mathrm{m}\\, \\left( \\text{校核：}H_{\\mathrm{eq}}+H-R=2.776+1.60=4.376\\, \\mathrm{m} \\right)\n$$\n\n$$\np_{O}=\\gamma \\cdot 4.376=9.81\\times 4.376=42.9286\\, \\mathrm{kPa}\n$$\n\n$$\nP_{x}=p_{O}A_{x}=42.9286\\times 4.0=171.714\\, \\mathrm{kN}\\approx 171.71\\, \\mathrm{kN}\\, (\\text{方向水平向右})\n$$\n\n3. 作压力体图并计算竖直分力 $P_{z}$：\n\n将右半圆柱面 AB 以最右端水平切点 M 为界分为上四分之一圆弧 AM 与下四分之一圆弧 MB（见解图 8 左图）：\n\n• 上弧 AM 受水压力向上，对应向上至等效自由液面的虚压力体；\n\n• 下弧 MB 受水压力向下，对应向上至等效自由液面的实压力体；\n\n• 二者在 AM 上方重合部分大小相等、方向相反，完全抵消，叠加后仅剩半圆柱体自身所占的净实压力体（方向竖直向下）：\n\n$$\nV_{z}=\\frac{1}{2}\\pi R^{2}B=\\frac{1}{2}\\pi \\times {0.40}^{2}\\times 5.0=0.40\\pi \\approx 1.2566\\, {\\mathrm{m}}^{3}\n$$\n\n$$\nP_{z}=\\gamma V_{z}=9.81\\times 0.40\\pi =3.924\\pi \\approx 12.33\\, \\mathrm{kN}\\, (\\text{方向竖直向下})\n$$\n\n4. 计算静水总压力合力 $P$ 的大小、方向及作用线：\n\n$$\nP=\\sqrt{P_x^{2}+P_z^{2}}=\\sqrt{{171.714}^{2}+{12.328}^{2}}\\approx 172.16\\, \\mathrm{kN}\n$$\n\n$$\n\\tan \\alpha =\\frac{P_{z}}{P_{x}}=\\frac{12.328}{171.714}\\approx 0.07179\\Longrightarrow \\alpha =\\arctan (0.07179)\\approx {4.11}^{\\circ}\n$$\n\n由于曲面 AB 为圆柱面，曲面上各点静水压强均沿径向向外指向，所有微元压力的作用线均汇交于圆心 O，因此合力 $P$ 的作用线通过圆心 O，指向右下方，与水平向右方向成 ${4.11}^{\\circ}$ 角。",
+      "analysisFigures": [
+        {
+          "src": "figures/2026/q27_sol.webp",
+          "caption": "解图 8　半圆柱曲面 AB 压力体图（左）与静水总压力合力方向图（右）"
+        }
+      ],
+      "pitfalls": "",
+      "chapter": 2,
+      "kps": [
+        "U形水银压差计测压",
+        "圆柱曲面静水总压力",
+        "压力体图与虚压力体"
+      ],
+      "method": "等效自由液面+水平投影与铅垂压力体合成法",
+      "difficulty": 4,
+      "rubric": [
+        {
+          "label": "由水银压差计正确求得 C 点及圆心 O 点相对压强（或等效液面深度）",
+          "pts": 6
+        },
+        {
+          "label": "求得水平分力 Px = pO·Ax = 171.71 kN（水平向右）",
+          "pts": 5
+        },
+        {
+          "label": "正确分析虚压力体方向并求得铅垂分力 Pz = γVz = 12.33 kN（竖直向下）",
+          "pts": 5
+        },
+        {
+          "label": "合成总压力 P = 172.16 kN、夹角 α = 4.11°（右下方，作用线过圆心 O）",
+          "pts": 4
+        }
+      ]
+    },
+    {
+      "id": "2026-28",
+      "year": 2026,
+      "no": 28,
+      "type": "calc",
+      "score": 20,
+      "title": "矩形明渠底坎流量及水流对坎底竖直迎水面的水平作用力",
+      "stem": "矩形明渠底宽 $b=1.0\\, \\mathrm{m}$。上游水深 $h_{1}=2.0\\, \\mathrm{m}$；下游渠底抬高 $a=0.30\\, \\mathrm{m}$，下游水面比上游水面低 $\\Delta h=0.10\\, \\mathrm{m}$；两断面间水头损失 $h_{w}=0.09\\, \\mathrm{m}$。流动恒定，断面速度分布均匀。求：（1）流量 $Q$；（2）水流对坎底竖直迎水面的水平作用力。",
+      "note": "注：除特别说明外，取 $g=9.81\\, {\\mathrm{m/s}}^{2}$，水的密度 $\\rho =1000\\, {\\mathrm{kg/m}}^{3}$，水的运动黏度 $\\nu =1.0\\times {10}^{-6}\\, {\\mathrm{m}}^{2}/\\mathrm{s}$。",
+      "figures": [
+        {
+          "src": "figures/2026/q28_orig.webp",
+          "caption": "图 28　矩形明渠底坎恒定流示意图"
+        }
+      ],
+      "shortAnswer": "(1) $Q=1.18\\, {\\mathrm{m}}^{3}/\\mathrm{s}$；(2) $R^{\\prime}=6.89\\, \\mathrm{kN}$（水平向右）",
+      "judgeAnswer": null,
+      "answer": "（1）流量 $Q=1.18\\, {\\mathrm{m}}^{3}/\\mathrm{s}$；（2）水流对坎底竖直迎水面的水平作用力 $R^{\\prime}=6.89\\, \\mathrm{kN}$（$6888.8\\, \\mathrm{N}$），方向水平向右。",
+      "analysis": "因断面速度分布均匀，动能修正系数 ${\\alpha}_{1}={\\alpha}_{2}=1.0$，动量修正系数 ${\\beta}_{1}={\\beta}_{2}=1.0$。\n\n（1）求渠道流量 $Q$：\n\n由水面与渠底几何关系，下游 2—2 断面水深为：\n\n$$\nh_{2}=h_{1}-\\Delta h-a=2.0-0.10-0.30=1.60\\, \\mathrm{m}\n$$\n\n由连续性方程 $Q=bh_{1}v_{1}=bh_{2}v_{2}$ 得：\n\n$$\nv_{1}=\\frac{h_{2}}{h_{1}}v_{2}=\\frac{1.60}{2.0}v_{2}=0.8v_{2}\n$$\n\n以上游渠底水平面为基准面 0—0，对 1—1、2—2 断面列恒定总流能量方程：\n\n$$\nh_{1}+\\frac{v_1^{2}}{2g}=a+h_{2}+\\frac{v_2^{2}}{2g}+h_{w}\n$$\n\n整理得（注意 $h_{1}-(a+h_{2})=\\Delta h=0.10\\, \\mathrm{m}$）：\n\n$$\n\\frac{v_2^{2}-v_1^{2}}{2g}=\\Delta h-h_{w}=0.10-0.09=0.01\\, \\mathrm{m}\n$$\n\n将 $v_{1}=0.8v_{2}$ 代入上式：\n\n$$\n\\frac{(1-{0.8}^{2})v_2^{2}}{2\\times 9.81}=0.01\\Longrightarrow v_2^{2}=\\frac{0.01\\times 19.62}{0.36}=0.545\\, {\\mathrm{m}}^{2}/{\\mathrm{s}}^{2}\n$$\n\n$$\nv_{2}=\\sqrt{0.545}\\approx 0.7382\\, \\mathrm{m/s},\\, v_{1}=0.8v_{2}\\approx 0.5906\\, \\mathrm{m/s}\n$$\n\n由此求得渠道流量：\n\n$$\nQ=bh_{2}v_{2}=1.0\\times 1.60\\times 0.7382\\approx 1.181\\, {\\mathrm{m}}^{3}/\\mathrm{s}\\approx 1.18\\, {\\mathrm{m}}^{3}/\\mathrm{s}\n$$\n\n（2）求水流对坎底竖直迎水面的水平作用力 $R^{\\prime}$：\n\n选取 1—1 断面至 2—2 断面之间的水体为控制体（见解图 9），取水流方向（水平向右）为 $x$ 轴正方向。忽略渠底与侧壁摩阻力，控制体在水平方向所受外力为上游静水总压力 $P_{1}$（向右）、下游静水总压力 $P_{2}$（向左）以及坎底竖直迎水面对水体的水平反作用力 $R_{x}$（设方向向左）：\n\n$$\nP_{1}=\\frac{1}{2}\\gamma bh_1^{2}=\\frac{1}{2}\\times 9.81\\times 1.0\\times {2.0}^{2}=19.62\\, \\mathrm{kN}=19620\\, \\mathrm{N}\n$$\n\n$$\nP_{2}=\\frac{1}{2}\\gamma bh_2^{2}=\\frac{1}{2}\\times 9.81\\times 1.0\\times {1.60}^{2}=12.5568\\, \\mathrm{kN}=12556.8\\, \\mathrm{N}\n$$\n\n对控制体列 $x$ 方向恒定总流动量方程：\n\n$$\nP_{1}-P_{2}-R_{x}=\\rho Q(v_{2}-v_{1})\n$$\n\n其中动量流率变化项为：\n\n$$\n\\rho Q(v_{2}-v_{1})=1000\\times 1.18119\\times (0.73824-0.59059)=174.4\\, \\mathrm{N}=0.1744\\, \\mathrm{kN}\n$$\n\n解得坎底竖直迎水面对水体的水平反作用力：\n\n$$\nR_{x}=P_{1}-P_{2}-\\rho Q(v_{2}-v_{1})=19.62-12.5568-0.1744=6.8888\\, \\mathrm{kN}\\approx 6.89\\, \\mathrm{kN}\\, (\\text{向左})\n$$\n\n由牛顿第三定律，水流对坎底竖直迎水面的水平作用力大小为 $R^{\\prime}=R_{x}=6.89\\, \\mathrm{kN}$（$6888.8\\, \\mathrm{N}$），方向水平向右（顺水流方向）。",
+      "analysisFigures": [
+        {
+          "src": "figures/2026/q28_sol.webp",
+          "caption": "解图 9　底坎控制体水平方向受力分析图"
+        }
+      ],
+      "pitfalls": "",
+      "chapter": 3,
+      "kps": [
+        "恒定总流能量方程",
+        "恒定总流动量方程",
+        "明渠底坎水流作用力"
+      ],
+      "method": "能量方程求流量+控制体动量方程求反力",
+      "difficulty": 4,
+      "rubric": [
+        {
+          "label": "由几何关系求得下游水深 h2 = h1 - Δh - a = 1.60 m",
+          "pts": 4
+        },
+        {
+          "label": "对 1—1、2—2 断面列能量方程解得流量 Q = 1.18 m³/s",
+          "pts": 8
+        },
+        {
+          "label": "取控制体列水平动量方程求得水流对坎底水平作用力 R' = 6.89 kN（向右）",
+          "pts": 8
+        }
+      ]
+    },
+    {
+      "id": "2026-29",
+      "year": 2026,
+      "no": 29,
+      "type": "calc",
+      "score": 20,
+      "title": "二维速度场的流函数 $\\psi$ 与速度势函数 $\\varphi$",
+      "stem": "已知二维流动速度场 $u=2x+3y$，$v=3x-2y$。试判断是否存在流函数；若存在，求流函数 $\\psi$。再判断是否存在速度势函数；若存在，求速度势 $\\varphi$。",
+      "note": "注：除特别说明外，取 $g=9.81\\, {\\mathrm{m/s}}^{2}$，水的密度 $\\rho =1000\\, {\\mathrm{kg/m}}^{3}$，水的运动黏度 $\\nu =1.0\\times {10}^{-6}\\, {\\mathrm{m}}^{2}/\\mathrm{s}$。",
+      "figures": [],
+      "shortAnswer": "$\\psi =-\\frac{3}{2}x^{2}+2xy+\\frac{3}{2}y^{2}+C_{1}$；$\\varphi =x^{2}+3xy-y^{2}+C_{2}$",
+      "judgeAnswer": null,
+      "answer": "存在流函数：$\\psi =-\\frac{3}{2}x^{2}+2xy+\\frac{3}{2}y^{2}+C_{1}$；存在速度势函数：$\\varphi =x^{2}+3xy-y^{2}+C_{2}$（$C_{1}\\text{、}C_{2}$ 为任意积分常数）。",
+      "analysis": "已知二维速度场 $u=2x+3y$，$v=3x-2y$。\n\n1. 判断并求解流函数 $\\psi$：\n\n检验二维不可压缩流体连续性方程（流函数存在的充要条件）：\n\n$$\n\\frac{\\partial u}{\\partial x}+\\frac{\\partial v}{\\partial y}=\\frac{\\partial (2x+3y)}{\\partial x}+\\frac{\\partial (3x-2y)}{\\partial y}=2+(-2)=0\n$$\n\n满足连续性方程，故存在流函数 $\\psi$。按流函数定义 $u=\\frac{\\partial \\psi}{\\partial y}$、$v=-\\frac{\\partial \\psi}{\\partial x}$ 积分求解：\n\n$$\n\\psi (x,y)=\\int u\\, \\mathrm{d}y=\\int (2x+3y)\\, \\mathrm{d}y=2xy+\\frac{3}{2}y^{2}+f(x)\n$$\n\n对 $x$ 求偏导并与 $-v$ 比较：\n\n$$\n\\frac{\\partial \\psi}{\\partial x}=2y+f^{\\prime}(x)=-v=-(3x-2y)=-3x+2y\\Longrightarrow f^{\\prime}(x)=-3x\\Longrightarrow f(x)=-\\frac{3}{2}x^{2}+C_{1}\n$$\n\n因此流函数为：\n\n$$\n\\psi (x,y)=-\\frac{3}{2}x^{2}+2xy+\\frac{3}{2}y^{2}+C_{1}\n$$\n\n2. 判断并求解速度势函数 $\\varphi$：\n\n检验二维流动的无旋条件（速度势函数存在的充要条件 ${\\omega}_{z}=0$）：\n\n$$\n{\\omega}_{z}=\\frac{1}{2}\\left( \\frac{\\partial v}{\\partial x}-\\frac{\\partial u}{\\partial y} \\right)=\\frac{1}{2}(3-3)=0\n$$\n\n流动为平面无旋流，故存在速度势函数 $\\varphi$。按速度势定义 $u=\\frac{\\partial \\varphi}{\\partial x}$、$v=\\frac{\\partial \\varphi}{\\partial y}$ 积分求解：\n\n$$\n\\varphi (x,y)=\\int u\\, \\mathrm{d}x=\\int (2x+3y)\\, \\mathrm{d}x=x^{2}+3xy+g(y)\n$$\n\n对 $y$ 求偏导并与 $v$ 比较：\n\n$$\n\\frac{\\partial \\varphi}{\\partial y}=3x+g^{\\prime}(y)=v=3x-2y\\Longrightarrow g^{\\prime}(y)=-2y\\Longrightarrow g(y)=-y^{2}+C_{2}\n$$\n\n因此速度势函数为：\n\n$$\n\\varphi (x,y)=x^{2}+3xy-y^{2}+C_{2}\n$$\n\n（校核：${\\nabla}^{2}\\psi =-3+3=0$、${\\nabla}^{2}\\varphi =2-2=0$，均满足拉普拉斯方程；且 $\\nabla \\varphi \\cdot \\nabla \\psi =0$，流线族与等势线族构成处处正交的双曲线正交流网，见解图 10。）",
+      "analysisFigures": [
+        {
+          "src": "figures/2026/q29_sol.webp",
+          "caption": "解图 10　二维势流速度场正交流网图（实线为流线，虚线为等势线）"
+        }
+      ],
+      "pitfalls": "个别教材采用负号约定（如渗流力学中 $u=-\\frac{\\partial \\varphi}{\\partial x},v=-\\frac{\\partial \\varphi}{\\partial y}$ 或 $u=-\\frac{\\partial \\psi}{\\partial y},v=\\frac{\\partial \\psi}{\\partial x}$），此时对应表达式整体变号即可；答题时先明确写出自己采用的定义式最稳妥，不会丢符号分！",
+      "chapter": 5,
+      "kps": [
+        "平面不可压缩流连续性方程",
+        "无旋流判据",
+        "流函数与速度势函数求解"
+      ],
+      "method": "不可压与无旋偏导检验+偏积分求原函数法",
+      "difficulty": 3,
+      "rubric": [
+        {
+          "label": "检验 ∂u/∂x + ∂v/∂y = 0，判定存在流函数 ψ",
+          "pts": 4
+        },
+        {
+          "label": "积分求得流函数 ψ = -3/2 x² + 2xy + 3/2 y² + C1（或负号约定等价式）",
+          "pts": 6
+        },
+        {
+          "label": "检验旋转角速度 ωz = 0（∂v/∂x = ∂u/∂y = 3），判定存在速度势函数 φ",
+          "pts": 4
+        },
+        {
+          "label": "积分求得速度势函数 φ = x² + 3xy - y² + C2（或负号约定等价式）",
+          "pts": 6
+        }
+      ]
+    },
+    {
+      "id": "2026-30",
+      "year": 2026,
+      "no": 30,
+      "type": "calc",
+      "score": 20,
+      "title": "长直梯形渠道均匀流流量、弗劳德数与雷诺数判别",
+      "stem": "某长直梯形渠道底宽 $b=9.0\\, \\mathrm{m}$，边坡系数 $m=2.0$，正常水深 $h_{0}=2.0\\, \\mathrm{m}$，曼宁糙率 $n=0.025$。相距 $1000\\, \\mathrm{m}$ 的两断面间水头损失 $h_{f}=0.40\\, \\mathrm{m}$。求：（1）渠道流量 $Q$；（2）按弗劳德数判断急流或缓流；（3）按雷诺数判断层流或紊流。",
+      "note": "注：除特别说明外，取 $g=9.81\\, {\\mathrm{m/s}}^{2}$，水的密度 $\\rho =1000\\, {\\mathrm{kg/m}}^{3}$，水的运动黏度 $\\nu =1.0\\times {10}^{-6}\\, {\\mathrm{m}}^{2}/\\mathrm{s}$。",
+      "figures": [],
+      "shortAnswer": "(1) $Q=26.63\\, {\\mathrm{m}}^{3}/\\mathrm{s}$；(2) $Fr=0.264 < 1$ 缓流；(3) $Re_{R}=1.48\\times {10}^{6}$ 紊流",
+      "judgeAnswer": null,
+      "answer": "（1）$Q=26.63\\, {\\mathrm{m}}^{3}/\\mathrm{s}$；（2）$Fr=0.264 < 1$，为缓流；（3）$Re_{R}=1.48\\times {10}^{6}\\gg 500$（或 $Re_{4R}=5.94\\times {10}^{6}\\gg 2000$），为紊流。",
+      "analysis": "已知梯形渠道 $b=9.0\\, \\mathrm{m}$，$m=2.0$，正常水深 $h_{0}=2.0\\, \\mathrm{m}$，$n=0.025$，$L=1000\\, \\mathrm{m}$，$h_{f}=0.40\\, \\mathrm{m}$，$\\nu =1.0\\times {10}^{-6}\\, {\\mathrm{m}}^{2}/\\mathrm{s}$。\n\n（1）计算渠道流量 $Q$：\n\n先计算梯形渠道过水断面水力要素：\n\n$$\nA=(b+mh_{0})h_{0}=(9.0+2.0\\times 2.0)\\times 2.0=26.0\\, {\\mathrm{m}}^{2}\n$$\n\n$$\nB=b+2mh_{0}=9.0+2\\times 2.0\\times 2.0=17.0\\, \\mathrm{m}\n$$\n\n$$\n\\chi =b+2h_{0}\\sqrt{1+m^{2}}=9.0+2\\times 2.0\\times \\sqrt{1+{2.0}^{2}}=9.0+4\\sqrt{5}\\approx 17.9443\\, \\mathrm{m}\n$$\n\n$$\nR=\\frac{A}{\\chi}=\\frac{26.0}{17.9443}\\approx 1.4489\\, \\mathrm{m}\n$$\n\n长直渠道均匀流水力坡度 $J=i=\\frac{h_{f}}{L}=\\frac{0.40}{1000}=4.0\\times {10}^{-4}$。由谢才—曼宁公式计算谢才系数 $C$、断面平均流速 $v$ 与流量 $Q$：\n\n$$\nC=\\frac{1}{n}R^{1/6}=\\frac{1}{0.025}\\times {1.4489}^{1/6}\\approx 42.550\\, {\\mathrm{m}}^{1/2}/\\mathrm{s}\n$$\n\n$$\nv=C\\sqrt{RJ}=\\frac{1}{n}R^{2/3}J^{1/2}=40\\times {1.4489}^{2/3}\\times \\sqrt{4.0\\times {10}^{-4}}\\approx 1.0244\\, \\mathrm{m/s}\n$$\n\n$$\nQ=Av=26.0\\times 1.0244\\approx 26.63\\, {\\mathrm{m}}^{3}/\\mathrm{s}\n$$\n\n（2）按弗劳德数判断急流或缓流：\n\n对非矩形（梯形）明渠，计算弗劳德数时特征水深须采用水力深度（断面平均水深） $\\overline{h}=\\frac{A}{B}$：\n\n$$\n\\overline{h}=\\frac{A}{B}=\\frac{26.0}{17.0}\\approx 1.5294\\, \\mathrm{m}\n$$\n\n$$\nFr=\\frac{v}{\\sqrt{g\\overline{h}}}=\\frac{1.0244}{\\sqrt{9.81\\times 1.5294}}=\\frac{1.0244}{3.8734}\\approx 0.2645 < 1\n$$\n\n因 $Fr=0.264 < 1$，故该渠道水流为缓流。\n\n（3）按雷诺数判断层流或紊流：\n\n按明渠常用水力半径雷诺数 $Re_{R}$（下临界雷诺数 $Re_{R,c}=500$）计算：\n\n$$\nRe_{R}=\\frac{vR}{\\nu}=\\frac{1.0244\\times 1.4489}{1.0\\times {10}^{-6}}\\approx 1.484\\times {10}^{6}\\gg 500\n$$\n\n（若按当量直径 $d_{e}=4R$ 定义雷诺数，则 $Re_{4R}=\\frac{4vR}{\\nu}\\approx 5.937\\times {10}^{6}\\gg 2000$。）故该渠道水流为紊流。",
+      "analysisFigures": [
+        {
+          "src": "figures/2026/q30_sol.webp",
+          "caption": "解图 11　长直梯形渠道过水断面几何与水力要素汇总图"
+        }
+      ],
+      "pitfalls": "梯形明渠求弗劳德数时切忌直接拿渠底水深 $h_{0}=2.0\\, \\mathrm{m}$ 代入！必须使用水力深度 $\\overline{h}=\\frac{A}{B}=1.529\\, \\mathrm{m}$；同时明渠雷诺数以水力半径 $R$ 为特征长度时临界值为 $500$，以 $4R$ 为特征长度时临界值为 $2000$，两者需对应匹配。",
+      "chapter": 7,
+      "kps": [
+        "明渠均匀流曼宁公式",
+        "梯形断面水力要素",
+        "弗劳德数判急缓流",
+        "明渠雷诺数判层紊流"
+      ],
+      "method": "水力要素计算+曼宁公式+水力深度Fr判据",
+      "difficulty": 3,
+      "rubric": [
+        {
+          "label": "正确算出梯形过水面积 A=26 m²、湿周 χ=17.944 m、水力半径 R=1.449 m 及底坡 i=0.0004",
+          "pts": 6
+        },
+        {
+          "label": "由曼宁公式求得流速 v=1.024 m/s 与流量 Q=26.63 m³/s",
+          "pts": 6
+        },
+        {
+          "label": "用水力深度 h̄=A/B=1.529 m 求得 Fr=0.264 < 1，判为缓流",
+          "pts": 4
+        },
+        {
+          "label": "求得明渠雷诺数 ReR=1.48×10⁶ ≫ 500，判为紊流",
+          "pts": 4
+        }
+      ]
+    }
+  ]
+}
