@@ -63,7 +63,7 @@ c:\Users\6\Desktop\水力学\
     │   │   └── yzu-849/                            # 扬大 849 题库、章节、公式与图片
     │   ├── codex/                                  # 14×3 角色设定图、立绘与特写头像（sheets / sprites / avatars WebP）
     │   ├── mascot/                                 # 看板娘（hero/think/cheer/study）与 Gemini 角色立绘 WebP
-    │   └── sw.js                                   # PWA 离线缓存 Service Worker（当前 jingyan-multi-v19）
+    │   └── sw.js                                   # PWA 离线缓存 Service Worker（当前 jingyan-multi-v20）
     └── src/
         ├── brand.ts                                # 站名、联系邮箱、QQ 群及留言 API 扩展配置
         ├── types.ts                                # 8 种通用题型、公告、留言与养成图鉴类型定义
@@ -103,7 +103,7 @@ Set-Location web; npm run deploy
 
 ## 五、后续会话待办事项（Next Steps）
 
-> 截至 2026-11-21：河海 814（2013～2026，14 套）与扬大 849（2007～2008、2010～2024，17 套）已全部上线；`node scripts/validate_course.mjs` 全站 **Total errors: 0**（16485 处公式）；`npm run build` 通过；河海 2017/2018/2022 共 35 幅手绘原题图已通过 `scripts/redraw_hhu_handdrawn.py` 重绘并复核修正了 5 幅偏差题（`18.10`、`17.9`、`17.10`、`17.11`、`17.15`），河海 2025 全部 12 幅去水印原题图已通过 `scripts/redraw_hhu_2025.py` 重绘并完成 7 题定向精修（原图均已备份于 `assets_src/handdrawn_backup/`），河海 2026（8 幅）已核实原本即为矢量简图，其余河海 2013–2023（87 幅）与扬大真题卷原图均为清晰黑白印刷原图无需重绘；阶段 0 前端合规整改（首页主标题指示性降权、大肥鱼 CC BY-NC-SA 4.0 完整外链与修改声明、Gemini 方案 B 非商业说明、48 小时权利响应、刷题/整卷/模考区 AI 显式标识）、多院校元信息（`index.html` / `manifest.webmanifest`）、根目录 `.gitignore` 发布隔离、联系方式（`amassss321@gmail.com` / QQ 群 `1058675261`）、公告栏、留言板、角色图鉴以及新增的 `/companion` 小鱼干养成补给站（任务/成就、PRTS 卡包寻访、14×3 角色图鉴与主页/全站看板娘替换；图鉴整理参考自 `HABAI182/ai-girls-atlas` / `AI MUSE`）均已就绪（`sw.js` 已升级至 `jingyan-multi-v19`），当前已通过 `cf` CLI 部署至 Cloudflare Workers Static Assets，公网地址 https://jingyan.h0mura.de5.net 。
+> 截至 2026-11-21：河海 814（2013～2026，14 套）与扬大 849（2007～2008、2010～2024，17 套）已全部上线；`node scripts/validate_course.mjs` 全站 **Total errors: 0**（16485 处公式）；`npm run build` 通过；河海 2017/2018/2022 共 35 幅手绘原题图已通过 `scripts/redraw_hhu_handdrawn.py` 重绘并复核修正了 5 幅偏差题（`18.10`、`17.9`、`17.10`、`17.11`、`17.15`），河海 2025 全部 12 幅去水印原题图已通过 `scripts/redraw_hhu_2025.py` 重绘并完成 7 题定向精修（原图均已备份于 `assets_src/handdrawn_backup/`），河海 2026（8 幅）已核实原本即为矢量简图，其余河海 2013–2023（87 幅）与扬大真题卷原图均为清晰黑白印刷原图无需重绘；阶段 0 前端合规整改（首页主标题指示性降权、大肥鱼 CC BY-NC-SA 4.0 完整外链与修改声明、Gemini 方案 B 非商业说明、48 小时权利响应、刷题/整卷/模考区 AI 显式标识）、多院校元信息（`index.html` / `manifest.webmanifest`）、根目录 `.gitignore` 发布隔离、联系方式（`amassss321@gmail.com` / QQ 群 `1058675261`）、公告栏、留言板、角色图鉴以及新增的 `/companion` 小鱼干养成补给站（任务/成就、PRTS 卡包寻访、14×3 角色图鉴与主页/全站看板娘替换；图鉴整理参考自 `HABAI182/ai-girls-atlas` / `AI MUSE`）均已就绪（`sw.js` 已升级至 `jingyan-multi-v20`），当前已通过 `cf` CLI 部署至 Cloudflare Workers Static Assets，公网地址 https://jingyan.h0mura.de5.net 。
 
 1. **接入更多考研专业课板块**：
    - 按 `docs/02_试卷与新板块导入说明书(供AI使用).md` 场景 B，在 `courses.json` 注册新科目并建立对应 `<courseId>/` 三件套。

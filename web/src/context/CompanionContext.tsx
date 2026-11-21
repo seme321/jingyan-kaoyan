@@ -10,6 +10,7 @@ import type {
   StageFrameId,
   WeeklyCompanionProgress,
 } from '../types';
+import { useData } from './DataContext';
 import { useStudy } from './StudyContext';
 import {
   ACHIEVEMENTS,
@@ -116,6 +117,7 @@ interface CompanionContextValue {
   weeklyMissions: MissionProgressItem[];
   achievements: AchievementProgressItem[];
   claimableCount: number;
+  todayPracticedCount: number;
   unlockedCodexCount: number;
   displayCheckInStreak: number;
   toasts: RewardToast[];
@@ -258,10 +260,30 @@ function normalizeCompanionPeriods(raw: CompanionState | undefined): CompanionSt
   const base = raw ?? createInitialCompanionState();
   const today = getLocalDateKey();
   const weekKey = getWeekKey();
-  const daily =
-    base.daily && base.daily.date === today ? base.daily : createEmptyDaily(today);
-  const weekly =
-    base.weekly && base.weekly.weekKey === weekKey ? base.weekly : createEmptyWeekly(weekKey);
+  const emptyDaily = createEmptyDaily(today);
+  const rawDaily = base.daily && base.daily.date === today ? base.daily : emptyDaily;
+  const daily: DailyCompanionProgress = {
+    ...emptyDaily,
+    ...rawDaily,
+    practicedQids: Array.isArray(rawDaily.practicedQids) ? rawDaily.practicedQids : [],
+    masteredQids: Array.isArray(rawDaily.masteredQids) ? rawDaily.masteredQids : [],
+    bigQuestionQids: Array.isArray(rawDaily.bigQuestionQids) ? rawDaily.bigQuestionQids : [],
+    wrongClearedQids: Array.isArray(rawDaily.wrongClearedQids) ? rawDaily.wrongClearedQids : [],
+    noteQids: Array.isArray(rawDaily.noteQids) ? rawDaily.noteQids : [],
+    formulaFlippedIds: Array.isArray(rawDaily.formulaFlippedIds) ? rawDaily.formulaFlippedIds : [],
+    microDropQids: Array.isArray(rawDaily.microDropQids) ? rawDaily.microDropQids : [],
+    bondDropQids: Array.isArray(rawDaily.bondDropQids) ? rawDaily.bondDropQids : [],
+    claimedMissions: Array.isArray(rawDaily.claimedMissions) ? rawDaily.claimedMissions : [],
+  };
+  const emptyWeekly = createEmptyWeekly(weekKey);
+  const rawWeekly = base.weekly && base.weekly.weekKey === weekKey ? base.weekly : emptyWeekly;
+  const weekly: WeeklyCompanionProgress = {
+    ...emptyWeekly,
+    ...rawWeekly,
+    practicedQids: Array.isArray(rawWeekly.practicedQids) ? rawWeekly.practicedQids : [],
+    activeDays: Array.isArray(rawWeekly.activeDays) ? rawWeekly.activeDays : [],
+    claimedMissions: Array.isArray(rawWeekly.claimedMissions) ? rawWeekly.claimedMissions : [],
+  };
   const ownedCards: Record<string, number> = {
     'sp:dafeyu': 1,
     'sp:gemini': 1,
@@ -299,6 +321,7 @@ function pickWeighted<T>(items: Array<{ item: T; weight: number }>): T {
 const CompanionContext = createContext<CompanionContextValue | null>(null);
 
 export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { currentCourse, questionsById } = useData();
   const { allCourses, companionState, setCompanionState, subscribeStudyEvent } = useStudy();
   const [catalog, setCatalog] = useState<CodexCatalog | null>(null);
   const [toasts, setToasts] = useState<RewardToast[]>([]);
@@ -440,6 +463,13 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
           daily.noteQids = appendUnique(daily.noteQids, key);
         } else if (ev.type === 'mock_saved') {
           weekly.mockCount += 1;
+        } else if (ev.type === 'question_reviewed') {
+          const key = `${ev.courseId}:${ev.qid}`;
+          daily.practicedQids = appendUnique(daily.practicedQids, key);
+          weekly.practicedQids = appendUnique(weekly.practicedQids, key);
+          if (ev.isBigQuestion) {
+            daily.bigQuestionQids = appendUnique(daily.bigQuestionQids, key);
+          }
         }
 
         return {
@@ -474,20 +504,127 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     [setCompanionState]
   );
 
+  // Retroactive reconciliation from allCourses logs/records/mockHistory
+  const reconciledProgress = useMemo(() => {
+    const today = companion.daily.date;
+    const weekKey = companion.weekly.weekKey;
+    const todayPracticed = new Set<string>();
+    const todayMastered = new Set<string>();
+    const todayBig = new Set<string>();
+    const todayNotes = new Set<string>();
+    const weekPracticed = new Set<string>();
+    const weekActiveDays = new Set<string>();
+    let weekMocks = 0;
+
+    const isBigInCurrentCourse = (courseId: string, qid: string) => {
+      if (courseId !== currentCourse.id) return false;
+      const tp = questionsById[qid]?.type;
+      return tp === 'calc' || tp === 'proof';
+    };
+
+    Object.entries(allCourses).forEach(([courseId, slice]) => {
+      if (!slice) return;
+
+      for (const log of slice.practiceLogs ?? []) {
+        if (!log || typeof log.timestamp !== 'number' || !log.qid) continue;
+        const d = new Date(log.timestamp);
+        const logDate = getLocalDateKey(d);
+        const logWeek = getWeekKey(d);
+        const key = `${courseId}:${log.qid}`;
+        if (logDate === today) {
+          todayPracticed.add(key);
+          if (log.result === 'mastered') todayMastered.add(key);
+          if (isBigInCurrentCourse(courseId, log.qid)) todayBig.add(key);
+        }
+        if (logWeek === weekKey) {
+          weekPracticed.add(key);
+          weekActiveDays.add(logDate);
+        }
+      }
+
+      Object.entries(slice.records ?? {}).forEach(([qid, rec]) => {
+        if (!rec || !(rec.updatedAt > 0)) return;
+        const d = new Date(rec.updatedAt);
+        const recDate = getLocalDateKey(d);
+        const recWeek = getWeekKey(d);
+        const key = `${courseId}:${qid}`;
+        if (rec.status !== 'unseen') {
+          if (recDate === today) {
+            todayPracticed.add(key);
+            if (rec.status === 'mastered') todayMastered.add(key);
+            if (isBigInCurrentCourse(courseId, qid)) todayBig.add(key);
+          }
+          if (recWeek === weekKey) {
+            weekPracticed.add(key);
+            weekActiveDays.add(recDate);
+          }
+        }
+        if (rec.note && rec.note.trim().length >= 8 && recDate === today) {
+          todayNotes.add(key);
+        }
+      });
+
+      for (const m of slice.mockHistory ?? []) {
+        if (!m || typeof m.submittedAt !== 'number') continue;
+        const d = new Date(m.submittedAt);
+        if (getWeekKey(d) === weekKey) {
+          weekMocks += 1;
+          weekActiveDays.add(getLocalDateKey(d));
+        }
+      }
+    });
+
+    return {
+      todayPracticed,
+      todayMastered,
+      todayBig,
+      todayNotes,
+      weekPracticed,
+      weekActiveDays,
+      weekMocks,
+    };
+  }, [allCourses, companion.daily.date, companion.weekly.weekKey, currentCourse.id, questionsById]);
+
+  const dailyPracticedCount = useMemo(
+    () => new Set([...companion.daily.practicedQids, ...reconciledProgress.todayPracticed]).size,
+    [companion.daily.practicedQids, reconciledProgress.todayPracticed]
+  );
+  const dailyMasteredCount = useMemo(
+    () => new Set([...companion.daily.masteredQids, ...reconciledProgress.todayMastered]).size,
+    [companion.daily.masteredQids, reconciledProgress.todayMastered]
+  );
+  const dailyBigCount = useMemo(
+    () => new Set([...companion.daily.bigQuestionQids, ...reconciledProgress.todayBig]).size,
+    [companion.daily.bigQuestionQids, reconciledProgress.todayBig]
+  );
+  const dailyNoteCount = useMemo(
+    () => new Set([...companion.daily.noteQids, ...reconciledProgress.todayNotes]).size,
+    [companion.daily.noteQids, reconciledProgress.todayNotes]
+  );
+  const weeklyPracticedCount = useMemo(
+    () => new Set([...companion.weekly.practicedQids, ...reconciledProgress.weekPracticed]).size,
+    [companion.weekly.practicedQids, reconciledProgress.weekPracticed]
+  );
+  const weeklyMockCount = Math.max(companion.weekly.mockCount, reconciledProgress.weekMocks);
+  const weeklyActiveDaysCount = useMemo(
+    () => new Set([...companion.weekly.activeDays, ...reconciledProgress.weekActiveDays]).size,
+    [companion.weekly.activeDays, reconciledProgress.weekActiveDays]
+  );
+
   // Mission evaluations
   const dailyMissions = useMemo<MissionProgressItem[]>(() => {
     const d = companion.daily;
     const claimedSet = new Set(d.claimedMissions);
 
-    const m1Done = d.practicedQids.length >= 5;
-    const m2Done = d.masteredQids.length >= 3 || d.bigQuestionQids.length >= 1;
-    const m3Done = d.wrongClearedQids.length >= 2 || d.noteQids.length >= 1;
+    const m1Done = dailyPracticedCount >= 5;
+    const m2Done = dailyMasteredCount >= 3 || dailyBigCount >= 1;
+    const m3Done = d.wrongClearedQids.length >= 2 || dailyNoteCount >= 1;
     const m4Done = d.formulaFlippedIds.length >= 5;
     const firstFourDone = [m1Done, m2Done, m3Done, m4Done].filter(Boolean).length;
 
     return DAILY_MISSIONS.map((def) => {
       if (def.id === 'daily_practice_5') {
-        const cur = Math.min(5, d.practicedQids.length);
+        const cur = Math.min(5, dailyPracticedCount);
         return {
           ...def,
           current: cur,
@@ -499,10 +636,11 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       if (def.id === 'daily_master_or_big') {
         return {
           ...def,
-          current: m2Done ? 1 : 0,
+          target: 3,
+          current: m2Done ? 3 : Math.min(3, dailyMasteredCount),
           progressText: m2Done
             ? '已达成'
-            : `掌握 ${Math.min(3, d.masteredQids.length)}/3 题 或 大题 ${Math.min(1, d.bigQuestionQids.length)}/1`,
+            : `掌握 ${Math.min(3, dailyMasteredCount)}/3 题 或 大题 ${Math.min(1, dailyBigCount)}/1`,
           done: m2Done,
           claimed: claimedSet.has(def.id),
         };
@@ -510,10 +648,11 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       if (def.id === 'daily_wrong_or_note') {
         return {
           ...def,
-          current: m3Done ? 1 : 0,
+          target: 2,
+          current: m3Done ? 2 : Math.min(2, d.wrongClearedQids.length),
           progressText: m3Done
             ? '已达成'
-            : `斩错题 ${Math.min(2, d.wrongClearedQids.length)}/2 或 笔记 ${Math.min(1, d.noteQids.length)}/1`,
+            : `斩错题 ${Math.min(2, d.wrongClearedQids.length)}/2 或 笔记 ${Math.min(1, dailyNoteCount)}/1`,
           done: m3Done,
           claimed: claimedSet.has(def.id),
         };
@@ -537,42 +676,48 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         claimed: claimedSet.has(def.id),
       };
     });
-  }, [companion.daily]);
+  }, [
+    companion.daily,
+    dailyBigCount,
+    dailyMasteredCount,
+    dailyNoteCount,
+    dailyPracticedCount,
+  ]);
 
   const weeklyMissions = useMemo<MissionProgressItem[]>(() => {
     const w = companion.weekly;
     const claimedSet = new Set(w.claimedMissions);
     return WEEKLY_MISSIONS.map((def) => {
       if (def.id === 'weekly_practice_40') {
-        const cur = Math.min(40, w.practicedQids.length);
+        const cur = Math.min(40, weeklyPracticedCount);
         return {
           ...def,
           current: cur,
           progressText: `${cur} / 40 题`,
-          done: w.practicedQids.length >= 40,
+          done: weeklyPracticedCount >= 40,
           claimed: claimedSet.has(def.id),
         };
       }
       if (def.id === 'weekly_mock_1') {
-        const cur = Math.min(1, w.mockCount);
+        const cur = Math.min(1, weeklyMockCount);
         return {
           ...def,
           current: cur,
           progressText: `${cur} / 1 场`,
-          done: w.mockCount >= 1,
+          done: weeklyMockCount >= 1,
           claimed: claimedSet.has(def.id),
         };
       }
-      const cur = Math.min(5, w.activeDays.length);
+      const cur = Math.min(5, weeklyActiveDaysCount);
       return {
         ...def,
         current: cur,
         progressText: `${cur} / 5 天`,
-        done: w.activeDays.length >= 5,
+        done: weeklyActiveDaysCount >= 5,
         claimed: claimedSet.has(def.id),
       };
     });
-  }, [companion.weekly]);
+  }, [companion.weekly, weeklyActiveDaysCount, weeklyMockCount, weeklyPracticedCount]);
 
   const unlockedCodexCount = useMemo(
     () =>
@@ -598,8 +743,9 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     const claimedSet = new Set(companion.claimedAchievements);
     return ACHIEVEMENTS.map((def) => {
       let raw = 0;
-      if (def.id === 'ach_first_q') raw = practicedTotal;
-      else if (def.category === 'study') raw = masteredTotal;
+      if (def.id === 'ach_first_q') {
+        raw = Math.max(practicedTotal, dailyPracticedCount, weeklyPracticedCount);
+      } else if (def.category === 'study') raw = masteredTotal;
       else if (def.category === 'mock') raw = mockTotal;
       else if (def.category === 'codex') raw = unlockedCodexCount;
 
@@ -611,7 +757,13 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         claimed: claimedSet.has(def.id),
       };
     });
-  }, [allCourses, companion.claimedAchievements, unlockedCodexCount]);
+  }, [
+    allCourses,
+    companion.claimedAchievements,
+    dailyPracticedCount,
+    unlockedCodexCount,
+    weeklyPracticedCount,
+  ]);
 
   const claimableCount = useMemo(() => {
     let cnt = companion.daily.checkedIn ? 0 : 1;
@@ -1444,6 +1596,7 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         weeklyMissions,
         achievements,
         claimableCount,
+        todayPracticedCount: dailyPracticedCount,
         unlockedCodexCount,
         displayCheckInStreak,
         toasts,

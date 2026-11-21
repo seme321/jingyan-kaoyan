@@ -20,7 +20,8 @@ type TabKey = 'wrong' | 'fav' | 'notes';
 
 export const WrongBookPage: React.FC = () => {
   const { currentCourse, allQuestions, chapterMap } = useData();
-  const { getRecord, removeFromWrongBook, toggleFavorite, saveQuestionNote } = useStudy();
+  const { getRecord, removeFromWrongBook, toggleFavorite, saveQuestionNote, trackQuestionReviewed } =
+    useStudy();
   const [tab, setTab] = useState<TabKey>('wrong');
   const [openAns, setOpenAns] = useState<Record<string, boolean>>({});
 
@@ -146,7 +147,10 @@ export const WrongBookPage: React.FC = () => {
                     <button
                       type="button"
                       className="btn btn-secondary btn-sm"
-                      onClick={() => setOpenAns((p) => ({ ...p, [q.id]: !p[q.id] }))}
+                      onClick={() => {
+                        if (!isOpen) trackQuestionReviewed(q.id);
+                        setOpenAns((p) => ({ ...p, [q.id]: !p[q.id] }));
+                      }}
                     >
                       <Eye size={13} /> {isOpen ? '收起答案' : '看答案'}
                     </button>

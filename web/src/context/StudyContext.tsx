@@ -103,6 +103,7 @@ interface StudyContextValue {
     session: ActiveMockSession | null | ((prev: ActiveMockSession | null) => ActiveMockSession | null)
   ) => void;
   saveMockAttempt: (attempt: MockAttempt) => void;
+  trackQuestionReviewed: (qid: string) => void;
   updateSettings: (patch: Partial<AppSettings>) => void;
   exportBackupJson: () => string;
   importBackupJson: (jsonText: string) => { ok: boolean; message: string };
@@ -148,13 +149,45 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     []
   );
 
+  const lastSerializedRef = useRef<string | null>(null);
+
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY_V2, JSON.stringify(multi));
+      const serialized = JSON.stringify(multi);
+      if (serialized === lastSerializedRef.current) return;
+      lastSerializedRef.current = serialized;
+      localStorage.setItem(STORAGE_KEY_V2, serialized);
     } catch {
       // ignore quota errors
     }
   }, [multi]);
+
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key !== STORAGE_KEY_V2 || !e.newValue || e.newValue === lastSerializedRef.current) {
+        return;
+      }
+      try {
+        const parsed = JSON.parse(e.newValue) as Partial<MultiCourseStudyState>;
+        if (!parsed || typeof parsed !== 'object') return;
+        const validCompanion =
+          parsed.companion &&
+          typeof parsed.companion === 'object' &&
+          !Array.isArray(parsed.companion);
+        const normalized: MultiCourseStudyState = {
+          courses: parsed.courses ?? {},
+          settings: { ...DEFAULT_SETTINGS, ...(parsed.settings ?? {}) },
+          ...(validCompanion ? { companion: parsed.companion } : {}),
+        };
+        lastSerializedRef.current = JSON.stringify(normalized);
+        setMulti(normalized);
+      } catch {
+        // ignore malformed storage updates
+      }
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
 
   const [resolvedTheme, setResolvedTheme] = useState<'dark' | 'light'>('dark');
 
@@ -388,6 +421,20 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     [cid, emitStudyEvent, updateSlice]
   );
 
+  const trackQuestionReviewed = useCallback(
+    (qid: string) => {
+      const q = questionsById[qid];
+      const isBigQuestion = q?.type === 'calc' || q?.type === 'proof';
+      emitStudyEvent({
+        type: 'question_reviewed',
+        courseId: cid,
+        qid,
+        isBigQuestion,
+      });
+    },
+    [cid, emitStudyEvent, questionsById]
+  );
+
   const updateSettings = useCallback((patch: Partial<AppSettings>) => {
     setMulti((prev) => ({
       ...prev,
@@ -479,6 +526,7 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         toggleFavoriteFormula,
         setActiveMock,
         saveMockAttempt,
+        trackQuestionReviewed,
         updateSettings,
         exportBackupJson,
         importBackupJson,

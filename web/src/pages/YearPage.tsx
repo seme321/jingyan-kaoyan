@@ -22,7 +22,7 @@ type BrowseMode = 'paper' | 'full' | 'recite';
 
 export const YearPage: React.FC = () => {
   const { currentCourse, yearsMeta, papersByYear, chapterMap } = useData();
-  const { getRecord, toggleFavorite } = useStudy();
+  const { getRecord, recordAttempt, toggleFavorite, trackQuestionReviewed } = useStudy();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const readyYears = useMemo(
@@ -49,6 +49,10 @@ export const YearPage: React.FC = () => {
   const paper = papersByYear[selectedYear];
 
   const toggleSingle = (qid: string) => {
+    const nextOpen = !openIds[qid];
+    if (nextOpen) {
+      trackQuestionReviewed(qid);
+    }
     setOpenIds((prev) => ({ ...prev, [qid]: !prev[qid] }));
   };
 
@@ -314,6 +318,33 @@ export const YearPage: React.FC = () => {
                             <span className="sol-badge">ANSWER // 参考答案</span>
                             <div className="sol-answer-content">
                               <MathText text={q.answer} />
+                            </div>
+                          </div>
+
+                          <div className="self-eval-box compact-eval">
+                            <span className="self-eval-prompt">自评掌握度（同步任务与错题本）：</span>
+                            <div className="self-eval-btns">
+                              <button
+                                type="button"
+                                className={`eval-btn mastered ${rec.status === 'mastered' ? 'selected' : ''}`}
+                                onClick={() => recordAttempt(q.id, 'mastered')}
+                              >
+                                ✓ 完全掌握
+                              </button>
+                              <button
+                                type="button"
+                                className={`eval-btn partial ${rec.status === 'partial' ? 'selected' : ''}`}
+                                onClick={() => recordAttempt(q.id, 'partial')}
+                              >
+                                ~ 半会
+                              </button>
+                              <button
+                                type="button"
+                                className={`eval-btn wrong ${rec.status === 'wrong' ? 'selected' : ''}`}
+                                onClick={() => recordAttempt(q.id, 'wrong')}
+                              >
+                                ✗ 不会·入错题本
+                              </button>
                             </div>
                           </div>
 

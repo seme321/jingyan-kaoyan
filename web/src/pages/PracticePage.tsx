@@ -35,6 +35,7 @@ export const PracticePage: React.FC = () => {
     toggleFavorite,
     saveQuestionNote,
     saveQuestionDraft,
+    trackQuestionReviewed,
     updateSettings,
   } = useStudy();
   const companionCtx = useCompanionOptional();
@@ -183,6 +184,13 @@ export const PracticePage: React.FC = () => {
     setCurrentIndex((idx) => (idx + 1 < baseQueue.length ? idx + 1 : idx));
   }, [baseQueue.length]);
 
+  const toggleRevealed = useCallback(() => {
+    if (!revealed && currentQuestion) {
+      trackQuestionReviewed(currentQuestion.id);
+    }
+    setRevealed((v) => !v);
+  }, [currentQuestion, revealed, trackQuestionReviewed]);
+
   const handleJudgeAnswer = useCallback(
     (choice: boolean) => {
       if (!currentQuestion || currentQuestion.type !== 'judge') return;
@@ -232,7 +240,7 @@ export const PracticePage: React.FC = () => {
         goNext();
       } else if (e.key === ' ') {
         e.preventDefault();
-        setRevealed((v) => !v);
+        toggleRevealed();
       } else if (e.key.toLowerCase() === 's') {
         e.preventDefault();
         toggleFavorite(currentQuestion.id);
@@ -243,7 +251,7 @@ export const PracticePage: React.FC = () => {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [currentQuestion, revealed, goPrev, goNext, toggleFavorite, handleJudgeAnswer]);
+  }, [currentQuestion, revealed, goPrev, goNext, toggleFavorite, toggleRevealed, handleJudgeAnswer]);
 
   const handleShuffle = () => {
     const ids = baseQueue.map((q) => q.id);
@@ -406,6 +414,18 @@ export const PracticePage: React.FC = () => {
                     <span>·</span>
                     <span className="text-coral">错题 {queueStats.wrong}</span>
                   </span>
+                  {companionCtx && (
+                    <Link
+                      to="/companion"
+                      className={`queue-mission-chip ${companionCtx.todayPracticedCount >= 5 ? 'done' : ''}`}
+                      title="查看今日小鱼干任务与奖励"
+                    >
+                      今日任务 {Math.min(5, companionCtx.todayPracticedCount)}/5
+                      {companionCtx.claimableCount > 0 && (
+                        <span className="queue-mission-dot">{companionCtx.claimableCount}可领</span>
+                      )}
+                    </Link>
+                  )}
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
@@ -655,7 +675,7 @@ export const PracticePage: React.FC = () => {
                 <button
                   type="button"
                   className={revealed ? 'btn btn-secondary' : 'btn btn-tactical'}
-                  onClick={() => setRevealed((v) => !v)}
+                  onClick={toggleRevealed}
                 >
                   {revealed ? '收起答案与解析 (Space)' : '展开参考答案与规范解析 (Space)'}
                 </button>
@@ -700,6 +720,33 @@ export const PracticePage: React.FC = () => {
                     </div>
                   </div>
 
+                  <div className="self-eval-box">
+                    <span className="self-eval-prompt">EVAL // 对照答案自评掌握度（同步错题本并触发 +5 小鱼干掉落）：</span>
+                    <div className="self-eval-btns">
+                      <button
+                        type="button"
+                        className={`eval-btn mastered ${rec.status === 'mastered' ? 'selected' : ''}`}
+                        onClick={() => handleSelfRate('mastered')}
+                      >
+                        ✓ 完全掌握
+                      </button>
+                      <button
+                        type="button"
+                        className={`eval-btn partial ${rec.status === 'partial' ? 'selected' : ''}`}
+                        onClick={() => handleSelfRate('partial')}
+                      >
+                        ~ 半会·需巩固
+                      </button>
+                      <button
+                        type="button"
+                        className={`eval-btn wrong ${rec.status === 'wrong' ? 'selected' : ''}`}
+                        onClick={() => handleSelfRate('wrong')}
+                      >
+                        ✗ 不会·入错题本
+                      </button>
+                    </div>
+                  </div>
+
                   {currentQuestion.rubric && (
                     <div className="sol-rubric-preview">
                       <div className="sol-section-label">
@@ -732,33 +779,6 @@ export const PracticePage: React.FC = () => {
                       <MathText text={currentQuestion.pitfalls} />
                     </div>
                   )}
-
-                  <div className="self-eval-box">
-                    <span className="self-eval-prompt">EVAL // 对照解析自评掌握度（驱动错题闭环）：</span>
-                    <div className="self-eval-btns">
-                      <button
-                        type="button"
-                        className={`eval-btn mastered ${rec.status === 'mastered' ? 'selected' : ''}`}
-                        onClick={() => handleSelfRate('mastered')}
-                      >
-                        ✓ 完全掌握
-                      </button>
-                      <button
-                        type="button"
-                        className={`eval-btn partial ${rec.status === 'partial' ? 'selected' : ''}`}
-                        onClick={() => handleSelfRate('partial')}
-                      >
-                        ~ 半会·需巩固
-                      </button>
-                      <button
-                        type="button"
-                        className={`eval-btn wrong ${rec.status === 'wrong' ? 'selected' : ''}`}
-                        onClick={() => handleSelfRate('wrong')}
-                      >
-                        ✗ 不会·入错题本
-                      </button>
-                    </div>
-                  </div>
                 </div>
               )}
 

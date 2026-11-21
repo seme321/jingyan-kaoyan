@@ -55,7 +55,7 @@ function getRankGrade(pct: number): { rank: string; label: string } {
 
 export const MockPage: React.FC = () => {
   const { currentCourse, yearsMeta, papersByYear, chapterMap } = useData();
-  const { state, setActiveMock, saveMockAttempt, recordAttempt } = useStudy();
+  const { state, setActiveMock, saveMockAttempt, recordAttempt, trackQuestionReviewed } = useStudy();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const readyYears = useMemo(
@@ -128,17 +128,21 @@ export const MockPage: React.FC = () => {
     for (const q of paper.questions) {
       if (q.type === 'judge') {
         const picked = session.judgeChoices[q.id];
-        initialScores[q.id] =
-          picked !== undefined && picked !== null && picked === q.judgeAnswer ? q.score : 0;
+        const hasAns = picked !== undefined && picked !== null;
+        if (hasAns) trackQuestionReviewed(q.id);
+        initialScores[q.id] = hasAns && picked === q.judgeAnswer ? q.score : 0;
       } else if (q.type === 'single_choice') {
         const picked = (session.choiceAnswers?.[q.id] ?? '').trim().toUpperCase();
         const ans = (q.choiceAnswer ?? '').trim().toUpperCase();
+        if (picked) trackQuestionReviewed(q.id);
         initialScores[q.id] = picked && picked === ans ? q.score : 0;
       } else if (q.rubric && q.rubric.length > 0) {
+        if ((session.textAnswers[q.id] ?? '').trim()) trackQuestionReviewed(q.id);
         initialRubrics[q.id] = q.rubric.map(() => false);
         initialScores[q.id] = 0;
       } else {
         const txt = (session.textAnswers[q.id] ?? '').trim();
+        if (txt) trackQuestionReviewed(q.id);
         initialScores[q.id] = txt ? q.score : 0;
       }
     }

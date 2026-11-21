@@ -359,6 +359,12 @@ export type StudyEvent =
       type: 'mock_saved';
       courseId: string;
       year: number;
+    }
+  | {
+      type: 'question_reviewed';
+      courseId: string;
+      qid: string;
+      isBigQuestion: boolean;
     };
 
 export interface MultiCourseStudyState {
