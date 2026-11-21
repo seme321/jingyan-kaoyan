@@ -37,13 +37,13 @@ VALID_PACK_TYPES = {"course", "exam", "character"}
 VALID_UNLOCK_MODES = {"direct", "gacha"}
 VALID_Q_TYPES = {
     "judge",
-    "choice",
+    "single_choice",
+    "multi_choice",
     "fill",
+    "term",
     "short",
-    "concept",
-    "draw",
-    "proof",
     "calc",
+    "proof",
 }
 BANNED_TEXT_RE = re.compile(r"(?:\bOCR\b|待补充解析|占位图|placeholder)", re.IGNORECASE)
 IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg"}
@@ -267,6 +267,33 @@ def validate_pack_dir(src_dir: Path, skip_katex: bool = False) -> tuple[list[str
                 errors.append(f"{pf.name}: questions 数组不能为空")
                 continue
 
+            sections = paper.get("sections") or []
+            if isinstance(sections, list) and sections:
+                expected_start = 1
+                sec_score_sum = 0
+                for sec in sections:
+                    rng = sec.get("range")
+                    if (
+                        not isinstance(rng, list)
+                        or len(rng) != 2
+                        or rng[0] != expected_start
+                        or rng[1] < rng[0]
+                    ):
+                        errors.append(
+                            f"{pf.name} section {sec.get('id')}: range {rng} 非法（应从 {expected_start} 起连续）"
+                        )
+                    else:
+                        expected_start = rng[1] + 1
+                    sec_score_sum += sec.get("totalScore", 0)
+                if expected_start - 1 != len(questions):
+                    errors.append(
+                        f"{pf.name}: sections 覆盖终点 {expected_start - 1} != 题数 {len(questions)}"
+                    )
+                if sec_score_sum != paper.get("totalScore"):
+                    errors.append(
+                        f"{pf.name}: sections 分值总和 {sec_score_sum} != totalScore {paper.get('totalScore')}"
+                    )
+
             q_score_sum = 0
             for idx, q in enumerate(questions):
                 expected_no = idx + 1
@@ -275,22 +302,42 @@ def validate_pack_dir(src_dir: Path, skip_katex: bool = False) -> tuple[list[str
                 q_type = q.get("type")
                 if q_type not in VALID_Q_TYPES:
                     errors.append(f"{pf.name} Q{q.get('no')}: 不支持的题型 {q_type}")
+                if q_type == "judge":
+                    if not isinstance(q.get("judgeAnswer"), bool):
+                        errors.append(f"{pf.name} Q{q.get('no')}: judge 题必须提供布尔值 judgeAnswer")
+                elif q_type in ("single_choice", "multi_choice"):
+                    opts = q.get("options") or []
+                    if not isinstance(opts, list) or len(opts) < 2:
+                        errors.append(f"{pf.name} Q{q.get('no')}: {q_type} 至少需要 2 个选项")
+                    if not str(q.get("choiceAnswer") or "").strip():
+                        errors.append(f"{pf.name} Q{q.get('no')}: {q_type} 缺少 choiceAnswer")
+                    if q.get("judgeAnswer") is not None:
+                        errors.append(f"{pf.name} Q{q.get('no')}: {q_type} 的 judgeAnswer 必须为 null")
+                elif q.get("judgeAnswer") is not None:
+                    errors.append(f"{pf.name} Q{q.get('no')}: 非判断题的 judgeAnswer 必须为 null")
+
                 q_score = q.get("score", 0)
                 q_score_sum += q_score
                 if valid_chapters and q.get("chapter") not in valid_chapters:
                     errors.append(f"{pf.name} Q{q.get('no')}: chapter={q.get('chapter')} 不在 chapters.json 中")
                 rubric = q.get("rubric") or []
+                if q_type in ("short", "calc", "proof") and q_score >= 5 and not rubric:
+                    errors.append(f"{pf.name} Q{q.get('no')}: {q_score} 分主观大题建议/必须配备 rubric 采分点")
                 if isinstance(rubric, list) and rubric:
                     r_sum = sum(r.get("pts", 0) for r in rubric)
                     if r_sum != q_score:
                         errors.append(f"{pf.name} Q{q.get('no')}: rubric 总分 {r_sum} != 题分 {q_score}")
                     for r_idx, r in enumerate(rubric):
-                        extract_math_segments(
-                            f"{pf.name} Q{q.get('no')}.rubric[{r_idx}]",
-                            r.get("step"),
-                            tex_items,
-                            errors,
-                        )
+                        r_text = r.get("label") if isinstance(r.get("label"), str) and r.get("label").strip() else r.get("step")
+                        if not isinstance(r_text, str) or not r_text.strip():
+                            errors.append(f"{pf.name} Q{q.get('no')}.rubric[{r_idx}]: 缺少非空 label 文本")
+                        else:
+                            extract_math_segments(
+                                f"{pf.name} Q{q.get('no')}.rubric[{r_idx}]",
+                                r_text,
+                                tex_items,
+                                errors,
+                            )
                 for fig in q.get("figures") or []:
                     src = norm_rel(str(fig.get("src", "")))
                     if not file_exists(src):
@@ -490,7 +537,7 @@ def stage_exported_course(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="经研·水力学 创意工坊 .jypack.zip 检验与打包工具")
+    parser = argparse.ArgumentParser(description="鲸研·水力学 创意工坊 .jypack.zip 检验与打包工具")
     src_group = parser.add_mutually_exclusive_group(required=True)
     src_group.add_argument("--src", type=Path, help="待打包的资源包根目录（需包含 manifest.json）")
     src_group.add_argument("--export-course", help="从 web/public/data 导出指定内置科目 ID（如 hhu-814）")
@@ -498,7 +545,7 @@ def main() -> int:
     parser.add_argument("--year", type=int, help="配合 --export-course 使用：仅导出单年试卷为 exam 包")
     parser.add_argument("--pack-id", help="覆盖导出时的 manifest.packId")
     parser.add_argument("--version", default="1.0.0", help="导出时写入的包版本号（默认 1.0.0）")
-    parser.add_argument("--author", default="经研社区贡献者", help="导出时写入的作者署名")
+    parser.add_argument("--author", default="鲸研社区贡献者", help="导出时写入的作者署名")
     parser.add_argument("--license", default="仅供个人考研复习与学术交流使用（非商业）", help="导出时写入的许可声明")
     parser.add_argument("--out", type=Path, required=True, help="输出 .jypack.zip 文件路径")
     parser.add_argument("--to-webp", action="store_true", help="将包内 PNG/JPG 图片自动压缩转为 WebP")

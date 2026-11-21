@@ -21,6 +21,16 @@ import type {
 const SAFE_PACK_ID_RE = /^[a-z0-9][a-z0-9_-]{2,47}$/;
 const SAFE_COURSE_ID_RE = /^[a-z0-9][a-z0-9_-]{1,31}$/;
 const VALID_PACK_TYPES = new Set<WorkshopPackType>(['course', 'exam', 'character']);
+const VALID_QUESTION_TYPES = new Set([
+  'judge',
+  'single_choice',
+  'multi_choice',
+  'fill',
+  'term',
+  'short',
+  'calc',
+  'proof',
+]);
 const MAX_ZIP_BYTES = 60 * 1024 * 1024;
 const MAX_UNZIPPED_BYTES = 60 * 1024 * 1024;
 const MAX_FILES = 600;
@@ -401,12 +411,34 @@ export async function parseAndValidateWorkshopZip(
         if (q.no !== expectedNo) {
           errors.push(`${pPath}: 第 ${idx + 1} 题的 no 应为 ${expectedNo}（实际为 ${q.no}）`);
         }
+        if (!VALID_QUESTION_TYPES.has(q.type)) {
+          errors.push(`${pPath} Q${q.no}: 不支持的题型 ${String(q.type)}`);
+        }
         scoreSum += Number(q.score ?? 0);
         if (validChapterNums.size > 0 && !validChapterNums.has(q.chapter)) {
           errors.push(`${pPath} Q${q.no}: chapter=${q.chapter} 不在 chapters.json 定义中`);
         }
+        const qLabel = `${paper.year} Q${q.no}`;
+        let normRubric = q.rubric;
         if (Array.isArray(q.rubric) && q.rubric.length > 0) {
-          const rSum = q.rubric.reduce((s, r) => s + Number(r.pts ?? 0), 0);
+          let rSum = 0;
+          normRubric = q.rubric.map((r, rIdx) => {
+            const rawStep = (r as { step?: unknown }).step;
+            const label =
+              typeof r.label === 'string' && r.label.trim()
+                ? r.label.trim()
+                : typeof rawStep === 'string' && rawStep.trim()
+                  ? rawStep.trim()
+                  : '';
+            if (!label) {
+              errors.push(`${pPath} Q${q.no}.rubric[${rIdx}]: 缺少非空采分点 label`);
+            } else {
+              checkTextAndMath(`${qLabel}.rubric[${rIdx}]`, label, errors);
+            }
+            const pts = Number(r.pts ?? 0);
+            rSum += pts;
+            return { label, pts };
+          });
           if (rSum !== q.score) {
             errors.push(`${pPath} Q${q.no}: rubric 采分点总和 ${rSum} != 题分 ${q.score}`);
           }
@@ -432,7 +464,6 @@ export async function parseAndValidateWorkshopZip(
           return { ...f, src: cleanSrc };
         });
 
-        const qLabel = `${paper.year} Q${q.no}`;
         checkTextAndMath(`${qLabel}.title`, q.title, errors);
         checkTextAndMath(`${qLabel}.stem`, q.stem, errors);
         checkTextAndMath(`${qLabel}.note`, q.note, errors);
@@ -448,6 +479,7 @@ export async function parseAndValidateWorkshopZip(
         return {
           ...q,
           id: `${safeCourse}-${paper.year}-${String(q.no).padStart(2, '0')}`,
+          rubric: normRubric,
           figures: normFigures,
           analysisFigures: normAnalysisFigures,
         };

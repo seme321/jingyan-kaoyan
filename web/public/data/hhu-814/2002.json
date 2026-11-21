@@ -1,0 +1,1045 @@
+{
+  "year": 2002,
+  "code": "814",
+  "subject": "水力学",
+  "school": "河海大学",
+  "totalScore": 100,
+  "durationMinutes": 180,
+  "calculatorAllowed": false,
+  "examNotes": [
+    "满分 100 分，考试时间 180 分钟，闭卷笔试。",
+    "除特别说明外，统一取重力加速度 g = 9.81 m/s²，水密度 ρ = 1000 kg/m³，水银密度 ρm = 13600 kg/m³。",
+    "题型与分值：一、判断题（10×1=10 分）；二、选择题（10×1=10 分）；三、计算题（共 7 题，12+12+10+12+12+10+12=80 分）。",
+    "原排版卷局部明显笔误（如第 12 题‘相加’→‘相交’、第 20 题‘避免粗糙度’→‘壁面粗糙度’、第 24 题‘14.7m’→‘14.7cm’、第 27 题‘m·s’→‘m/s’）已勘误并保留说明。"
+  ],
+  "sections": [
+    {
+      "id": "judge",
+      "title": "一、判断题",
+      "description": "共 10 小题，每小题 1 分，共 10 分。",
+      "range": [
+        1,
+        10
+      ],
+      "scorePerQuestion": 1,
+      "totalScore": 10
+    },
+    {
+      "id": "single_choice",
+      "title": "二、选择题",
+      "description": "共 10 小题，每小题 1 分，共 10 分。",
+      "range": [
+        11,
+        20
+      ],
+      "scorePerQuestion": 1,
+      "totalScore": 10
+    },
+    {
+      "id": "calc",
+      "title": "三、计算题",
+      "description": "共 7 小题（12+12+10+12+12+10+12 分），共 80 分。",
+      "range": [
+        21,
+        27
+      ],
+      "totalScore": 80
+    }
+  ],
+  "questions": [
+    {
+      "id": "2002-01",
+      "year": 2002,
+      "no": 1,
+      "type": "judge",
+      "score": 1,
+      "title": "真空状态与相对压强正负号判别",
+      "stem": "当液体发生真空时，其相对压强必小于零。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "√",
+      "judgeAnswer": true,
+      "answer": "√（正确）",
+      "analysis": "相对压强定义为绝对压强与当地大气压之差：$p_r = p_{\\text{abs}} - p_a$。当液体发生真空时，其绝对压强小于当地大气压强（$p_{\\text{abs}} < p_a$），故相对压强 $p_r < 0$（真空压强 $p_v = p_a - p_{\\text{abs}} = -p_r > 0$）。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 2,
+      "kps": [
+        "静水压强基本方程",
+        "真空高度(真空度)"
+      ],
+      "method": "物理概念定义辨析",
+      "difficulty": 1
+    },
+    {
+      "id": "2002-02",
+      "year": 2002,
+      "no": 2,
+      "type": "judge",
+      "score": 1,
+      "title": "边界层内外液体黏滞性与理想液体假设适用区辨析",
+      "stem": "边界层内的液流，其粘滞性可以忽略，因此可以看作是理想液体的运动。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "×",
+      "judgeAnswer": false,
+      "answer": "×（错误）",
+      "analysis": "流体绕固体边界流动时，紧贴壁面的**边界层内**流速从壁面零流速急剧变化到外缘主流流速，流速梯度 $\\frac{\\partial u}{\\partial y}$ 很大，黏滞切应力 $\\tau = \\mu\\frac{\\partial u}{\\partial y}$ 与惯性力同量级，**不可忽略**；恰恰是**边界层外**的势流区流速梯度极小，黏滞性才可忽略并按理想液体处理。",
+      "analysisFigures": [],
+      "pitfalls": "易把“边界层外可作理想液体”偷换为“边界层内”。",
+      "chapter": 4,
+      "kps": [
+        "理想液体假设",
+        "断面流速分布"
+      ],
+      "method": "概念偷换词辨析",
+      "difficulty": 1
+    },
+    {
+      "id": "2002-03",
+      "year": 2002,
+      "no": 3,
+      "type": "judge",
+      "score": 1,
+      "title": "紊流粗糙区同种材料管径减小对阻力系数与水头损失的影响",
+      "stem": "在紊流粗糙区中，对同一种材料的管道，管径越小，则沿程水头损失越小，系数 $\\lambda$ 越大。",
+      "note": "部分流传参考答案仅依据‘$d$ 减小使相对粗糙度 $\\Delta/d$ 增大、$\\lambda$ 增大’而标为 √，未审查前半句‘沿程水头损失越小’。按题干所印文字，由达西公式 $h_f=\\lambda\\frac{l}{d}\\frac{v^2}{2g}=\\lambda\\frac{8lQ^2}{\\pi^2 g d^5}$ 可知，$d$ 减小时 $\\lambda$ 增大且分母减小，无论给定流速还是流量，沿程水头损失均增大而非减小，故应判为 ×（若原考卷实际印作‘沿程水头损失系数 $\\lambda$ 越大’，则仅该半句结论成立）。",
+      "figures": [],
+      "shortAnswer": "×",
+      "judgeAnswer": false,
+      "answer": "×（错误）",
+      "analysis": "在紊流粗糙区（阻力平方区），沿程水头损失系数 $\\lambda$ 仅取决于相对粗糙度 $\\Delta/d$（$\\frac{1}{\\sqrt{\\lambda}} = 2\\lg\\frac{3.7d}{\\Delta}$）。同一种材料的管道绝对粗糙度 $\\Delta$ 相同，管径 $d$ 越小时 $\\Delta/d$ 越大，故 $\\lambda$ 确实越大；但由达西公式：\n\n$$\nh_f = \\lambda\\frac{l}{d}\\frac{v^2}{2g} = \\lambda\\frac{8lQ^2}{\\pi^2 g d^5}\n$$\n\n可知，无论是给定管长与流速还是给定管长与流量，管径 $d$ 减小同时导致 $\\lambda$ 增大与分母 $d$（或 $d^5$）减小，因此沿程水头损失 $h_f$ 必然**增大**而非减小。题干前半句错误，故整题判为错误。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 4,
+      "kps": [
+        "紊流阻力分区",
+        "达西-韦斯巴赫公式",
+        "沿程水头损失规律"
+      ],
+      "method": "概念偷换词辨析",
+      "difficulty": 2
+    },
+    {
+      "id": "2002-04",
+      "year": 2002,
+      "no": 4,
+      "type": "judge",
+      "score": 1,
+      "title": "紊流与层流过水断面流速分布均匀度比较",
+      "stem": "在同样的边界条件下，紊流过水断面上的流速分布比层流要均匀。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "√",
+      "judgeAnswer": true,
+      "answer": "√（正确）",
+      "analysis": "紊流中流体微团存在剧烈的横向脉动混掺，使高速核心区与近壁低速区之间发生强烈的动量交换，从而拉平断面流速剖面（呈对数律或 $1/7$ 次方律），比仅靠分子黏滞力传递动量的层流抛物线型流速分布更加均匀（动能校正系数 $\\alpha_{\\text{紊}} < \\alpha_{\\text{层}}$）。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 4,
+      "kps": [
+        "断面流速分布",
+        "雷诺数与流态判别"
+      ],
+      "method": "物理概念定义辨析",
+      "difficulty": 1
+    },
+    {
+      "id": "2002-05",
+      "year": 2002,
+      "no": 5,
+      "type": "judge",
+      "score": 1,
+      "title": "圆管紊流均匀流在轴线与管壁处的紊流附加切应力特性",
+      "stem": "紊流均匀流在管轴线和管壁处的紊流附加切应力均等于零。",
+      "note": "部分流传参考答案第 5 题漏印答案，经由对称性与壁面无滑移条件严格验证为 √。",
+      "figures": [],
+      "shortAnswer": "√",
+      "judgeAnswer": true,
+      "answer": "√（正确）",
+      "analysis": "紊流总切应力由黏滞切应力与雷诺紊流附加切应力组成：$\\tau = \\tau_v + \\tau_t = \\mu\\frac{d\\bar{u}}{dy} - \\rho\\overline{u_x'u_r'}$。\n\n1. 在**管轴线处**（$r=0$）：由轴对称性，总切应力 $\\tau = \\tau_0\\frac{r}{r_0} = 0$ 且时均流速梯度 $\\frac{d\\bar{u}}{dr}=0$（即 $\\tau_v = 0$），故紊流附加切应力 $\\tau_t = 0$；\n2. 在**固体管壁处**（$y=0$）：受固体边界无滑移和不可穿透条件约束，脉动流速 $u_x' = u_r' = 0$，故紊流附加切应力 $\\tau_t = -\\rho\\overline{u_x'u_r'} = 0$（壁面切应力 $\\tau_0$ 全部由黏性底层内的黏滞切应力承担）。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 4,
+      "kps": [
+        "圆管均匀流切应力分布",
+        "断面流速分布"
+      ],
+      "method": "物理概念定义辨析",
+      "difficulty": 2
+    },
+    {
+      "id": "2002-06",
+      "year": 2002,
+      "no": 6,
+      "type": "judge",
+      "score": 1,
+      "title": "有压管道总水头线与测压管水头线沿程变化规律",
+      "stem": "管道总流的总水头线沿流程下降，而测压管水头沿程可升可降。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "√",
+      "judgeAnswer": true,
+      "answer": "√（正确）",
+      "analysis": "无水泵等外部能量输入时，实际黏性液体流动总存在水头损失 $h_w > 0$，故总水头 $H = z + \\frac{p}{\\rho g} + \\frac{\\alpha v^2}{2g}$ 沿流向必定不断减小（总水头线单调下降）。测压管水头 $H_p = z + \\frac{p}{\\rho g} = H - \\frac{\\alpha v^2}{2g}$；当管道渐扩使流速减小、动能转化为压能且流速水头减幅大于水头损失时，测压管水头线沿程可以上升，故可升可降。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 3,
+      "kps": [
+        "总水头线与测压管水头线",
+        "恒定总流能量方程"
+      ],
+      "method": "总水头线与测压管水头线判据",
+      "difficulty": 1
+    },
+    {
+      "id": "2002-07",
+      "year": 2002,
+      "no": 7,
+      "type": "judge",
+      "score": 1,
+      "title": "缓流与急流区断面单位能量随水深变化规律",
+      "stem": "缓流时断面单位能量随水深的增大而增加，急流时断面单位能量随水深的增大而减小。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "√",
+      "judgeAnswer": true,
+      "answer": "√（正确）",
+      "analysis": "流量一定时，断面单位能量 $E_s = h + \\frac{\\alpha Q^2}{2gA^2}$ 对水深求导得 $\\frac{dE_s}{dh} = 1 - Fr^2$。当水流为缓流时，$Fr < 1$（$h > h_c$），$\\frac{dE_s}{dh} > 0$，故 $E_s$ 随水深 $h$ 增大而增加；当水流为急流时，$Fr > 1$（$h < h_c$），$\\frac{dE_s}{dh} < 0$，故 $E_s$ 随水深 $h$ 增大而减小。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 8,
+      "kps": [
+        "断面单位能量(比能)",
+        "弗劳德数判急缓流"
+      ],
+      "method": "比能沿程导数判别法",
+      "difficulty": 1
+    },
+    {
+      "id": "2002-08",
+      "year": 2002,
+      "no": 8,
+      "type": "judge",
+      "score": 1,
+      "title": "渗流模型流速与真实孔隙流速数值关系辨析",
+      "stem": "渗流模型流速与真实渗流流速数值相等。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "×",
+      "judgeAnswer": false,
+      "answer": "×（错误）",
+      "analysis": "渗流模型假定液体充满土体全部过水断面 $A$（含土颗粒骨架与孔隙），而实际渗流仅在有效孔隙面积 $A_v = nA$（孔隙率 $n < 1$）中流动。由流量相等原则 $Q = vA = uA_v$，渗流模型流速（达西流速）$v = nu < u$，数值上小于真实孔隙平均流速 $u$。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 11,
+      "kps": [
+        "渗流流速与实际流速",
+        "达西定律与适用范围"
+      ],
+      "method": "物理概念定义辨析",
+      "difficulty": 1
+    },
+    {
+      "id": "2002-09",
+      "year": 2002,
+      "no": 9,
+      "type": "judge",
+      "score": 1,
+      "title": "水击波传播周期与水击相长概念混淆辨析",
+      "stem": "水击波传播的一个周期为 $2L/C$。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "×",
+      "judgeAnswer": false,
+      "answer": "×（错误）",
+      "analysis": "水击波从阀门传至上游水库再反射回阀门经历路程 $2L$，所需时间 $T_r = \\frac{2L}{c}$ 称为**一个水击相长**；经历增压与降压正负交替的**一个完整水击周期**需要往返两次，即 $T = 2T_r = \\frac{4L}{c}$（其中 $C$ 即水击波速 $c$）。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 6,
+      "kps": [
+        "有压管道水击(水锤)",
+        "直接与间接水击判别"
+      ],
+      "method": "水击相长判别与儒氏公式",
+      "difficulty": 1
+    },
+    {
+      "id": "2002-10",
+      "year": 2002,
+      "no": 10,
+      "type": "judge",
+      "score": 1,
+      "title": "液流运动相似的速度与加速度矢量完备条件",
+      "stem": "两个液流只要在相应点的速度和加速度的大小成比例，则两个液流就是运动相似。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "×",
+      "judgeAnswer": false,
+      "answer": "×（错误）",
+      "analysis": "运动相似（在几何相似的前提下）要求模型与原型在**所有对应点、对应时刻**的速度矢量和加速度矢量不仅**大小成固定比例**，而且**方向也必须相同**（流线几何相似）。仅大小成比例而方向不同时，两液流并不运动相似。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 13,
+      "kps": [
+        "弗劳德相似准则"
+      ],
+      "method": "物理概念定义辨析",
+      "difficulty": 1
+    },
+    {
+      "id": "2002-11",
+      "year": 2002,
+      "no": 11,
+      "type": "single_choice",
+      "score": 1,
+      "title": "由切应力与流速梯度实测数据表判别流体本构类型",
+      "stem": "切应力 $\\tau$ 与流速梯度符合下列关系的液体为\n\n$$\n\\begin{array}{|c|c|c|c|c|c|}\n\\hline\ndu/dy & 0 & 0.3 & 0.6 & 0.9 & 1.2 \\\\\n\\hline\n\\tau & 0 & 3 & 4 & 6 & 8 \\\\\n\\hline\n\\end{array}\n$$",
+      "options": [
+        {
+          "label": "A",
+          "text": "非牛顿液体"
+        },
+        {
+          "label": "B",
+          "text": "理想液体"
+        },
+        {
+          "label": "C",
+          "text": "牛顿液体"
+        },
+        {
+          "label": "D",
+          "text": "宾汉液体"
+        }
+      ],
+      "choiceAnswer": "A",
+      "note": "原卷表格中 $du/dy=0.3$ 处印为 $\\tau=3$（其后 $0.6, 0.9, 1.2$ 对应 $4, 6, 8$），使得比值 $\\tau/(du/dy)$ 分别为 $10, 6.67, 6.67, 6.67$ 并非常数，且屈服应力 $\\tau_0=0$，故严格按表格数据应判为非牛顿液体（A）；若原卷排印意图是将首项 $2$ 误印为 $3$（等差数列 $0,2,4,6,8$），则对应牛顿液体（C），部分流传参考答案即按后者误选 C 而未校验首项比值。",
+      "figures": [],
+      "shortAnswer": "A",
+      "judgeAnswer": null,
+      "answer": "A. 非牛顿液体",
+      "analysis": "由表中数据依次检验本构特征：\n\n1. 当 $du/dy = 0$ 时 $\\tau = 0$，无初始屈服切应力，排除宾汉液体（D）；\n2. 流动时切应力 $\\tau \\neq 0$，存在黏性内摩擦，排除理想液体（B）；\n3. 检验 $\\tau$ 与 $du/dy$ 的比值（即表观动力黏度 $\\mu = \\frac{\\tau}{du/dy}$）：\n   - $du/dy = 0.3$ 时，$\\frac{\\tau}{du/dy} = \\frac{3}{0.3} = 10$；\n   - $du/dy = 0.6$ 时，$\\frac{\\tau}{du/dy} = \\frac{4}{0.6} \\approx 6.67$；\n   - $du/dy = 0.9$、$1.2$ 时，$\\frac{\\tau}{du/dy} \\approx 6.67$。\n\n可见 $\\tau$ 与 $du/dy$ 不满足过原点的严格线性关系（$\\mu$ 随剪切率变化），不符合牛顿内摩擦定律，因此属于**非牛顿液体**（A）。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 1,
+      "kps": [
+        "牛顿内摩擦定律",
+        "理想液体假设"
+      ],
+      "method": "物理概念定义辨析",
+      "difficulty": 2
+    },
+    {
+      "id": "2002-12",
+      "year": 2002,
+      "no": 12,
+      "type": "single_choice",
+      "score": 1,
+      "title": "恒定流场时空不变性与流线性质判别",
+      "stem": "在恒定流中",
+      "options": [
+        {
+          "label": "A",
+          "text": "流线一定相互平行"
+        },
+        {
+          "label": "B",
+          "text": "断面平均流速必定沿程不变"
+        },
+        {
+          "label": "C",
+          "text": "不同瞬时流线有可能相交"
+        },
+        {
+          "label": "D",
+          "text": "同一点处不同时刻的动水压强相等"
+        }
+      ],
+      "choiceAnswer": "D",
+      "note": "原卷选项 C 将“相交”误排为“相加”，已予勘误修正。",
+      "figures": [],
+      "shortAnswer": "D",
+      "judgeAnswer": null,
+      "answer": "D. 同一点处不同时刻的动水压强相等",
+      "analysis": "恒定流定义为空间任一固定点处的流速、动水压强等所有运动要素均不随时间变化（$\\frac{\\partial}{\\partial t} = 0$），故 D 正确。A、B 均为**均匀流**特征；恒定流流线形状与位置不随时间改变且不同流线互不相交，故 C 错误。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 3,
+      "kps": [
+        "恒定流与均匀流判别",
+        "流线与迹线"
+      ],
+      "method": "核心基本概念记忆",
+      "difficulty": 1
+    },
+    {
+      "id": "2002-13",
+      "year": 2002,
+      "no": 13,
+      "type": "single_choice",
+      "score": 1,
+      "title": "圆管均匀层流流量增大时各水力参数变化判断",
+      "stem": "一管道均匀层流，当流量增加时，下列错误的是",
+      "options": [
+        {
+          "label": "A",
+          "text": "沿程水头损失系数 $\\lambda$ 增大"
+        },
+        {
+          "label": "B",
+          "text": "沿程水头损失增大"
+        },
+        {
+          "label": "C",
+          "text": "边界切应力增大"
+        },
+        {
+          "label": "D",
+          "text": "水力坡度增大"
+        }
+      ],
+      "choiceAnswer": "A",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "A",
+      "judgeAnswer": null,
+      "answer": "A. 沿程水头损失系数 $\\lambda$ 增大",
+      "analysis": "在圆管均匀层流中，当管径 $d$ 与黏度 $\\nu$ 一定、流量 $Q$ 增大时：\n\n1. 雷诺数 $Re = \\frac{vd}{\\nu} = \\frac{4Q}{\\pi d\\nu}$ 增大，而层流 $\\lambda = \\frac{64}{Re}$，因此 $\\lambda$ **减小**而非增大，故 A 错误（符合题意）；\n2. 由哈根-泊肃叶公式 $h_f = \\frac{128\\nu l Q}{\\pi g d^4}$，流量 $Q$ 增大则 $h_f$ 线性增大（B 正确）；\n3. 水力坡度 $J = \\frac{h_f}{l}$ 与边壁切应力 $\\tau_0 = \\rho g R J$ 均随之增大（C、D 正确）。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 4,
+      "kps": [
+        "圆管层流哈根-泊肃叶定律",
+        "圆管均匀流切应力分布"
+      ],
+      "method": "圆管切应力线性分布性质",
+      "difficulty": 2
+    },
+    {
+      "id": "2002-14",
+      "year": 2002,
+      "no": 14,
+      "type": "single_choice",
+      "score": 1,
+      "title": "流量与水温一定时管径减小对雷诺数的影响",
+      "stem": "当输水管道的流量和水温一定时，水流雷诺数随管径的减小而",
+      "options": [
+        {
+          "label": "A",
+          "text": "增大"
+        },
+        {
+          "label": "B",
+          "text": "减小"
+        },
+        {
+          "label": "C",
+          "text": "不变"
+        },
+        {
+          "label": "D",
+          "text": "不定"
+        }
+      ],
+      "choiceAnswer": "A",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "A",
+      "judgeAnswer": null,
+      "answer": "A. 增大",
+      "analysis": "圆管雷诺数用流量表示为：\n\n$$\nRe = \\frac{vd}{\\nu} = \\frac{4Q}{\\pi d\\nu}\n$$\n\n流量 $Q$ 一定且水温不变（即运动黏度 $\\nu$ 为常数）时，$Re$ 与管径 $d$ 成反比，故管径 $d$ 减小则雷诺数 $Re$ **增大**。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 4,
+      "kps": [
+        "雷诺数与流态判别"
+      ],
+      "method": "核心基本概念记忆",
+      "difficulty": 1
+    },
+    {
+      "id": "2002-15",
+      "year": 2002,
+      "no": 15,
+      "type": "single_choice",
+      "score": 1,
+      "title": "有压管流负压区与测压管水头线位置判据",
+      "stem": "管流的负压区是指测压管水头线",
+      "options": [
+        {
+          "label": "A",
+          "text": "在基准面以下的部分"
+        },
+        {
+          "label": "B",
+          "text": "在下游自由水面以下的部分"
+        },
+        {
+          "label": "C",
+          "text": "在管轴线以下的部分"
+        },
+        {
+          "label": "D",
+          "text": "在基准面以上的部分"
+        }
+      ],
+      "choiceAnswer": "C",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "C",
+      "judgeAnswer": null,
+      "answer": "C. 在管轴线以下的部分",
+      "analysis": "测压管水头为 $H_p = z + \\frac{p}{\\rho g}$，其中 $z$ 为管道中心线（管轴线）的位置高程。当测压管水头线位于**管轴线以下**时，$H_p < z \\Rightarrow \\frac{p}{\\rho g} < 0$，表明管内动水压强小于大气压，出现真空（负压）。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 6,
+      "kps": [
+        "总水头线与测压管水头线",
+        "真空高度(真空度)"
+      ],
+      "method": "总水头线与测压管水头线判据",
+      "difficulty": 1
+    },
+    {
+      "id": "2002-16",
+      "year": 2002,
+      "no": 16,
+      "type": "single_choice",
+      "score": 1,
+      "title": "按相对堰厚 δ/H 判别溢流堰流类型",
+      "stem": "有一溢流堰，堰顶厚度为 $2\\,\\mathrm{m}$，堰上水头为 $2\\,\\mathrm{m}$，则该堰流属于",
+      "options": [
+        {
+          "label": "A",
+          "text": "薄壁堰流"
+        },
+        {
+          "label": "B",
+          "text": "宽顶堰流"
+        },
+        {
+          "label": "C",
+          "text": "实用堰流"
+        },
+        {
+          "label": "D",
+          "text": "明渠水流"
+        }
+      ],
+      "choiceAnswer": "C",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "C",
+      "judgeAnswer": null,
+      "answer": "C. 实用堰流",
+      "analysis": "由相对堰顶厚度 $\\frac{\\delta}{H}$ 划分堰流类型：$\\frac{\\delta}{H} < 0.67$ 为薄壁堰，$0.67 \\le \\frac{\\delta}{H} \\le 2.5$ 为实用堰，$2.5 < \\frac{\\delta}{H} \\le 10$ 为宽顶堰。本题 $\\frac{\\delta}{H} = \\frac{2}{2} = 1.0 \\in [0.67, 2.5]$，故属于**实用堰流**。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 9,
+      "kps": [
+        "堰流分类与基本流量公式"
+      ],
+      "method": "堰流与闸孔出流判别及流量公式",
+      "difficulty": 1
+    },
+    {
+      "id": "2002-17",
+      "year": 2002,
+      "no": 17,
+      "type": "single_choice",
+      "score": 1,
+      "title": "有压渗流流网形状的决定因素",
+      "stem": "有压渗流流网的形状与下列哪个因素有关",
+      "options": [
+        {
+          "label": "A",
+          "text": "上游水位"
+        },
+        {
+          "label": "B",
+          "text": "渗透系数"
+        },
+        {
+          "label": "C",
+          "text": "上下游水位差"
+        },
+        {
+          "label": "D",
+          "text": "边界的几何形状"
+        }
+      ],
+      "choiceAnswer": "D",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "D",
+      "judgeAnswer": null,
+      "answer": "D. 边界的几何形状",
+      "analysis": "均质各向同性土层中的恒定有压渗流满足拉普拉斯方程 $\\nabla^2 H = 0$，流网（流线族与等水头线族）的几何形状**仅取决于渗流区域的边界几何形状**，而与渗透系数 $k$、上游水位及上下游水位差 $\\Delta H$ 无关。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 11,
+      "kps": [
+        "平面渗流流网"
+      ],
+      "method": "核心基本概念记忆",
+      "difficulty": 1
+    },
+    {
+      "id": "2002-18",
+      "year": 2002,
+      "no": 18,
+      "type": "single_choice",
+      "score": 1,
+      "title": "有压管道水击波分析的基本力学假设",
+      "stem": "在水击研究中，必须认为",
+      "options": [
+        {
+          "label": "A",
+          "text": "液体是可压缩的，管道是刚体"
+        },
+        {
+          "label": "B",
+          "text": "液体是不可压缩的，管道是弹性体"
+        },
+        {
+          "label": "C",
+          "text": "液体和管道都是弹性体"
+        },
+        {
+          "label": "D",
+          "text": "液体是不可压缩的，管道是刚体"
+        }
+      ],
+      "choiceAnswer": "C",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "C",
+      "judgeAnswer": null,
+      "answer": "C. 液体和管道都是弹性体",
+      "analysis": "水击现象的本质是压强弹性波以有限波速 $c = \\sqrt{\\frac{K/\\rho}{1 + \\frac{Kd}{E\\delta}}}$ 在管道中传播，该波速同时由液体的体积弹性模量 $K$（液体可压缩弹性）和管壁材料的弹性模量 $E$（管道弹性变形）共同决定，必须认为**液体和管道都是弹性体**。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 6,
+      "kps": [
+        "有压管道水击(水锤)"
+      ],
+      "method": "核心基本概念记忆",
+      "difficulty": 1
+    },
+    {
+      "id": "2002-19",
+      "year": 2002,
+      "no": 19,
+      "type": "single_choice",
+      "score": 1,
+      "title": "表征惯性力与黏滞力之比的无量纲准数",
+      "stem": "惯性力与粘滞力之比的无量纲数是",
+      "options": [
+        {
+          "label": "A",
+          "text": "佛汝德数 $F_r$"
+        },
+        {
+          "label": "B",
+          "text": "欧拉数 $E_u$"
+        },
+        {
+          "label": "C",
+          "text": "雷诺数 $R_e$"
+        },
+        {
+          "label": "D",
+          "text": "斯特哈罗数 $S_t$"
+        }
+      ],
+      "choiceAnswer": "C",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "C",
+      "judgeAnswer": null,
+      "answer": "C. 雷诺数 $R_e$",
+      "analysis": "雷诺数 $Re = \\frac{vd}{\\nu} = \\frac{\\rho v^2 l^2}{\\mu v l}$ 表征惯性力与黏滞力之比；弗劳德数 $Fr$ 表征惯性力与重力之比；欧拉数 $Eu$ 表征压力与惯性力之比；斯特劳哈尔数 $St$ 表征当地惯性力与迁移惯性力之比。",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 13,
+      "kps": [
+        "雷诺相似准则",
+        "雷诺数与流态判别"
+      ],
+      "method": "核心基本概念记忆",
+      "difficulty": 1
+    },
+    {
+      "id": "2002-20",
+      "year": 2002,
+      "no": 20,
+      "type": "single_choice",
+      "score": 1,
+      "title": "同管径同粗糙度同雷诺数下输水与输油管沿程损失比较",
+      "stem": "$A$、$B$ 两根管道，$A$ 管输水，$B$ 管输油，其长度 $L$、管径 $d$、壁面粗糙度 $k_s$ 和雷诺数 $R_e$ 都相同，则沿程水头损失之间的关系为",
+      "options": [
+        {
+          "label": "A",
+          "text": "$h_{fA} = h_{fB}$"
+        },
+        {
+          "label": "B",
+          "text": "$h_{fA} > h_{fB}$"
+        },
+        {
+          "label": "C",
+          "text": "$h_{fA} < h_{fB}$"
+        },
+        {
+          "label": "D",
+          "text": "不能确定"
+        }
+      ],
+      "choiceAnswer": "C",
+      "note": "原卷将“壁面粗糙度”误印为“避免粗糙度”，已予勘误修正。",
+      "figures": [],
+      "shortAnswer": "C",
+      "judgeAnswer": null,
+      "answer": "C. $h_{fA} < h_{fB}$",
+      "analysis": "两管管径 $d$ 与壁面粗糙度 $k_s$ 相同（故相对粗糙度 $k_s/d$ 相等），且雷诺数 $Re$ 相同，则沿程阻力系数 $\\lambda = f(Re, k_s/d)$ 必相等，即 $\\lambda_A = \\lambda_B$。\n\n又由 $Re = \\frac{vd}{\\nu}$ 相同且 $d$ 相同，有 $v = \\frac{Re\\cdot\\nu}{d} \\propto \\nu$。常温下油的运动黏度大于水（$\\nu_B > \\nu_A$），故输油管流速更大（$v_B > v_A$）。代入达西公式 $h_f = \\lambda\\frac{L}{d}\\frac{v^2}{2g}$，得 $h_{fA} < h_{fB}$。",
+      "analysisFigures": [],
+      "pitfalls": "易误以为 Re 和 ks/d 相等（即 λ 相等）就推出 hf 相等，忽略了黏度不同导致 Re 相等时流速 v 不同。",
+      "chapter": 4,
+      "kps": [
+        "达西-韦斯巴赫公式",
+        "雷诺数与流态判别",
+        "沿程水头损失规律"
+      ],
+      "method": "物理概念定义辨析",
+      "difficulty": 2
+    },
+    {
+      "id": "2002-21",
+      "year": 2002,
+      "no": 21,
+      "type": "calc",
+      "score": 12,
+      "title": "部分淹没直立平面闸门两侧静水总压力合成计算",
+      "stem": "图示为泄水洞进口设置一直立平面闸门 $AB$，门高 $a=3\\,\\mathrm{m}$，门宽 $b=2\\,\\mathrm{m}$，门顶 $A$ 在水下的深度 $h_1=4\\,\\mathrm{m}$，上下游水位差 $h_2=5.2\\,\\mathrm{m}$。求闸门所受的静水总压力的大小和方向。",
+      "note": "",
+      "figures": [
+        {
+          "src": "figures/2002/q21_orig.webp",
+          "caption": "题 21 图"
+        }
+      ],
+      "shortAnswer": "$P = 291.95\\,\\mathrm{kN}$（精确值 $291945.6\\,\\mathrm{N}$），方向水平向右",
+      "judgeAnswer": null,
+      "answer": "$P = 291.95\\,\\mathrm{kN}$，方向水平向右",
+      "analysis": "解题思路：闸门左侧全门板受上游静水压力作用，右侧部分淹没于下游水中，需分别计算左右两侧静水总压力后再求合力。\n\n1. **求闸门左侧所受静水总压力 $P_{\\text{左}}$**\n\n门顶 $A$ 淹深 $h_1 = 4\\,\\mathrm{m}$，门底 $B$ 淹深 $h_1 + a = 7\\,\\mathrm{m}$，形心淹深 $h_{c1} = h_1 + \\frac{a}{2} = 4 + 1.5 = 5.5\\,\\mathrm{m}$，受压面积 $A = ab = 3\\times 2 = 6\\,\\mathrm{m}^2$。\n\n$$\nP_{\\text{左}} = \\rho g h_{c1} A = 1000\\times 9.81\\times 5.5\\times 6 = 323730\\,\\mathrm{N} = 323.73\\,\\mathrm{kN} \\quad (\\text{方向水平向右})\n$$\n\n2. **求闸门右侧所受静水总压力 $P_{\\text{右}}$**\n\n下游水面高出门底 $B$ 的水深为：\n\n$$\nh_{\\text{右}} = (h_1 + a) - h_2 = 4 + 3 - 5.2 = 1.8\\,\\mathrm{m}\n$$\n\n该受压面为高 $1.8\\,\\mathrm{m}$、宽 $2\\,\\mathrm{m}$ 的直立矩形，其上缘与下游自由液面齐平（形心淹深 $h_{c2} = \\frac{1.8}{2} = 0.9\\,\\mathrm{m}$）：\n\n$$\nP_{\\text{右}} = \\frac{1}{2}\\rho g h_{\\text{右}}^2 b = \\frac{1}{2}\\times 1000\\times 9.81\\times 1.8^2\\times 2 = 31784.4\\,\\mathrm{N} = 31.78\\,\\mathrm{kN} \\quad (\\text{方向水平向左})\n$$\n\n3. **求闸门所受净静水总压力 $P$**\n\n$$\nP = P_{\\text{左}} - P_{\\text{右}} = 323730 - 31784.4 = 291945.6\\,\\mathrm{N} \\approx 291.95\\,\\mathrm{kN}\n$$\n\n方向为**水平向右**（附加校核：合力作用线位于门底 $B$ 以上约 $1.45\\,\\mathrm{m}$ 处）。",
+      "analysisFigures": [
+        {
+          "src": "figures/2002/q21_sol.webp",
+          "caption": "第 21 题解析示意图"
+        }
+      ],
+      "pitfalls": "注意辨清 $h_2 = 5.2\\,\\mathrm{m}$ 是“上下游水位差”而非门底以上下游水深，下游浸水深度应由 $(h_1+a)-h_2 = 1.8\\,\\mathrm{m}$ 求得。",
+      "chapter": 2,
+      "kps": [
+        "平面静水总压力"
+      ],
+      "method": "平面总压力形心法/分块合成法",
+      "difficulty": 2,
+      "rubric": [
+        {
+          "label": "计算左侧受压面积与形心淹深 hc1 = 5.5 m，求得 P左 = 323.73 kN（向右）",
+          "pts": 5
+        },
+        {
+          "label": "求得下游挡水深度 h右 = 4 + 3 - 5.2 = 1.8 m 及 P右 = 31.78 kN（向左）",
+          "pts": 4
+        },
+        {
+          "label": "合成求得净静水总压力 P = 291.95 kN 并指出方向水平向右",
+          "pts": 3
+        }
+      ]
+    },
+    {
+      "id": "2002-22",
+      "year": 2002,
+      "no": 22,
+      "type": "calc",
+      "score": 12,
+      "title": "有压管道末端喷嘴射流冲击力与水箱水头反算",
+      "stem": "自水箱引出一水平管段，长度 $L=15\\,\\mathrm{m}$，直径 $D=0.06\\,\\mathrm{m}$，末端接一喷嘴，喷嘴出口的直径 $d=0.02\\,\\mathrm{m}$，如图所示。已知射流作用于铅直放置的平板 $A$ 上的水平力 $F=31.4\\,\\mathrm{N}$。求水箱水头 $H$。（设管段沿程水头损失系数 $\\lambda=0.04$，喷嘴局部水头损失系数 $\\zeta_1=0.2$，管道进口局部水头损失系数 $\\zeta_2=0.1$，各系数均对应于流速水头 $v^2/(2g)$，动能校正系数和动量校正系数均为 $1.0$。）",
+      "note": "",
+      "figures": [
+        {
+          "src": "figures/2002/q22_orig.webp",
+          "caption": "题 22 图"
+        }
+      ],
+      "shortAnswer": "$H = 5.74\\,\\mathrm{m}$（精确值 $5.742\\,\\mathrm{m}$）",
+      "judgeAnswer": null,
+      "answer": "$H = 5.74\\,\\mathrm{m}$",
+      "analysis": "1. **由平板射流动量方程求喷嘴出口流速 $v_1$ 与管内流速 $v$**\n\n取射流冲击平板转折区为控制体（以水平向右为 $x$ 正方向），平板对射流的作用力 $R_x = F = 31.4\\,\\mathrm{N}$（方向水平向左）。因射流沿平板对称向四周散开，出流 $x$ 向动量为零：\n\n$$\n-F = \\rho Q (0 - v_1) = -\\rho A_1 v_1^2 = -\\rho\\left(\\frac{\\pi}{4}d^2\\right)v_1^2\n$$\n\n解得喷嘴出口射流流速：\n\n$$\nv_1 = \\sqrt{\\frac{F}{\\rho\\frac{\\pi}{4}d^2}} = \\sqrt{\\frac{31.4}{1000\\times \\frac{\\pi}{4}\\times 0.02^2}} = 9.9975\\,\\mathrm{m/s} \\approx 10.00\\,\\mathrm{m/s}\n$$\n\n由连续性方程 $v \\frac{\\pi}{4}D^2 = v_1 \\frac{\\pi}{4}d^2$，求得直径为 $D$ 的水平管段内流速：\n\n$$\nv = v_1\\left(\\frac{d}{D}\\right)^2 = 9.9975\\times\\left(\\frac{0.02}{0.06}\\right)^2 = \\frac{9.9975}{9} = 1.1108\\,\\mathrm{m/s}\n$$\n\n2. **列水箱液面至喷嘴出口的能量方程求水头 $H$**\n\n以水平管中心线为基准面，水箱液面及喷嘴自由出口压强均取相对压强为零，且两局部阻力系数 $\\zeta_1$、$\\zeta_2$ 均按管内流速水头 $v^2/(2g)$ 计：\n\n$$\nH + 0 + 0 = 0 + 0 + \\frac{v_1^2}{2g} + \\left(\\lambda\\frac{L}{D} + \\zeta_1 + \\zeta_2\\right)\\frac{v^2}{2g}\n$$\n\n代入数值（$\\lambda\\frac{L}{D} = 0.04\\times\\frac{15}{0.06} = 10$）：\n\n$$\nH = \\frac{9.9975^2}{2\\times 9.81} + (10 + 0.2 + 0.1)\\times\\frac{1.1108^2}{2\\times 9.81} = 5.0943 + 10.3\\times 0.06289 = 5.742\\,\\mathrm{m} \\approx 5.74\\,\\mathrm{m}\n$$\n\n（注：若计算中取 $\\pi \\approx 3.14$ 得 $v_1 = 10.0\\,\\mathrm{m/s}$，则 $H = 5.745\\,\\mathrm{m}$；部分资料因中间四舍五入记为 $5.73\\,\\mathrm{m}$。）",
+      "analysisFigures": [
+        {
+          "src": "figures/2002/q22_sol.webp",
+          "caption": "第 22 题解析示意图"
+        }
+      ],
+      "pitfalls": "注意题目明确说明 $\\zeta_1$、$\\zeta_2$ 均对应管内流速水头 $v^2/(2g)$，切勿误用喷嘴出口流速水头 $v_1^2/(2g)$。",
+      "chapter": 3,
+      "kps": [
+        "恒定总流能量方程",
+        "恒定总流动量方程",
+        "孔口与管嘴出流"
+      ],
+      "method": "能量方程求流量+控制体动量方程求反力",
+      "difficulty": 3,
+      "rubric": [
+        {
+          "label": "列喷嘴射流冲击平板的动量方程，求得喷嘴出口流速 v1 ≈ 10.00 m/s",
+          "pts": 4
+        },
+        {
+          "label": "由连续性方程求得管内流速 v = v1(d/D)² ≈ 1.111 m/s",
+          "pts": 3
+        },
+        {
+          "label": "列水箱至喷嘴出口的能量方程并代入沿程及局部阻力系数，求得 H ≈ 5.74 m",
+          "pts": 5
+        }
+      ]
+    },
+    {
+      "id": "2002-23",
+      "year": 2002,
+      "no": 23,
+      "type": "calc",
+      "score": 10,
+      "title": "矩形明渠过升坎流量与坎壁水流作用力计算",
+      "stem": "在矩形断面渠道中有一升坎，坎高 $a=0.5\\,\\mathrm{m}$，坎前水头 $H=1\\,\\mathrm{m}$，坎上水深 $h=0.75\\,\\mathrm{m}$，渠宽 $b=1\\,\\mathrm{m}$，如图所示。水流过坎时的水头损失 $h_w = 0.2\\times v^2/(2g)$（$v$ 为坎上流速）。渠道摩阻力不计。求流量 $Q$ 和坎壁 $AB$ 上的水流作用力 $F$。（取动能校正系数和动量校正系数均为 $1.0$）",
+      "note": "部分流传参考答案第 3 题方程列式正确，但求解能量方程时出现算术误算（给出 $Q=1.935\\,\\mathrm{m^3/s}$、$F'=5.75\\,\\mathrm{kN}$）；严格联立原题方程解得 $Q=1.704\\,\\mathrm{m^3/s}$、$F=6.34\\,\\mathrm{kN}$。",
+      "figures": [
+        {
+          "src": "figures/2002/q23_orig.webp",
+          "caption": "题 23 图"
+        }
+      ],
+      "shortAnswer": "$Q = 1.704\\,\\mathrm{m^3/s}$，$F = 6.34\\,\\mathrm{kN}$（方向水平向右）",
+      "judgeAnswer": null,
+      "answer": "$Q = 1.704\\,\\mathrm{m^3/s}$，$F = 6.34\\,\\mathrm{kN}$（方向水平向右）",
+      "analysis": "1. **连续性方程与能量方程联立求流量 $Q$**\n\n坎前断面 $1-1$ 水深 $h_1 = H + a = 1 + 0.5 = 1.5\\,\\mathrm{m}$，流速记为 $V_1$；坎上断面 $2-2$ 水深 $h = 0.75\\,\\mathrm{m}$，流速记为 $V$。由连续性方程：\n\n$$\nQ = V_1(H+a)b = Vhb \\Rightarrow V_1 = \\frac{h}{H+a}V = \\frac{0.75}{1.5}V = 0.5V\n$$\n\n以坎前渠底 $B$ 所在平面为基准面，列 $1-1$ 至 $2-2$ 断面的能量方程：\n\n$$\n(H+a) + \\frac{V_1^2}{2g} = a + h + \\frac{V^2}{2g} + 0.2\\frac{V^2}{2g}\n$$\n\n消去 $a$ 并代入 $V_1 = 0.5V$：\n\n$$\n1.0 - 0.75 = (1 + 0.2 - 0.25)\\frac{V^2}{2g} = 0.95\\frac{V^2}{2g}\n$$\n\n解得：\n\n$$\nV = \\sqrt{\\frac{0.25\\times 2\\times 9.81}{0.95}} = 2.2723\\,\\mathrm{m/s}, \\qquad V_1 = 1.1361\\,\\mathrm{m/s}\n$$\n\n通过渠道的流量为：\n\n$$\nQ = Vhb = 2.2723\\times 0.75\\times 1 = 1.7042\\,\\mathrm{m^3/s} \\approx 1.70\\,\\mathrm{m^3/s}\n$$\n\n2. **控制体动量方程求坎壁 $AB$ 所受水流作用力 $F$**\n\n取断面 $1-1$ 至 $2-2$ 间水体为控制体，设坎壁 $AB$ 对水流的水平反力 $F'$ 方向向左（以流向向右为 $x$ 正方向），忽略渠道底坡摩阻力，列 $x$ 向动量方程：\n\n$$\nP_1 - P_2 - F' = \\rho Q(V - V_1)\n$$\n\n其中上下游断面静水总压力分别为：\n\n$$\nP_1 = \\frac{1}{2}\\rho g (H+a)^2 b = \\frac{1}{2}\\times 1000\\times 9.81\\times 1.5^2\\times 1 = 11036.25\\,\\mathrm{N} = 11.036\\,\\mathrm{kN}\n$$\n\n$$\nP_2 = \\frac{1}{2}\\rho g h^2 b = \\frac{1}{2}\\times 1000\\times 9.81\\times 0.75^2\\times 1 = 2759.06\\,\\mathrm{N} = 2.759\\,\\mathrm{kN}\n$$\n\n代入动量方程得：\n\n$$\nF' = 11036.25 - 2759.06 - 1000\\times 1.7042\\times(2.2723 - 1.1361) = 6340.9\\,\\mathrm{N} \\approx 6.34\\,\\mathrm{kN}\n$$\n\n根据作用力与反作用力关系，水流对坎壁 $AB$ 的作用力 $F = F' = 6.34\\,\\mathrm{kN}$，方向**水平向右**。",
+      "analysisFigures": [
+        {
+          "src": "figures/2002/q23_sol.webp",
+          "caption": "第 23 题解析示意图"
+        }
+      ],
+      "pitfalls": "列能量方程时坎上断面位置高程为 $a$，其水位高程为 $a+h$（与坎前水深 $H+a$ 比较即得势能差 $H-h=0.25\\,\\mathrm{m}$）；动量方程控制体中下游压力 $P_2$ 仅取坎上水流深度 $h$ 的静水压力，坎壁垂直面 $AB$ 的水压力已整体计入固体反力 $F'$ 中。",
+      "chapter": 3,
+      "kps": [
+        "恒定总流能量方程",
+        "恒定总流动量方程",
+        "弯管/底坎水流作用力"
+      ],
+      "method": "能量方程求流量+控制体动量方程求反力",
+      "difficulty": 3,
+      "rubric": [
+        {
+          "label": "建立连续性方程求得 V1 = 0.5V，列坎前至坎上能量方程解得 V = 2.272 m/s 与 Q = 1.704 m³/s",
+          "pts": 5
+        },
+        {
+          "label": "计算上下游断面静水总压力 P1 = 11.04 kN 与 P2 = 2.76 kN",
+          "pts": 2
+        },
+        {
+          "label": "列控制体 x 向动量方程解得水流对坎壁 AB 的作用力 F = 6.34 kN（水平向右）",
+          "pts": 3
+        }
+      ]
+    },
+    {
+      "id": "2002-24",
+      "year": 2002,
+      "no": 24,
+      "type": "calc",
+      "score": 12,
+      "title": "密闭水箱配水银测压计与四分之一圆柱曲面静水总压力计算",
+      "stem": "有一密闭水箱，其右下方接一圆柱体，横断面如图所示。圆柱体长度 $L=1.0\\,\\mathrm{m}$（垂直于纸面方向），圆柱半径 $R=0.5\\,\\mathrm{m}$，$A$ 点距水箱顶部 $0.5\\,\\mathrm{m}$。在距水箱顶部 $0.3\\,\\mathrm{m}$ 的 $C$ 点处接一 U 形水银测压计，水银面高差 $\\Delta h=14.7\\,\\mathrm{cm}$，其他尺寸见图。要求：\n\n（1）绘出 $AB$ 曲面上静水总压力水平分力的压强分布图及垂直分力的压力体图；\n\n（2）计算 $AB$ 曲面上的静水总压力的大小及方向。",
+      "note": "原排版真题将“$C$ 点处”误印为“$C$ 点出”、水银面高差“$14.7\\,\\mathrm{cm}$”误印为“$14.7\\,\\mathrm{m}$”（按工程实际及参考答案 $h_A = 13.6\\times 0.147 \\approx 2\\,\\mathrm{m}$ 勘误为 $14.7\\,\\mathrm{cm}$）；另由图面尺寸 $0.3\\,\\mathrm{m}+0.2\\,\\mathrm{m}=0.5\\,\\mathrm{m}$ 与题干“$A$ 点距水箱顶部 $0.5\\,\\mathrm{m}$”可知，测压计左侧水银液面与 $A$ 点严格等高（原粗绘示意图将 $A$ 标注略偏下，重绘图已依尺寸对齐）。",
+      "figures": [
+        {
+          "src": "figures/2002/q24_orig.webp",
+          "caption": "题 24 图"
+        }
+      ],
+      "shortAnswer": "（1）见解析附图；（2）$P = 15.12\\,\\mathrm{kN}$，方向过圆心 $O$ 斜向右下方、与水平面夹角 $\\theta = 43.12^\\circ$",
+      "judgeAnswer": null,
+      "answer": "（1）见解析附图；（2）$P = 15.12\\,\\mathrm{kN}$，方向过圆心 $O$ 斜向右下方，与水平面呈 $43.12^\\circ$",
+      "analysis": "首先由 U 形水银测压计确定 $A$ 点静水压强水头 $h_A$。由题干知 $A$ 点距水箱顶 $0.5\\,\\mathrm{m}$，由图知测压计接点 $C$ 距顶 $0.3\\,\\mathrm{m}$、其下至左侧水银面为 $0.2\\,\\mathrm{m}$，故左侧水银-水交界面与 $A$ 点位于同一水平等压面上（$0.3+0.2=0.5\\,\\mathrm{m}$）。测压计右管开口于大气（图中 $p_0$ 即当地大气压，相对压强为零），取左侧水银面为等压面：\n\n$$\np_A = \\rho_m g \\Delta h \\Rightarrow h_A = \\frac{p_A}{\\rho g} = \\frac{\\rho_m}{\\rho}\\Delta h = 13.6\\times 0.147 = 1.9992\\,\\mathrm{m} \\approx 2.00\\,\\mathrm{m}\n$$\n\n即等效自由液面位于 $A$ 点上方 $h_A = 2.00\\,\\mathrm{m}$ 处。\n\n（1）**水平压强分布图与垂直压力体图**\n\n- **水平压强分布图**：$AB$ 在铅直平面上的投影高为 $R=0.5\\,\\mathrm{m}$，压强从 $A$ 点的 $p_A = \\rho g h_A$ 线性增大至 $B$ 点的 $p_B = \\rho g(h_A+R)$，呈梯形分布，方向水平向右；\n- **垂直压力体图**：水体位于四分之一圆弧 $AB$ 的上方（左上方水箱内），故垂直分力为**实压力体**，由曲面 $AB$、$A$ 点铅垂线、$B$ 点铅垂线及等效自由液面围成（即宽 $R$、高 $h_A+R$ 的矩形扣除四分之一圆），方向竖直向下。图形见解析附图。\n\n（2）**计算 $AB$ 曲面静水总压力的大小和方向**\n\n- **水平分力 $P_x$**（取 $h_A = 2.00\\,\\mathrm{m}$；若不四舍五入取 $1.9992\\,\\mathrm{m}$ 结果为 $11.03\\,\\mathrm{kN}$）：\n\n$$\nP_x = \\rho g\\left(h_A + \\frac{R}{2}\\right)RL = 1000\\times 9.81\\times(2.00 + 0.25)\\times 0.5\\times 1.0 = 11036.25\\,\\mathrm{N} \\approx 11.04\\,\\mathrm{kN} \\quad (\\text{水平向右})\n$$\n\n- **垂直分力 $P_z$**：\n\n$$\nV = \\left[(h_A + R)R - \\frac{1}{4}\\pi R^2\\right]L = \\left[(2.00+0.5)\\times 0.5 - \\frac{\\pi}{4}\\times 0.5^2\\right]\\times 1.0 = 1.05365\\,\\mathrm{m^3}\n$$\n\n$$\nP_z = \\rho g V = 1000\\times 9.81\\times 1.05365 = 10336.3\\,\\mathrm{N} \\approx 10.34\\,\\mathrm{kN} \\quad (\\text{竖直向下})\n$$\n\n- **静水总压力 $P$ 及其方向**：\n\n$$\nP = \\sqrt{P_x^2 + P_z^2} = \\sqrt{11.0363^2 + 10.3363^2} = 15.121\\,\\mathrm{kN} \\approx 15.12\\,\\mathrm{kN}\n$$\n\n$$\n\\theta = \\arctan\\frac{P_z}{P_x} = \\arctan\\frac{10.3363}{11.0363} = 43.12^\\circ\n$$\n\n方向为**过圆柱圆心 $O$ 斜向右下方**，与水平面夹角为 $43.12^\\circ$。",
+      "analysisFigures": [
+        {
+          "src": "figures/2002/q24_sol.webp",
+          "caption": "第 24 题解析示意图（水平压强分布图与垂直压力体图）"
+        }
+      ],
+      "pitfalls": "注意先利用水银压差计求出密闭水箱在 $A$ 点处的测压管水头 $h_A$（等效自由液面高出 $A$ 点 $2.00\\,\\mathrm{m}$），再以等效自由液面为顶界作水平压强分布图与实压力体图。",
+      "chapter": 2,
+      "kps": [
+        "U形水银压差计测压",
+        "圆柱曲面静水总压力",
+        "压力体图与虚压力体"
+      ],
+      "method": "等效自由液面+水平投影与铅垂压力体合成法",
+      "difficulty": 3,
+      "rubric": [
+        {
+          "label": "由U形水银测压计等压面方程求得 A 点压强水头 hA = 2.00 m（等效自由液面高程）",
+          "pts": 3
+        },
+        {
+          "label": "正确绘制水平梯形压强分布图与垂直实压力体图（矩形扣除四分之一圆）",
+          "pts": 3
+        },
+        {
+          "label": "算得水平分力 Px = 11.04 kN（向右）与垂直分力 Pz = 10.34 kN（向下）",
+          "pts": 4
+        },
+        {
+          "label": "合成求得总压力 P = 15.12 kN，方向过圆心斜向右下方与水平面呈 43.12°",
+          "pts": 2
+        }
+      ]
+    },
+    {
+      "id": "2002-25",
+      "year": 2002,
+      "no": 25,
+      "type": "calc",
+      "score": 12,
+      "title": "平面流速场的连续性、有旋性、流函数及单宽流量计算",
+      "stem": "已知平面流动的流速为 $u_x = x^2 + 2x - 4y$，$u_y = -2xy - 2y$，要求：\n\n（1）检查是否连续；\n\n（2）检查是否无旋；\n\n（3）证明是否存在流函数及流速势函数，如存在，求其函数式；\n\n（4）求点 $A(2,3)$、$B(2,1)$ 间的单宽流量为多少。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "（1）连续；（2）有旋（$\\omega_z = 2 - y \\neq 0$）；（3）存在流函数 $\\psi = x^2 y + 2xy - 2y^2 + C$，不存在流速势函数；（4）$q_{AB} = 0$（两质点位于同一条流线上）",
+      "judgeAnswer": null,
+      "answer": "（1）连续；（2）有旋；（3）流函数 $\\psi = x^2 y + 2xy - 2y^2 + C$，无势函数；（4）单宽流量为 $0$",
+      "analysis": "（1）**检查连续性**\n\n代入不可压缩平面流连续性微分方程：\n\n$$\n\\frac{\\partial u_x}{\\partial x} + \\frac{\\partial u_y}{\\partial y} = (2x + 2) + (-2x - 2) = 0\n$$\n\n满足连续性方程，故该流动**连续**。\n\n（2）**检查无旋性**\n\n计算绕 $z$ 轴的旋转角速度：\n\n$$\n\\omega_z = \\frac{1}{2}\\left(\\frac{\\partial u_y}{\\partial x} - \\frac{\\partial u_x}{\\partial y}\\right) = \\frac{1}{2}\\left[-2y - (-4)\\right] = 2 - y \\not\\equiv 0\n$$\n\n故该流动为**有旋流动**（不是无旋流）。\n\n（3）**证明并求解流函数 $\\psi$ 与流速势函数 $\\varphi$**\n\n- 由于流场满足不可压缩连续性方程，$-u_y\\,dx + u_x\\,dy$ 为全微分，故**流函数 $\\psi$ 存在**：\n\n$$\nd\\psi = \\frac{\\partial\\psi}{\\partial x}dx + \\frac{\\partial\\psi}{\\partial y}dy = -u_y\\,dx + u_x\\,dy = (2xy + 2y)\\,dx + (x^2 + 2x - 4y)\\,dy\n$$\n\n对 $x$ 偏积分得 $\\psi = x^2 y + 2xy + f(y)$，对 $y$ 求偏导并与 $u_x$ 对比：\n\n$$\n\\frac{\\partial\\psi}{\\partial y} = x^2 + 2x + f'(y) = x^2 + 2x - 4y \\Rightarrow f'(y) = -4y \\Rightarrow f(y) = -2y^2 + C\n$$\n\n因此流函数为：\n\n$$\n\\psi(x, y) = x^2 y + 2xy - 2y^2 + C\n$$\n\n- 由于 $\\omega_z = 2 - y \\neq 0$（有旋流动），不满足势函数存在条件，故**流速势函数 $\\varphi$ 不存在**。\n\n（4）**求点 $A(2,3)$ 与 $B(2,1)$ 间的单宽流量 $q_{AB}$**\n\n分别计算两点处的流函数值：\n\n$$\n\\psi_A = \\psi(2, 3) = 2^2\\times 3 + 2\\times 2\\times 3 - 2\\times 3^2 + C = 12 + 12 - 18 + C = 6 + C\n$$\n\n$$\n\\psi_B = \\psi(2, 1) = 2^2\\times 1 + 2\\times 2\\times 1 - 2\\times 1^2 + C = 4 + 4 - 2 + C = 6 + C\n$$\n\n故两流线之间的单宽流量为：\n\n$$\nq_{AB} = |\\psi_A - \\psi_B| = |(6+C) - (6+C)| = 0\n$$\n\n（几何意义：$A(2,3)$ 与 $B(2,1)$ 恰好位于同一条流线 $\\psi = 6 + C$ 上；沿直线 $x=2, y\\in[1,3]$ 流速 $u_x = 8-4y$ 在 $y=2$ 上下正负对称抵消，净通量为零。）",
+      "analysisFigures": [],
+      "pitfalls": "旋转角速度 $\\omega_z$ 非零仅说明无速度势 $\\varphi$，但只要连续性方程成立，流函数 $\\psi$ 依然存在。",
+      "chapter": 5,
+      "kps": [
+        "平面不可压缩流连续性方程",
+        "无旋流判据",
+        "流函数与速度势函数求解"
+      ],
+      "method": "不可压与无旋偏导检验+偏积分求原函数法",
+      "difficulty": 2,
+      "rubric": [
+        {
+          "label": "检验 ∂ux/∂x + ∂uy/∂y = 0，判定流动连续",
+          "pts": 2
+        },
+        {
+          "label": "计算旋转角速度 ωz = 2 - y ≠ 0，判定为有旋流动",
+          "pts": 3
+        },
+        {
+          "label": "证明存在流函数并积分求得 ψ = x²y + 2xy - 2y² + C，同时说明因有旋不存在势函数 φ",
+          "pts": 4
+        },
+        {
+          "label": "代入 A(2,3) 与 B(2,1) 求得 ψA = ψB = 6 + C，得出单宽流量 qAB = 0",
+          "pts": 3
+        }
+      ]
+    },
+    {
+      "id": "2002-26",
+      "year": 2002,
+      "no": 26,
+      "type": "calc",
+      "score": 10,
+      "title": "矩形断面引水渡槽均匀流由曼宁公式反算底坡与出口高程",
+      "stem": "有一矩形断面引水渡槽，底宽 $B=1.5\\,\\mathrm{m}$，槽长 $L=116.5\\,\\mathrm{m}$，进口处槽底高程 $Z_1=52.06\\,\\mathrm{m}$，槽身为普通混凝土，糙率 $0.014$。当通过设计流量 $Q=10.5\\,\\mathrm{m^3/s}$ 时，槽中均匀流水深 $h_0=2.56\\,\\mathrm{m}$，求渡槽出口底部高程 $Z_2$。",
+      "note": "",
+      "figures": [],
+      "shortAnswer": "$Z_2 = 51.71\\,\\mathrm{m}$（精确值 $51.707\\,\\mathrm{m}$）",
+      "judgeAnswer": null,
+      "answer": "$Z_2 = 51.71\\,\\mathrm{m}$",
+      "analysis": "1. **计算矩形断面的水力要素**\n\n- 过水断面面积：$A = B h_0 = 1.5 \\times 2.56 = 3.84\\,\\mathrm{m^2}$\n- 湿周：$\\chi = B + 2h_0 = 1.5 + 2\\times 2.56 = 6.62\\,\\mathrm{m}$\n- 水力半径：$R = \\frac{A}{\\chi} = \\frac{3.84}{6.62} \\approx 0.5801\\,\\mathrm{m}$\n\n2. **由谢才—曼宁公式反求渡槽底坡 $i$**\n\n谢才系数：\n\n$$\nC = \\frac{1}{n}R^{1/6} = \\frac{1}{0.014}\\times(0.5801)^{1/6} \\approx 65.23\\,\\mathrm{m^{0.5}/s}\n$$\n\n代入明渠均匀流公式 $Q = CA\\sqrt{Ri}$：\n\n$$\ni = \\left(\\frac{Q}{CA\\sqrt{R}}\\right)^2 = \\left(\\frac{10.5}{65.23\\times 3.84\\times\\sqrt{0.5801}}\\right)^2 \\approx 0.003029\n$$\n\n3. **计算渡槽出口底部高程 $Z_2$**\n\n沿程高程降落 $\\Delta Z = iL = 0.003029\\times 116.5 \\approx 0.3529\\,\\mathrm{m}$，故：\n\n$$\nZ_2 = Z_1 - iL = 52.06 - 0.3529 = 51.7071\\,\\mathrm{m} \\approx 51.71\\,\\mathrm{m}\n$$",
+      "analysisFigures": [],
+      "pitfalls": "",
+      "chapter": 7,
+      "kps": [
+        "梯形断面水力要素",
+        "明渠均匀流曼宁公式"
+      ],
+      "method": "水力要素计算+曼宁公式+水力深度Fr判据",
+      "difficulty": 2,
+      "rubric": [
+        {
+          "label": "算得过水面积 A = 3.84 m²、湿周 χ = 6.62 m 与水力半径 R = 0.580 m",
+          "pts": 3
+        },
+        {
+          "label": "由曼宁—谢才公式求得 C ≈ 65.23 m⁰·⁵/s 及底坡 i ≈ 0.003029",
+          "pts": 4
+        },
+        {
+          "label": "利用 Z2 = Z1 - iL 算得渡槽出口底部高程 Z2 ≈ 51.71 m",
+          "pts": 3
+        }
+      ]
+    },
+    {
+      "id": "2002-27",
+      "year": 2002,
+      "no": 27,
+      "type": "calc",
+      "score": 12,
+      "title": "平板拖曳双层静止液体层流的交界流速、切应力分布图及内摩擦力计算",
+      "stem": "图示为一面积 $A=1200\\,\\mathrm{cm^2}$ 的平板在液面以上以 $v=0.5\\,\\mathrm{m/s}$ 的速度作水平移动，使平板下的液体作层流运动。液体分两层，它们的动力粘滞系数与厚度分别为 $\\mu_1=0.142\\,\\mathrm{(N\\cdot s)/m^2}$，$h_1=1\\,\\mathrm{mm}$；$\\mu_2=0.235\\,\\mathrm{(N\\cdot s)/m^2}$，$h_2=1.4\\,\\mathrm{mm}$。两液层内的流速均按直线分布。试绘制平板间液体的流速分布图和切应力分布图，并求平板上所受的内摩擦力 $F$。",
+      "note": "原排版真题将“$v=0.5\\,\\mathrm{m/s}$”误印为“$v=0.5\\,\\mathrm{m\\cdot s}$”，已予勘误修正。",
+      "figures": [
+        {
+          "src": "figures/2002/q27_orig.webp",
+          "caption": "题 27 图"
+        }
+      ],
+      "shortAnswer": "交界面流速 $v' = 0.229\\,\\mathrm{m/s}$，切应力 $\\tau = 38.46\\,\\mathrm{Pa}$，内摩擦力 $F = 4.62\\,\\mathrm{N}$（精确值 $4.616\\,\\mathrm{N}$）；流速与切应力分布图见解析附图",
+      "judgeAnswer": null,
+      "answer": "$F = 4.62\\,\\mathrm{N}$（分布图见解析附图）",
+      "analysis": "1. **求两液层交界面处的流速 $v'$**\n\n因两层液体内流速均呈直线分布，且均在全高做平面层流均匀剪切流动，故上下两层内的切应力处处相等，且在两液体交界面处满足切应力连续条件：\n\n$$\n\\tau = \\mu_1\\frac{v - v'}{h_1} = \\mu_2\\frac{v' - 0}{h_2}\n$$\n\n代入已知量（$h_1 = 0.001\\,\\mathrm{m},\\; h_2 = 0.0014\\,\\mathrm{m}$）：\n\n$$\n0.142\\times\\frac{0.5 - v'}{0.001} = 0.235\\times\\frac{v'}{0.0014}\n$$\n\n$$\n142(0.5 - v') = 167.857 v' \\Rightarrow 309.857 v' = 71 \\Rightarrow v' = 0.22914\\,\\mathrm{m/s} \\approx 0.229\\,\\mathrm{m/s}\n$$\n\n2. **计算切应力 $\\tau$ 与平板所受内摩擦力 $F$**\n\n$$\n\\tau = \\mu_2\\frac{v'}{h_2} = 0.235\\times\\frac{0.22914}{0.0014} = 38.462\\,\\mathrm{Pa}\n$$\n\n平板面积 $A = 1200\\,\\mathrm{cm^2} = 0.12\\,\\mathrm{m^2}$，所受内摩擦力为：\n\n$$\nF = \\tau A = 38.462\\times 0.12 = 4.6155\\,\\mathrm{N} \\approx 4.62\\,\\mathrm{N} \\quad (\\text{若先取 } v'=0.229\\,\\mathrm{m/s}\\text{ 则得 } 4.618\\,\\mathrm{N})\n$$\n\n3. **绘制流速分布图与切应力分布图**\n\n- **流速分布图**：底壁无滑移 $u=0$，下层（$\\mu_2$）线性增至交界面 $v'=0.229\\,\\mathrm{m/s}$（梯度 $\\frac{du}{dy}=163.7\\,\\mathrm{s^{-1}}$），上层（$\\mu_1$）以更陡斜率线性增至平板速度 $v=0.5\\,\\mathrm{m/s}$（梯度 $\\frac{du}{dy}=270.9\\,\\mathrm{s^{-1}}$），在交界面处呈折线转折；\n- **切应力分布图**：两层内部 $\\tau = 38.46\\,\\mathrm{Pa}$ 为竖直矩形常数分布。详见解析附图。",
+      "analysisFigures": [
+        {
+          "src": "figures/2002/q27_sol.webp",
+          "caption": "第 27 题解析示意图（流速分布图与切应力分布图）"
+        }
+      ],
+      "pitfalls": "注意两层液体虽然流速梯度在交界面处突变（$\\mu_1 < \\mu_2 \\Rightarrow (du/dy)_1 > (du/dy)_2$），但切应力 $\\tau$ 沿铅垂方向连续且为常数。",
+      "chapter": 1,
+      "kps": [
+        "牛顿内摩擦定律",
+        "双层液体平板剪切流"
+      ],
+      "method": "分层液体切应力连续与速度叠加法",
+      "difficulty": 2,
+      "rubric": [
+        {
+          "label": "由交界面切应力连续条件 μ1(v - v')/h1 = μ2 v'/h2 求得交界流速 v' = 0.229 m/s",
+          "pts": 4
+        },
+        {
+          "label": "算得液体切应力 τ = 38.46 Pa 及平板内摩擦力 F ≈ 4.62 N（精确值 4.616 N）",
+          "pts": 4
+        },
+        {
+          "label": "正确绘制分段折线形流速分布图与均匀矩形切应力分布图",
+          "pts": 4
+        }
+      ]
+    }
+  ]
+}
