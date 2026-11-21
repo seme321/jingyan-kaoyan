@@ -1,6 +1,6 @@
 # 鲸研专业课 · 多院校考研专业课真题精解复习站
 
-> **线上访问**：[https://jingyan.h0mura.de5.net](https://jingyan.h0mura.de5.net)（Cloudflare Workers Static Assets）  
+> **在线预览**：[https://jingyan.h0mura.de5.net](https://jingyan.h0mura.de5.net)  
 > **非官方、非营利个人学习工具** —— 与任何高校研究生院、考试机构或商业培训平台均无隶属或合作关系。
 
 ## 当前已上线板块
@@ -14,29 +14,33 @@
 
 - **双轴正交刷题**：支持按年份整卷、按考纲章节、按通用解题方法与考点精准筛选刷题；
 - **180 分钟全真模考**：客观题自动判分，计算/推导/简答题支持分步采分点勾选自评并生成成绩单；
-- **多板块分仓持久化**：基于 `Vite 6 + React 19 + TypeScript + KaTeX` 纯静态 PWA 架构，学习进度、错题本、私人笔记按 `courseId` 隔离存于浏览器本地 `localStorage`（支持全量 JSON 导入/导出备份）。
+- **创意工坊扩展模块（`.jypack.zip`）**：支持一键安装或本地导入新增高校专业课包（`course`）、单年真题补充包（`exam`）以及自定义看板娘/三阶干员角色包（`character`，支持即装即用或小鱼干卡池抽取），全部持久化存放在浏览器 IndexedDB 中，离线可用、随时启停；
+- **多板块分仓持久化**：基于 `Vite + React 19 + TypeScript + KaTeX` 纯前端 PWA 架构，学习进度、错题本、私人笔记按 `courseId` 隔离存于浏览器本地 `localStorage`（支持全量 JSON 导入/导出备份）。
 
-## 本地开发与校验
+## 本地开发、数据校验与工坊打包
 
 ```powershell
-# 1. 安装前端依赖并启动本地预览（http://localhost:5173/）
+# 1. 安装前端依赖并启动纯前端本地预览（http://localhost:5173/）
 Set-Location web
 npm install
 npm run dev
 
-# 2. 全站数据完整性与 KaTeX 零错校验（需先安装前端依赖）
+# 2. 全站内置题库完整性与 KaTeX 零错校验（根目录执行，需先安装 web/ 依赖）
 node scripts/validate_course.mjs
 
-# 3. 生产静态包构建（输出至 web/dist/）
+# 3. 创意工坊 .jypack.zip 资源包检验与打包（亦支持 --export-course 导出示例包）
+python scripts/pack_workshop.py --src ./my_pack --out ./my_pack.jypack.zip
+
+# 4. 生产纯静态包构建（输出至 web/dist/）
 Set-Location web
 npm run build
-
-# 4. 构建并部署至 Cloudflare Workers Static Assets（需先 cf auth login）
-Set-Location web
-npm run deploy
 ```
 
-更多项目交接说明、数据契约、出图规范与日常修改发版 SOP（GitHub + 橙色云）见 [`docs/`](docs/) 目录及 [`docs/04_日常修改校验与发布上线规范.md`](docs/04_日常修改校验与发布上线规范.md)。
+> [!TIP]
+> 本公开仓库仅包含纯前端应用、题库数据与资源包规范脚本；如在纯静态模式下离线运行，留言板与创意工坊会自动降级为本地模式，不影响刷题、模考与本地导入 `.jypack.zip`。
+
+资源包结构定义、`manifest.json` 协议、真题与 KaTeX 质量规范、角色包制作及打包导出流程，请查阅：
+- [`docs/创意工坊资源包制作与导入规范.md`](docs/创意工坊资源包制作与导入规范.md)
 
 ## 合规说明与署名
 

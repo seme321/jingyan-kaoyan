@@ -93,6 +93,7 @@ export interface CourseMeta {
   examMetaBadge: string;
   status: 'ready' | 'preparing';
   description: string;
+  sourcePackId?: string;
 }
 
 export interface CoursesCatalog {
@@ -264,6 +265,8 @@ export interface CodexCharacter {
   judgeOkQuote: string;
   judgeWarnQuote: string;
   variants: Record<CardVariant, CodexVariantAsset>;
+  sourcePackId?: string;
+  unlockMode?: CharacterUnlockMode;
 }
 
 export interface CodexSpCard {
@@ -277,12 +280,14 @@ export interface CodexSpCard {
   rarity: 'SP';
   sprite: string;
   avatar: string;
+  poses?: Partial<Record<'hero' | 'study' | 'think' | 'cheer', string>>;
   bio: string;
   credit: string;
   greetTemplate: string;
   judgeOkQuote: string;
   judgeWarnQuote: string;
   studyQuotes: string[];
+  sourcePackId?: string;
 }
 
 export interface CodexCatalog {
@@ -420,4 +425,85 @@ export interface AdminGuestbookCounts {
   approved: number;
   inboxAll: number;
   rejected: number;
+}
+
+export type WorkshopPackType = 'course' | 'exam' | 'character';
+export type CharacterUnlockMode = 'direct' | 'gacha';
+export type WorkshopStorageMode = 'd1' | 'url';
+
+export interface WorkshopManifest {
+  schemaVersion: 1;
+  packId: string;
+  type: WorkshopPackType;
+  name: string;
+  version: string;
+  author: string;
+  license: string;
+  summary: string;
+  description?: string;
+  tags?: string[];
+  cover?: string;
+  targetCourseId?: string;
+  unlockMode?: CharacterUnlockMode;
+}
+
+export interface WorkshopPackStats {
+  paperCount?: number;
+  questionCount?: number;
+  figureCount?: number;
+  characterCount?: number;
+  spCardCount?: number;
+}
+
+export interface WorkshopCatalogItem {
+  packId: string;
+  type: WorkshopPackType;
+  name: string;
+  version: string;
+  author: string;
+  summary: string;
+  description: string;
+  license: string;
+  tags: string[];
+  targetCourseId: string;
+  unlockMode: CharacterUnlockMode;
+  storageMode: WorkshopStorageMode;
+  externalUrl?: string;
+  fileName: string;
+  sizeBytes: number;
+  sha256: string;
+  coverDataUrl?: string;
+  stats: WorkshopPackStats;
+  downloads: number;
+  featured: boolean;
+  published: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface WorkshopCoursePayload {
+  course?: CourseMeta;
+  targetCourseId?: string;
+  chapters?: ChaptersPayload;
+  formulas?: FormulaItem[];
+  papers: ExamPaper[];
+}
+
+export interface WorkshopCharacterPayload {
+  unlockMode: CharacterUnlockMode;
+  spCards: CodexSpCard[];
+  characters: CodexCharacter[];
+}
+
+export interface InstalledWorkshopPack {
+  packId: string;
+  manifest: WorkshopManifest;
+  enabled: boolean;
+  source: 'workshop' | 'local';
+  installedAt: string;
+  sizeBytes: number;
+  stats: WorkshopPackStats;
+  coverRelPath?: string;
+  coursePayload?: WorkshopCoursePayload;
+  characterPayload?: WorkshopCharacterPayload;
 }

@@ -22,3 +22,16 @@ Thumbs.db
 web/.cloudflare/
 .dev.vars*
 .env*
+
+# === 本地运维、内部文档与后端部署配置（仅留本地，不上传公开 GitHub）===
+docs_internal/
+scripts_internal/
+/package.json
+/package-lock.json
+/node_modules/
+web/cloudflare.config.ts
+web/vite.cloudflare.config.ts
+web/tsconfig.worker.json
+web/worker/
+web/migrations/
+promo_video/

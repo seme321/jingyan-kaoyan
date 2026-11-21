@@ -3343,6 +3343,435 @@ html[data-theme='light'] .dashboard-table td.heat-4 { background: rgba(242, 190,
   padding: 0.75rem;
 }
 
+/* Course Switcher Workshop Footer Link */
+.course-popover-foot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.55rem;
+  padding: 0.55rem 0.75rem;
+  border-top: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  background: var(--primary-soft);
+  color: var(--sky);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.14s, color 0.14s;
+}
+.course-popover-foot:hover {
+  background: rgba(34, 199, 242, 0.22);
+  color: var(--text-main);
+}
+
+/* ============================================================================
+   WORKSHOP // 创意工坊模块与站长上架面板
+   ============================================================================ */
+.ws-hero-main {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+.ws-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  flex-shrink: 0;
+  padding-top: 0.2rem;
+}
+
+.ws-guide-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  border-left: 3px solid var(--sky);
+}
+
+.ws-guide-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.ws-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.ws-guide-col {
+  padding: 0.85rem 0.95rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-elevated);
+}
+
+.ws-guide-col h3 {
+  margin: 0 0 0.35rem;
+  font-size: 0.88rem;
+  color: var(--text-main);
+}
+
+.ws-guide-col p {
+  margin: 0;
+  font-size: 0.81rem;
+  line-height: 1.58;
+  color: var(--text-muted);
+}
+
+.ws-code-snippet {
+  margin: 0.5rem 0 0;
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-input);
+  color: var(--sky);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  overflow-x: auto;
+}
+
+.ws-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.ws-error-list {
+  margin: 0.45rem 0 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.81rem;
+}
+
+.ws-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.ws-toolbar-right {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.ws-search-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  padding: 0.36rem 0.68rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-input);
+  color: var(--text-muted);
+  min-width: 240px;
+}
+
+.ws-search-box input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-main);
+  font-size: 0.82rem;
+  outline: none;
+}
+
+.ws-mode-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  border: 1px solid var(--border-subtle);
+}
+.ws-mode-pill.online {
+  border-color: rgba(16, 185, 129, 0.35);
+  background: var(--emerald-soft);
+  color: var(--emerald);
+}
+.ws-mode-pill.offline {
+  border-color: var(--border-yellow);
+  background: var(--yellow-soft);
+  color: var(--yellow);
+}
+
+.ws-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.ws-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.72rem;
+  border-top: 2px solid var(--border-strong);
+}
+
+.ws-card.is-featured {
+  border-top-color: var(--yellow);
+}
+
+.ws-card.is-disabled {
+  opacity: 0.76;
+}
+
+.ws-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.ws-card-cover {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-xs);
+  object-fit: cover;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-elevated);
+  flex-shrink: 0;
+}
+
+.ws-card-cover-placeholder {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-elevated);
+  color: var(--sky);
+  flex-shrink: 0;
+}
+.ws-card-cover-placeholder.exam { color: var(--emerald); }
+.ws-card-cover-placeholder.character { color: var(--purple); }
+
+.ws-card-head-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+}
+
+.ws-card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.34rem;
+}
+
+.ws-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.12rem 0.45rem;
+  border-radius: var(--radius-xs);
+  font-size: 0.71rem;
+  font-weight: 700;
+  border: 1px solid var(--border-subtle);
+}
+.ws-badge.course {
+  background: var(--primary-soft);
+  border-color: rgba(34, 199, 242, 0.35);
+  color: var(--sky);
+}
+.ws-badge.exam {
+  background: var(--emerald-soft);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: var(--emerald);
+}
+.ws-badge.character {
+  background: var(--purple-soft);
+  border-color: rgba(167, 139, 250, 0.35);
+  color: var(--purple);
+}
+.ws-badge.unlock {
+  background: var(--yellow-soft);
+  border-color: rgba(244, 196, 48, 0.38);
+  color: var(--yellow);
+}
+.ws-badge.pin {
+  background: var(--yellow);
+  border-color: var(--yellow);
+  color: var(--yellow-ink);
+}
+.ws-badge.enabled {
+  background: var(--emerald-soft);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: var(--emerald);
+}
+.ws-badge.disabled {
+  background: var(--amber-soft);
+  border-color: rgba(245, 158, 11, 0.4);
+  color: var(--amber);
+}
+.ws-badge.update {
+  background: var(--coral-soft);
+  border-color: rgba(244, 63, 94, 0.45);
+  color: var(--coral);
+}
+.ws-badge.neutral {
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+}
+
+.ws-card-title {
+  margin: 0;
+  font-size: 1.03rem;
+  line-height: 1.32;
+  color: var(--text-main);
+}
+
+.ws-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.38rem;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+.ws-card-summary {
+  margin: 0;
+  font-size: 0.87rem;
+  line-height: 1.56;
+  color: var(--text-body);
+}
+
+.ws-card-desc {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.54;
+  color: var(--text-muted);
+  white-space: pre-wrap;
+}
+
+.ws-card-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.ws-stat-chip {
+  padding: 0.16rem 0.52rem;
+  border-radius: var(--radius-xs);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.74rem;
+  font-family: var(--font-mono);
+  color: var(--text-body);
+}
+
+.ws-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.34rem;
+}
+
+.ws-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.48rem;
+  margin-top: auto;
+  padding-top: 0.35rem;
+  border-top: 1px dashed var(--border-subtle);
+}
+
+.ws-progress-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-accent);
+  background: var(--primary-soft);
+}
+
+.ws-progress-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.76rem;
+  color: var(--sky);
+}
+
+/* Workshop Admin Modal */
+.ws-admin-uploader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.72rem;
+  padding: 0.85rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-elevated);
+}
+
+.ws-admin-pick-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.ws-admin-file-meta {
+  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  color: var(--sky);
+}
+
+.ws-admin-preview-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.68rem;
+  padding: 0.82rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-accent);
+  background: var(--bg-surface);
+}
+
+.ws-preview-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.ws-preview-cover {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-xs);
+  object-fit: cover;
+  border: 1px solid var(--border-strong);
+  flex-shrink: 0;
+}
+
+.ws-preview-summary {
+  margin: 0.35rem 0 0;
+  font-size: 0.81rem;
+  color: var(--text-body);
+}
+
+.ws-admin-field-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+
 /* ============================================================================
    RESPONSIVE BREAKPOINTS
    ============================================================================ */
@@ -3364,8 +3793,13 @@ html[data-theme='light'] .dashboard-table td.heat-4 { background: rgba(242, 190,
   .mock-layout,
   .codex-grid,
   .board-layout,
-  .about-grid {
+  .about-grid,
+  .ws-grid,
+  .ws-guide-grid {
     grid-template-columns: 1fr;
+  }
+  .ws-hero-main {
+    flex-direction: column;
   }
   .mock-palette {
     position: static;
@@ -3411,6 +3845,10 @@ html[data-theme='light'] .dashboard-table td.heat-4 { background: rgba(242, 190,
   .gb-admin-login-row,
   .gb-admin-compose-row {
     grid-template-columns: 1fr;
+  }
+  .ws-search-box {
+    width: 100%;
+    min-width: 0;
   }
   .codex-portrait-stage {
     max-width: 200px;

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'jingyan-multi-v21';
+const CACHE_NAME = 'jingyan-multi-v22';
 const PRECACHE_URLS = [
   './',
   './index.html',
@@ -7,6 +7,7 @@ const PRECACHE_URLS = [
   './data/courses.json',
   './data/announcements.json',
   './data/guestbook.json',
+  './data/workshop.json',
   './data/hhu-814/index.json',
   './data/hhu-814/2026.json',
   './data/hhu-814/2025.json',

@@ -12,6 +12,7 @@ import type {
 } from '../types';
 import { useData } from './DataContext';
 import { useStudy } from './StudyContext';
+import { useWorkshopOptional } from './WorkshopContext';
 import {
   ACHIEVEMENTS,
   CHECKIN_REWARDS,
@@ -101,6 +102,7 @@ export interface ActiveMascotInfo {
   color: string;
   sprite: string;
   avatar: string;
+  poses?: Partial<Record<'hero' | 'study' | 'think' | 'cheer', string>>;
   bondXp: number;
   bondLevel: number;
   greetTemplate: string;
@@ -112,6 +114,7 @@ export interface ActiveMascotInfo {
 interface CompanionContextValue {
   catalog: CodexCatalog | null;
   companion: CompanionState;
+  effectiveOwnedCards: Record<string, number>;
   activeMascot: ActiveMascotInfo;
   dailyMissions: MissionProgressItem[];
   weeklyMissions: MissionProgressItem[];
@@ -119,6 +122,8 @@ interface CompanionContextValue {
   claimableCount: number;
   todayPracticedCount: number;
   unlockedCodexCount: number;
+  totalCodexCharacters: number;
+  totalCodexCards: number;
   displayCheckInStreak: number;
   toasts: RewardToast[];
   dismissToast: (id: string) => void;
@@ -323,7 +328,9 @@ const CompanionContext = createContext<CompanionContextValue | null>(null);
 export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { currentCourse, questionsById } = useData();
   const { allCourses, companionState, setCompanionState, subscribeStudyEvent } = useStudy();
-  const [catalog, setCatalog] = useState<CodexCatalog | null>(null);
+  const workshop = useWorkshopOptional();
+  const enabledPacks = useMemo(() => workshop?.enabledPacks ?? [], [workshop?.enabledPacks]);
+  const [baseCatalog, setBaseCatalog] = useState<CodexCatalog | null>(null);
   const [toasts, setToasts] = useState<RewardToast[]>([]);
 
   // Load codex.json lazily
@@ -333,7 +340,7 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       .then((r) => (r.ok ? r.json() : null))
       .then((data: CodexCatalog | null) => {
         if (!cancelled && data && Array.isArray(data.characters)) {
-          setCatalog(data);
+          setBaseCatalog(data);
         }
       })
       .catch(() => {
@@ -343,6 +350,91 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       cancelled = true;
     };
   }, []);
+
+  const { catalog, directUnlockedCardIds } = useMemo(() => {
+    const directSet = new Set<string>(['sp:dafeyu', 'sp:gemini']);
+    if (!baseCatalog) {
+      return { catalog: null as CodexCatalog | null, directUnlockedCardIds: directSet };
+    }
+
+    const spCards: CodexSpCard[] = [...baseCatalog.spCards];
+    const seenSpIds = new Set(spCards.map((s) => s.id));
+    const characters: CodexCharacter[] = [...baseCatalog.characters];
+    const seenCharIds = new Set(characters.map((c) => c.id));
+
+    for (const pack of enabledPacks) {
+      if (pack.manifest.type !== 'character' || !pack.characterPayload) continue;
+      const resolveAsset = (rel: string) =>
+        workshop?.resolvePackBlobUrl(pack.packId, rel) ?? rel;
+      const unlockMode = pack.characterPayload.unlockMode ?? 'direct';
+
+      for (const sp of pack.characterPayload.spCards ?? []) {
+        if (!sp.id || seenSpIds.has(sp.id)) continue;
+        seenSpIds.add(sp.id);
+        directSet.add(sp.id);
+        let resolvedPoses: CodexSpCard['poses'];
+        if (sp.poses) {
+          resolvedPoses = {};
+          for (const k of ['hero', 'study', 'think', 'cheer'] as const) {
+            const pVal = sp.poses[k];
+            if (pVal) resolvedPoses[k] = resolveAsset(pVal);
+          }
+        }
+        spCards.push({
+          ...sp,
+          sprite: resolveAsset(sp.sprite),
+          avatar: resolveAsset(sp.avatar),
+          poses: resolvedPoses,
+          sourcePackId: pack.packId,
+        });
+      }
+
+      for (const ch of pack.characterPayload.characters ?? []) {
+        if (!ch.id || seenCharIds.has(ch.id)) continue;
+        seenCharIds.add(ch.id);
+        const variants = {
+          chibi: {
+            ...ch.variants.chibi,
+            sprite: resolveAsset(ch.variants.chibi.sprite),
+            avatar: resolveAsset(ch.variants.chibi.avatar),
+            sheet: resolveAsset(ch.variants.chibi.sheet),
+          },
+          medium: {
+            ...ch.variants.medium,
+            sprite: resolveAsset(ch.variants.medium.sprite),
+            avatar: resolveAsset(ch.variants.medium.avatar),
+            sheet: resolveAsset(ch.variants.medium.sheet),
+          },
+          standard: {
+            ...ch.variants.standard,
+            sprite: resolveAsset(ch.variants.standard.sprite),
+            avatar: resolveAsset(ch.variants.standard.avatar),
+            sheet: resolveAsset(ch.variants.standard.sheet),
+          },
+        };
+        if (unlockMode !== 'gacha') {
+          directSet.add(variants.chibi.cardId);
+          directSet.add(variants.medium.cardId);
+          directSet.add(variants.standard.cardId);
+        }
+        characters.push({
+          ...ch,
+          variants,
+          sourcePackId: pack.packId,
+          unlockMode,
+        });
+      }
+    }
+
+    return {
+      catalog: {
+        ...baseCatalog,
+        spCards,
+        characters,
+      },
+      directUnlockedCardIds: directSet,
+    };
+  }, [baseCatalog, enabledPacks, workshop]);
 
   // Ensure companion slice is initialized & rolled over on first mount
   useEffect(() => {
@@ -719,12 +811,23 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     });
   }, [companion.weekly, weeklyActiveDaysCount, weeklyMockCount, weeklyPracticedCount]);
 
+  const effectiveOwnedCards = useMemo(() => {
+    const merged: Record<string, number> = { ...companion.ownedCards };
+    for (const cid of directUnlockedCardIds) {
+      merged[cid] = Math.max(1, merged[cid] ?? 0);
+    }
+    return merged;
+  }, [companion.ownedCards, directUnlockedCardIds]);
+
+  const totalCodexCharacters = catalog ? catalog.characters.length : 14;
+  const totalCodexCards = totalCodexCharacters * 3;
+
   const unlockedCodexCount = useMemo(
     () =>
-      Object.entries(companion.ownedCards).filter(
+      Object.entries(effectiveOwnedCards).filter(
         ([cid, cnt]) => !cid.startsWith('sp:') && cnt > 0
       ).length,
-    [companion.ownedCards]
+    [effectiveOwnedCards]
   );
 
   const achievements = useMemo<AchievementProgressItem[]>(() => {
@@ -1094,11 +1197,17 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         };
       }
 
-      // Build candidate pools by variant/rarity
+      // Build candidate pools by variant/rarity (built-in + workshop gacha characters)
+      const gachaChars = catalog.characters.filter(
+        (char) => !(char.sourcePackId && char.unlockMode === 'direct')
+      );
+      if (gachaChars.length === 0) {
+        return { ok: false, message: '卡池暂无可抽取的角色。' };
+      }
       const poolByVariant: Record<CardVariant, Array<{ char: CodexCharacter; variant: CardVariant }>> = {
-        chibi: catalog.characters.map((char) => ({ char, variant: 'chibi' })),
-        medium: catalog.characters.map((char) => ({ char, variant: 'medium' })),
-        standard: catalog.characters.map((char) => ({ char, variant: 'standard' })),
+        chibi: gachaChars.map((char) => ({ char, variant: 'chibi' })),
+        medium: gachaChars.map((char) => ({ char, variant: 'medium' })),
+        standard: gachaChars.map((char) => ({ char, variant: 'standard' })),
       };
 
       const tempOwned = { ...curSnapshot.ownedCards };
@@ -1281,7 +1390,7 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     (cardId: string, payWith: 'fish' | 'vouchers'): { ok: boolean; message: string } => {
       if (!catalog) return { ok: false, message: '图鉴尚未加载完成' };
       const cur = normalizeCompanionPeriods(companionRef.current);
-      if ((cur.ownedCards[cardId] ?? 0) > 0) {
+      if ((cur.ownedCards[cardId] ?? 0) > 0 || directUnlockedCardIds.has(cardId)) {
         return { ok: false, message: '该卡片已收录，无需重复兑换' };
       }
       if (payWith === 'fish' && cur.fish < SELECTOR_COST_FISH) {
@@ -1324,7 +1433,7 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       });
       return { ok: true, message: `已成功解锁「${char.name} · ${char.variants[variant].label}」` };
     },
-    [catalog, pushToast, setCompanionState]
+    [catalog, directUnlockedCardIds, pushToast, setCompanionState]
   );
 
   const giftCharacter = useCallback(
@@ -1416,7 +1525,9 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const equipMascot = useCallback(
     (cardId: string) => {
       const snapshot = normalizeCompanionPeriods(companionRef.current);
-      if ((snapshot.ownedCards[cardId] ?? 0) <= 0 || snapshot.equippedCardId === cardId) {
+      const isOwned =
+        (snapshot.ownedCards[cardId] ?? 0) > 0 || directUnlockedCardIds.has(cardId);
+      if (!isOwned || snapshot.equippedCardId === cardId) {
         return;
       }
 
@@ -1437,7 +1548,8 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
       setCompanionState((prevRaw) => {
         const cur = normalizeCompanionPeriods(prevRaw);
-        if ((cur.ownedCards[cardId] ?? 0) <= 0 || cur.equippedCardId === cardId) return cur;
+        const curOwned = (cur.ownedCards[cardId] ?? 0) > 0 || directUnlockedCardIds.has(cardId);
+        if (!curOwned || cur.equippedCardId === cardId) return cur;
         return { ...cur, equippedCardId: cardId };
       });
 
@@ -1447,7 +1559,7 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         tone: 'ok',
       });
     },
-    [catalog, pushToast, setCompanionState]
+    [catalog, directUnlockedCardIds, pushToast, setCompanionState]
   );
 
   const setApplyGlobally = useCallback(
@@ -1516,8 +1628,8 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   );
 
   const getCardCount = useCallback(
-    (cardId: string) => companion.ownedCards[cardId] ?? 0,
-    [companion.ownedCards]
+    (cardId: string) => effectiveOwnedCards[cardId] ?? 0,
+    [effectiveOwnedCards]
   );
 
   const activeMascot = useMemo<ActiveMascotInfo>(() => {
@@ -1542,10 +1654,11 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
           name: sp.name.replace(/（.*?）/, ''),
           subtitle: sp.subtitle,
           rarity: 'SP',
-          variantLabel: sp.id === 'sp:dafeyu' ? '四姿态' : '协研特绘',
+          variantLabel: sp.id === 'sp:dafeyu' ? '四姿态' : sp.sourcePackId ? '工坊特绘' : '协研特绘',
           color: sp.color,
           sprite: sp.sprite,
           avatar: sp.avatar,
+          poses: sp.poses,
           bondXp,
           bondLevel,
           greetTemplate: sp.greetTemplate,
@@ -1591,6 +1704,7 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       value={{
         catalog,
         companion,
+        effectiveOwnedCards,
         activeMascot,
         dailyMissions,
         weeklyMissions,
@@ -1598,6 +1712,8 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         claimableCount,
         todayPracticedCount: dailyPracticedCount,
         unlockedCodexCount,
+        totalCodexCharacters,
+        totalCodexCards,
         displayCheckInStreak,
         toasts,
         dismissToast,

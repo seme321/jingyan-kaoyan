@@ -32,7 +32,9 @@ export const Mascot: React.FC<MascotProps> = ({
     !ctx.activeMascot.isDefaultDafeyu &&
     (isHomeStage || ctx.companion.applyGlobally);
 
-  const imgSrc = shouldUseCustom ? ctx.activeMascot.sprite : `./mascot/${pose}.webp`;
+  const imgSrc = shouldUseCustom
+    ? (ctx.activeMascot.poses?.[pose] || ctx.activeMascot.sprite)
+    : `./mascot/${pose}.webp`;
   const altText = shouldUseCustom ? ctx.activeMascot.name : BRAND.mascotName;
 
   useEffect(() => {

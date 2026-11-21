@@ -11,5 +11,7 @@ export const BRAND = {
   qqGroup: '1058675261',
   /** Cloudflare Workers + D1「先审后发」公开留言后端接口 */
   guestbookApiUrl: '/api/guestbook',
+  /** Cloudflare Workers + D1 创意工坊资源库接口 */
+  workshopApiUrl: '/api/workshop',
   backupPrefix: '鲸研考研_学习记录全量备份',
 } as const;

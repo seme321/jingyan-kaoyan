@@ -51,12 +51,15 @@ export const CompanionPage: React.FC = () => {
   const {
     catalog,
     companion,
+    effectiveOwnedCards,
     activeMascot,
     dailyMissions,
     weeklyMissions,
     achievements,
     claimableCount,
     unlockedCodexCount,
+    totalCodexCharacters,
+    totalCodexCards,
     displayCheckInStreak,
     dailyCheckIn,
     claimDailyMission,
@@ -126,10 +129,10 @@ export const CompanionPage: React.FC = () => {
     if (!catalog) return 0;
     return catalog.characters.filter((c) =>
       (['standard', 'medium', 'chibi'] as CardVariant[]).some(
-        (v) => (companion.ownedCards[c.variants[v].cardId] ?? 0) > 0
+        (v) => (effectiveOwnedCards[c.variants[v].cardId] ?? 0) > 0
       )
     ).length;
-  }, [catalog, companion.ownedCards]);
+  }, [catalog, effectiveOwnedCards]);
 
   const codexCards = useMemo(() => {
     if (!catalog) return [];
@@ -138,7 +141,7 @@ export const CompanionPage: React.FC = () => {
     return catalog.characters
       .map((c) => {
         const ownedVariants: CardVariant[] = (['standard', 'medium', 'chibi'] as CardVariant[]).filter(
-          (v) => (companion.ownedCards[c.variants[v].cardId] ?? 0) > 0
+          (v) => (effectiveOwnedCards[c.variants[v].cardId] ?? 0) > 0
         );
         const equippedVariant = companion.equippedCardId.startsWith(`${c.id}:`)
           ? (companion.equippedCardId.split(':')[1] as CardVariant)
@@ -153,7 +156,7 @@ export const CompanionPage: React.FC = () => {
         const isUnlocked =
           codexVariantFilter === 'all'
             ? ownedVariants.length > 0
-            : (companion.ownedCards[asset.cardId] ?? 0) > 0;
+            : (effectiveOwnedCards[asset.cardId] ?? 0) > 0;
         return {
           char: c,
           displayVariant,
@@ -181,7 +184,7 @@ export const CompanionPage: React.FC = () => {
     codexQuery,
     codexVariantFilter,
     companion.equippedCardId,
-    companion.ownedCards,
+    effectiveOwnedCards,
   ]);
 
   // All unlocked equippable cards for Stage quick switch
@@ -202,7 +205,7 @@ export const CompanionPage: React.FC = () => {
         items.push({
           cardId: sp.id,
           name: sp.name.replace(/（.*?）/, ''),
-          sub: sp.id === 'sp:dafeyu' ? '经典四姿态' : '协研特绘',
+          sub: sp.id === 'sp:dafeyu' ? '经典四姿态' : sp.sourcePackId ? '工坊特绘' : '协研特绘',
           rarity: 'SP',
           avatar: sp.avatar,
           color: sp.color,
@@ -212,7 +215,7 @@ export const CompanionPage: React.FC = () => {
       for (const c of catalog.characters) {
         for (const v of ['standard', 'medium', 'chibi'] as CardVariant[]) {
           const asset = c.variants[v];
-          if ((companion.ownedCards[asset.cardId] ?? 0) > 0) {
+          if ((effectiveOwnedCards[asset.cardId] ?? 0) > 0) {
             const xp = companion.bonds[c.id] ?? 0;
             items.push({
               cardId: asset.cardId,
@@ -228,7 +231,7 @@ export const CompanionPage: React.FC = () => {
       }
     }
     return items.sort((a, b) => RARITY_ORDER[b.rarity] - RARITY_ORDER[a.rarity]);
-  }, [catalog, companion.bonds, companion.ownedCards, getBondKey]);
+  }, [catalog, companion.bonds, effectiveOwnedCards, getBondKey]);
 
   const activeBondInfo = getBondLevelInfo(activeMascot.bondXp);
   const nextCheckInDayIdx = companion.daily.checkedIn
@@ -279,7 +282,7 @@ export const CompanionPage: React.FC = () => {
               <Layers size={16} />
               <div>
                 <span>图鉴进度</span>
-                <strong>{unlockedCodexCount} / 42</strong>
+                <strong>{unlockedCodexCount} / {totalCodexCards}</strong>
               </div>
             </div>
           </div>
@@ -317,7 +320,7 @@ export const CompanionPage: React.FC = () => {
             onClick={() => switchTab('codex')}
           >
             <Sparkles size={15} />
-            <span>角色图鉴 ({unlockedCodexCount}/42)</span>
+            <span>角色图鉴 ({unlockedCodexCount}/{totalCodexCards})</span>
           </button>
 
           <button
@@ -700,10 +703,10 @@ export const CompanionPage: React.FC = () => {
                 <button
                   type="button"
                   className="btn btn-primary"
-                  disabled={unlockedCodexCount >= 42}
+                  disabled={unlockedCodexCount >= totalCodexCards}
                   onClick={() => setSelectorOpen(true)}
                 >
-                  {unlockedCodexCount >= 42 ? '已全图鉴制霸' : '挑选未收录档案'}
+                  {unlockedCodexCount >= totalCodexCards ? '已全图鉴制霸' : '挑选未收录档案'}
                 </button>
               </div>
             </article>
@@ -852,17 +855,19 @@ export const CompanionPage: React.FC = () => {
             <div className="codex-progress-strip">
               <div className="codex-progress-meta">
                 <span>
-                  已相遇 <strong>{encounteredCharCount}</strong> / 14 位角色 · 全形态收录{' '}
-                  <strong>{unlockedCodexCount}</strong> / 42 张
+                  已相遇 <strong>{encounteredCharCount}</strong> / {totalCodexCharacters} 位角色 · 全形态收录{' '}
+                  <strong>{unlockedCodexCount}</strong> / {totalCodexCards} 张
                 </span>
                 <span className="hud-code">
-                  COLLECTION // {Math.round((unlockedCodexCount / 42) * 100)}%
+                  COLLECTION // {totalCodexCards > 0 ? Math.round((unlockedCodexCount / totalCodexCards) * 100) : 0}%
                 </span>
               </div>
               <div className="progress-bar-track">
                 <div
                   className="progress-seg mastered"
-                  style={{ width: `${Math.round((unlockedCodexCount / 42) * 100)}%` }}
+                  style={{
+                    width: `${totalCodexCards > 0 ? Math.round((unlockedCodexCount / totalCodexCards) * 100) : 0}%`,
+                  }}
                 />
               </div>
             </div>
@@ -875,7 +880,7 @@ export const CompanionPage: React.FC = () => {
                     className={`seg-btn ${codexVariantFilter === 'all' ? 'active' : ''}`}
                     onClick={() => setCodexVariantFilter('all')}
                   >
-                    全角色 (14)
+                    全角色 ({totalCodexCharacters})
                   </button>
                   <button
                     type="button"
@@ -1229,7 +1234,7 @@ export const CompanionPage: React.FC = () => {
       <CharacterDetailModal
         character={detailTarget?.char ?? null}
         initialVariant={detailTarget?.variant ?? 'standard'}
-        ownedCards={companion.ownedCards}
+        ownedCards={effectiveOwnedCards}
         bondXp={detailTarget ? companion.bonds[detailTarget.char.id] ?? 0 : 0}
         fishBalance={companion.fish}
         equippedCardId={companion.equippedCardId}
@@ -1241,7 +1246,7 @@ export const CompanionPage: React.FC = () => {
       <SelectorTicketModal
         open={selectorOpen}
         characters={catalog?.characters ?? []}
-        ownedCards={companion.ownedCards}
+        ownedCards={effectiveOwnedCards}
         fishBalance={companion.fish}
         vouchersBalance={companion.vouchers}
         onClose={() => setSelectorOpen(false)}

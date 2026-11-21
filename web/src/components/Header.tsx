@@ -15,6 +15,7 @@ import {
   Megaphone,
   Menu,
   Moon,
+  Package,
   Settings,
   Sparkles,
   Sun,
@@ -144,6 +145,13 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
                   );
                 })}
               </div>
+              <Link
+                to="/workshop"
+                className="course-popover-foot"
+                onClick={() => setSwitcherOpen(false)}
+              >
+                <Package size={13} /> 前往创意工坊安装更多专业课 →
+              </Link>
             </div>
           )}
         </div>
@@ -266,6 +274,13 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
             <Activity size={13} /> 进度
           </NavLink>
           <NavLink
+            to="/workshop"
+            className={({ isActive }) => `nav-util-chip ${isActive ? 'active' : ''}`}
+            title="创意工坊：专业课试卷包与角色包"
+          >
+            <Package size={13} /> 工坊
+          </NavLink>
+          <NavLink
             to="/board"
             className={({ isActive }) => `nav-util-chip ${isActive ? 'active' : ''}`}
             title="查看站点公告与考研留言板"
@@ -357,6 +372,9 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
           <NavLink to="/board" className="mobile-nav-link">
             <Megaphone size={16} /> 站点公告与考研留言板
             {hasUnreadAnnouncement && <span className="nav-dot" />}
+          </NavLink>
+          <NavLink to="/workshop" className="mobile-nav-link">
+            <Package size={16} /> 创意工坊 · 专业课与角色包
           </NavLink>
           <NavLink to="/about" className="mobile-nav-link">
             <Info size={16} /> 关于本站 · 鸣谢 Gemini 与角色图鉴

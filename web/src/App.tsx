@@ -3,6 +3,7 @@ import { HashRouter, Link, Navigate, Route, Routes, useLocation } from 'react-ro
 import { DataProvider, useData } from './context/DataContext';
 import { StudyProvider } from './context/StudyContext';
 import { CompanionProvider, useCompanion } from './context/CompanionContext';
+import { WorkshopProvider } from './context/WorkshopContext';
 import { Header } from './components/Header';
 import { SettingsModal } from './components/SettingsModal';
 import { RewardToastHost } from './components/RewardToastHost';
@@ -23,6 +24,7 @@ import { FormulasPage } from './pages/FormulasPage';
 import { BoardPage } from './pages/BoardPage';
 import { AboutPage } from './pages/AboutPage';
 import { CompanionPage } from './pages/CompanionPage';
+import { WorkshopPage } from './pages/WorkshopPage';
 
 const AppShell: React.FC = () => {
   const { loading, error, currentCourse } = useData();
@@ -75,6 +77,7 @@ const AppShell: React.FC = () => {
               <Route path="/formulas" element={<FormulasPage />} />
               <Route path="/board" element={<BoardPage />} />
               <Route path="/companion" element={<CompanionPage />} />
+              <Route path="/workshop" element={<WorkshopPage />} />
               <Route path="/gallery" element={<Navigate to="/companion?tab=codex" replace />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
@@ -101,6 +104,10 @@ const AppShell: React.FC = () => {
               小鱼干补给站
             </Link>
             <span aria-hidden="true">/</span>
+            <Link to="/workshop" className="footer-link">
+              创意工坊
+            </Link>
+            <span aria-hidden="true">/</span>
             <Link to="/board" className="footer-link">
               公告与留言板
             </Link>
@@ -122,15 +129,17 @@ const AppShell: React.FC = () => {
 };
 
 export const App: React.FC = () => (
-  <DataProvider>
-    <StudyProvider>
-      <CompanionProvider>
-        <HashRouter>
-          <AppShell />
-        </HashRouter>
-      </CompanionProvider>
-    </StudyProvider>
-  </DataProvider>
+  <WorkshopProvider>
+    <DataProvider>
+      <StudyProvider>
+        <CompanionProvider>
+          <HashRouter>
+            <AppShell />
+          </HashRouter>
+        </CompanionProvider>
+      </StudyProvider>
+    </DataProvider>
+  </WorkshopProvider>
 );
 
 export default App;

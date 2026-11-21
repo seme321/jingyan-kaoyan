@@ -59,8 +59,14 @@ export const HomePage: React.FC = () => {
     latestAnnouncement,
   } = useData();
   const { state, getRecord } = useStudy();
-  const { companion, activeMascot, claimableCount, unlockedCodexCount, interactWithMascot } =
-    useCompanion();
+  const {
+    companion,
+    activeMascot,
+    claimableCount,
+    unlockedCodexCount,
+    totalCodexCards,
+    interactWithMascot,
+  } = useCompanion();
   const countdown = useMemo(getExamCountdown, []);
   const [copiedQq, setCopiedQq] = useState(false);
   const [quipIdx, setQuipIdx] = useState<number>(-1);
@@ -273,7 +279,7 @@ export const HomePage: React.FC = () => {
               </Link>
               <Link to="/companion?tab=codex" className="op-quick-link">
                 <Layers size={12} />
-                <span>图鉴 {unlockedCodexCount}/42</span>
+                <span>图鉴 {unlockedCodexCount}/{totalCodexCards}</span>
               </Link>
               <Link to="/companion?tab=stage" className="op-quick-link">
                 <UserCheck size={12} />
