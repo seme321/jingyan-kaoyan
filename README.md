@@ -1,5 +1,6 @@
 # 鲸研专业课 · 多院校考研专业课真题精解复习站
 
+> **线上访问**：[https://jingyan.h0mura.de5.net](https://jingyan.h0mura.de5.net)（Cloudflare Workers Static Assets）  
 > **非官方、非营利个人学习工具** —— 与任何高校研究生院、考试机构或商业培训平台均无隶属或合作关系。
 
 ## 当前已上线板块
@@ -29,6 +30,10 @@ node scripts/validate_course.mjs
 # 3. 生产静态包构建（输出至 web/dist/）
 Set-Location web
 npm run build
+
+# 4. 构建并部署至 Cloudflare Workers Static Assets（需先 cf auth login）
+Set-Location web
+npm run deploy
 ```
 
 更多项目交接说明、数据契约与出图规范见 [`docs/`](docs/) 目录。

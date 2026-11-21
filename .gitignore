@@ -16,3 +16,9 @@ web/tsconfig.tsbuildinfo
 *.pyc
 .DS_Store
 Thumbs.db
+
+# === Cloudflare CLI ===
+.cloudflare/
+web/.cloudflare/
+.dev.vars*
+.env*

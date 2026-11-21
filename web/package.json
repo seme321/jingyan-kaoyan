@@ -2,12 +2,13 @@
   "name": "jingyan-814",
   "private": true,
   "version": "1.0.0",
-  "description": "姘寸爾 路 娌虫捣澶у 814 姘村姏瀛﹁€冪爺鐪熼涓庤€冪偣澶嶄範绯荤粺",
+  "description": "鲸研专业课 · 考研专业课真题与考点复习系统",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run build && cf deploy ./dist"
   },
   "dependencies": {
     "katex": "^0.16.11",
@@ -21,8 +22,8 @@
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
     "@vitejs/plugin-react": "^4.3.4",
+    "cf": "^1.0.0-rc.2",
     "typescript": "~5.6.2",
     "vite": "^6.0.5"
   }
 }
-
