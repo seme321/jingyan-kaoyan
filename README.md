@@ -36,7 +36,7 @@ Set-Location web
 npm run deploy
 ```
 
-更多项目交接说明、数据契约与出图规范见 [`docs/`](docs/) 目录。
+更多项目交接说明、数据契约、出图规范与日常修改发版 SOP（GitHub + 橙色云）见 [`docs/`](docs/) 目录及 [`docs/04_日常修改校验与发布上线规范.md`](docs/04_日常修改校验与发布上线规范.md)。
 
 ## 合规说明与署名
 
