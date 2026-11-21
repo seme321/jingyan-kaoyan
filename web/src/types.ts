@@ -385,6 +385,9 @@ export interface AnnouncementItem {
 }
 
 export type GuestbookCategory = 'checkin' | 'errata' | 'wish' | 'chat';
+export type GuestbookStatus = 'pending' | 'approved' | 'rejected';
+export type GuestbookChannel = 'public' | 'inbox';
+export type AdminGuestbookTab = 'pending' | 'inbox' | 'approved' | 'rejected' | 'all';
 
 export interface GuestbookEntry {
   id: string;
@@ -396,5 +399,25 @@ export interface GuestbookEntry {
   createdAt: string;
   likes: number;
   pinned?: boolean;
+  status?: GuestbookStatus;
+  channel?: GuestbookChannel;
+  adminReply?: string;
+  adminRepliedAt?: string;
   isLocal?: boolean;
+  isPendingLocal?: boolean;
+}
+
+export interface AdminGuestbookEntry extends GuestbookEntry {
+  status: GuestbookStatus;
+  channel: GuestbookChannel;
+  contact?: string;
+  reviewedAt?: string;
+}
+
+export interface AdminGuestbookCounts {
+  pendingPublic: number;
+  pendingInbox: number;
+  approved: number;
+  inboxAll: number;
+  rejected: number;
 }

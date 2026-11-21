@@ -5,10 +5,13 @@
   "description": "鲸研专业课 · 考研专业课真题与考点复习系统",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "cf dev",
+    "typecheck": "cf workers types && tsc --noEmit && tsc -p tsconfig.worker.json --noEmit",
+    "build": "npm run typecheck && cf build",
     "preview": "vite preview",
-    "deploy": "npm run build && cf deploy ./dist"
+    "db:migrate:local": "cf d1 migrations apply c0d0fa0a-1252-44d5-9afe-c8626231bb67 --dir migrations --local",
+    "db:migrate:remote": "cf d1 migrations apply c0d0fa0a-1252-44d5-9afe-c8626231bb67 --dir migrations",
+    "deploy": "npm run build && cf deploy --prebuilt"
   },
   "dependencies": {
     "@fontsource/jetbrains-mono": "^5.3.0",
@@ -20,12 +23,13 @@
     "react-router-dom": "^7.1.1"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^2.0.0-rc.3",
     "@types/katex": "^0.16.7",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react": "^5.2.0",
     "cf": "^1.0.0-rc.2",
     "typescript": "~5.6.2",
-    "vite": "^6.0.5"
+    "vite": "^7.3.8"
   }
 }

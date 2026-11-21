@@ -2810,6 +2810,9 @@ html[data-theme='light'] .dashboard-table td.heat-4 { background: rgba(242, 190,
 .gb-role-badge.admin { background: var(--primary-soft); color: var(--sky); }
 .gb-role-badge.ai { background: var(--purple-soft); color: var(--purple); }
 .gb-role-badge.local { background: var(--emerald-soft); color: var(--emerald); }
+.gb-role-badge.pending { background: var(--amber-soft); color: var(--amber); }
+.gb-role-badge.inbox { background: var(--purple-soft); color: var(--purple); }
+.gb-role-badge.rejected { background: var(--coral-soft); color: var(--coral); }
 .gb-role-badge.pin { background: var(--yellow); color: var(--yellow-ink); }
 
 .gb-sub-meta { display: flex; flex-wrap: wrap; gap: 0.32rem; font-size: 0.74rem; color: var(--text-dim); }
@@ -2831,7 +2834,19 @@ html[data-theme='light'] .dashboard-table td.heat-4 { background: rgba(242, 190,
 }
 .gb-like-btn:hover, .gb-like-btn.liked { border-color: var(--coral); color: var(--coral); background: var(--coral-soft); }
 .gb-local-actions { display: inline-flex; align-items: center; gap: 0.65rem; }
-.gb-action-link { display: inline-flex; align-items: center; gap: 0.24rem; font-size: 0.76rem; color: var(--sky); }
+.gb-action-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.24rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: 0.76rem;
+  color: var(--sky);
+  cursor: pointer;
+}
+.gb-action-link:hover { text-decoration: underline; }
 .gb-delete-btn {
   display: inline-flex;
   align-items: center;
@@ -2844,6 +2859,296 @@ html[data-theme='light'] .dashboard-table td.heat-4 { background: rgba(242, 190,
   cursor: pointer;
 }
 .gb-delete-btn:hover { color: var(--coral); }
+
+.gb-mail-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.gb-mail-warn {
+  padding: 0.55rem 0.78rem;
+  border-radius: var(--radius-xs);
+  border-left: 3px solid var(--yellow);
+  background: var(--yellow-soft);
+  color: var(--text-main);
+  font-size: 0.81rem;
+  line-height: 1.5;
+}
+.gb-mail-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+}
+.gb-mail-field-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.gb-mail-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.gb-mail-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.16rem 0.52rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.14s, background 0.14s, color 0.14s;
+}
+.gb-mail-copy-btn:hover {
+  border-color: var(--border-accent);
+  background: var(--primary-soft);
+  color: var(--sky);
+}
+.gb-mail-copy-btn.copied {
+  border-color: var(--emerald);
+  background: var(--emerald-soft);
+  color: var(--emerald);
+}
+.gb-mail-value {
+  padding: 0.48rem 0.72rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-input);
+  color: var(--text-main);
+  font-size: 0.84rem;
+  line-height: 1.5;
+  word-break: break-all;
+  user-select: all;
+}
+.gb-mail-preview {
+  margin: 0;
+  padding: 0.65rem 0.78rem;
+  max-height: 210px;
+  overflow-y: auto;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-input);
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 0.81rem;
+  line-height: 1.56;
+  white-space: pre-wrap;
+  word-break: break-word;
+  user-select: text;
+}
+.gb-mail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-top: 0.15rem;
+}
+.gb-mail-tip {
+  margin: 0;
+  font-size: 0.76rem;
+  line-height: 1.54;
+  color: var(--text-dim);
+}
+
+/* Public Moderated Guestbook & Admin Console */
+.gb-head-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.gb-admin-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.16rem 0.52rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-elevated);
+  color: var(--text-dim);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.14s, color 0.14s, background 0.14s;
+}
+.gb-admin-trigger:hover {
+  border-color: var(--border-accent);
+  background: var(--primary-soft);
+  color: var(--sky);
+}
+.gb-contact-input {
+  width: 100%;
+  font-size: 0.84rem;
+}
+.gb-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+.gb-like-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+.gb-admin-reply-box {
+  padding: 0.52rem 0.75rem;
+  border-radius: var(--radius-xs);
+  border-left: 3px solid var(--sky);
+  background: var(--primary-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 0.24rem;
+}
+.gb-admin-reply-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.73rem;
+  font-weight: 700;
+  color: var(--sky);
+}
+.gb-admin-reply-head time {
+  color: var(--text-dim);
+  font-weight: 500;
+}
+.gb-admin-reply-text {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: var(--text-main);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.gb-admin-modal {
+  max-width: 780px;
+}
+.gb-admin-login {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.gb-admin-login-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.gb-admin-login-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.55rem;
+}
+.gb-admin-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.gb-admin-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem;
+}
+.gb-admin-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.22rem 0.58rem;
+  border-radius: var(--radius-xs);
+  background: var(--emerald-soft);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: var(--emerald);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+.gb-admin-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+.gb-admin-compose {
+  padding: 0.78rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-accent);
+  background: var(--bg-elevated);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.gb-admin-compose-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+.gb-admin-compose-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.gb-admin-pin-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.gb-admin-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.gb-admin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.68rem;
+  max-height: 50vh;
+  overflow-y: auto;
+  padding-right: 0.15rem;
+}
+.gb-admin-card {
+  padding: 0.82rem 0.92rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-elevated);
+  display: flex;
+  flex-direction: column;
+  gap: 0.52rem;
+}
+.gb-admin-card-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.gb-admin-contact {
+  font-size: 0.77rem;
+  color: var(--amber);
+  background: var(--amber-soft);
+  padding: 0.26rem 0.55rem;
+  border-radius: var(--radius-xs);
+  word-break: break-all;
+}
+.gb-admin-reply-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.gb-admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.42rem;
+  padding-top: 0.12rem;
+}
 
 /* About Page & Arknights Operator Dossier Character Codex */
 .about-hero {
@@ -3102,7 +3407,9 @@ html[data-theme='light'] .dashboard-table td.heat-4 { background: rgba(242, 190,
   .grading-compare-grid,
   .scorecard-sections-row,
   .codex-card,
-  .gb-input-row {
+  .gb-input-row,
+  .gb-admin-login-row,
+  .gb-admin-compose-row {
     grid-template-columns: 1fr;
   }
   .codex-portrait-stage {
