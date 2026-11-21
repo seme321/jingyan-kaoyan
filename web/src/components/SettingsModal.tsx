@@ -3,6 +3,7 @@ import { Download, RotateCcw, Upload, X } from 'lucide-react';
 import { useStudy } from '../context/StudyContext';
 import { useData } from '../context/DataContext';
 import { BRAND } from '../brand';
+import type { DiagramDarkMode } from '../types';
 
 interface SettingsModalProps {
   open: boolean;
@@ -20,6 +21,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) =
   if (!open) return null;
 
   const { settings } = state;
+  const activeDiagramMode: DiagramDarkMode =
+    settings.diagramDarkMode ?? (settings.softDiagramInDark ? 'blueprint' : 'original');
+
+  const handleDiagramModeChange = (mode: DiagramDarkMode) => {
+    updateSettings({
+      diagramDarkMode: mode,
+      softDiagramInDark: mode !== 'original',
+    });
+  };
 
   const handleDownloadBackup = () => {
     const json = exportBackupJson();
@@ -50,7 +60,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) =
       <div className="modal-panel" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <div>
-            <h3 className="modal-title">偏好设置与跨板块备份</h3>
+            <div className="page-kicker">SYSTEM CONFIG // PREFERENCES</div>
+            <h3 className="modal-title">终端偏好设置与跨板块备份</h3>
             <p className="modal-sub">各专业课板块进度独立存储在本地浏览器中，无需注册登录</p>
           </div>
           <button type="button" className="icon-btn" onClick={onClose} aria-label="关闭设置">
@@ -61,14 +72,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) =
         <div className="settings-body">
           <div className="setting-row">
             <div>
-              <div className="setting-label">界面外观</div>
-              <div className="setting-desc">深海夜读或浅海白昼，随心切换</div>
+              <div className="setting-label">终端视觉主题</div>
+              <div className="setting-desc">深海战术终端或工业晒图白昼，支持顶栏一键快切</div>
             </div>
             <div className="seg-group">
               {(
                 [
-                  ['dark', '深色'],
-                  ['light', '浅色'],
+                  ['dark', '深海暗夜'],
+                  ['light', '晒图白昼'],
                   ['system', '跟随系统'],
                 ] as const
               ).map(([val, label]) => (
@@ -86,8 +97,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) =
 
           <div className="setting-row">
             <div>
-              <div className="setting-label">正文字号</div>
-              <div className="setting-desc">同步缩放题目、推导公式与解析文字</div>
+              <div className="setting-label">正文字号缩放</div>
+              <div className="setting-desc">同步缩放题干、KaTeX 推导公式与解析文字</div>
             </div>
             <div className="seg-group">
               {(
@@ -112,13 +123,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) =
 
           <div className="setting-row">
             <div>
-              <div className="setting-label">阅读字体</div>
+              <div className="setting-label">学术阅读字体</div>
               <div className="setting-desc">可切换现代无衬线或传统书卷宋体风格</div>
             </div>
             <div className="seg-group">
               {(
                 [
-                  ['sans', '默认无衬线'],
+                  ['sans', '无衬线'],
                   ['serif', '书卷宋体'],
                 ] as const
               ).map(([val, label]) => (
@@ -136,13 +147,39 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) =
 
           <div className="setting-row">
             <div>
-              <div className="setting-label">答题前隐藏考点与方法</div>
-              <div className="setting-desc">逐题练习时先独立审题，提交或展开解析后再显示标签</div>
+              <div className="setting-label">深色模式工程配图渲染</div>
+              <div className="setting-desc">蓝图夜视可将白底黑线水力学图转为深蓝护眼蓝图</div>
+            </div>
+            <div className="seg-group">
+              {(
+                [
+                  ['blueprint', '蓝图夜视'],
+                  ['soft', '柔光纸面'],
+                  ['original', '原始白底'],
+                ] as const
+              ).map(([val, label]) => (
+                <button
+                  key={val}
+                  type="button"
+                  className={`seg-btn ${activeDiagramMode === val ? 'active' : ''}`}
+                  onClick={() => handleDiagramModeChange(val)}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="setting-row">
+            <div>
+              <div className="setting-label">动态水力学背景（公式流与流线）</div>
+              <div className="setting-desc">开启背景水力学方程缓动与流线脉冲，关闭则切换为纯静态测绘网格</div>
             </div>
             <button
               type="button"
-              className={`switch-btn ${settings.hideTagsBeforeAnswer ? 'on' : ''}`}
-              onClick={() => updateSettings({ hideTagsBeforeAnswer: !settings.hideTagsBeforeAnswer })}
+              className={`switch-btn ${settings.animatedBg !== false ? 'on' : ''}`}
+              onClick={() => updateSettings({ animatedBg: settings.animatedBg === false })}
+              aria-label="切换动态水力学背景"
             >
               <span className="switch-thumb" />
             </button>
@@ -150,13 +187,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) =
 
           <div className="setting-row">
             <div>
-              <div className="setting-label">深色下附图柔和护眼</div>
-              <div className="setting-desc">降低白底工程示意图在暗色背景下的刺眼对比度</div>
+              <div className="setting-label">答题前隐藏考点与方法</div>
+              <div className="setting-desc">逐题练习时先独立审题，提交或展开解析后再显示标签</div>
             </div>
             <button
               type="button"
-              className={`switch-btn ${settings.softDiagramInDark ? 'on' : ''}`}
-              onClick={() => updateSettings({ softDiagramInDark: !settings.softDiagramInDark })}
+              className={`switch-btn ${settings.hideTagsBeforeAnswer ? 'on' : ''}`}
+              onClick={() => updateSettings({ hideTagsBeforeAnswer: !settings.hideTagsBeforeAnswer })}
+              aria-label="切换答题前隐藏考点与方法"
             >
               <span className="switch-thumb" />
             </button>
@@ -170,15 +208,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) =
               一次导出即可备份所有院校专业课板块的做题记录、错题本、收藏与私人笔记。
             </div>
             <div className="backup-actions">
-              <button type="button" className="btn btn-secondary" onClick={handleDownloadBackup}>
-                <Download size={15} /> 导出全量备份
+              <button type="button" className="btn btn-secondary btn-sm" onClick={handleDownloadBackup}>
+                <Download size={14} /> 导出全量备份
               </button>
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn btn-secondary btn-sm"
                 onClick={() => fileRef.current?.click()}
               >
-                <Upload size={15} /> 导入备份恢复
+                <Upload size={14} /> 导入备份恢复
               </button>
               <input
                 ref={fileRef}
@@ -190,15 +228,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) =
               {!confirmReset ? (
                 <button
                   type="button"
-                  className="btn btn-ghost-danger"
+                  className="btn btn-ghost-danger btn-sm"
                   onClick={() => setConfirmReset(true)}
                 >
-                  <RotateCcw size={15} /> 清空「{currentCourse.shortLabel}」记录
+                  <RotateCcw size={14} /> 清空「{currentCourse.shortLabel}」记录
                 </button>
               ) : (
                 <button
                   type="button"
-                  className="btn btn-danger"
+                  className="btn btn-danger btn-sm"
                   onClick={() => {
                     resetCurrentCourseProgress();
                     setConfirmReset(false);

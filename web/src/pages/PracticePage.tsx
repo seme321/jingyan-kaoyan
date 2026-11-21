@@ -4,11 +4,16 @@ import {
   AlertTriangle,
   Bookmark,
   Check,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
+  ChevronUp,
   Eye,
   EyeOff,
+  Grid,
   HelpCircle,
+  Maximize2,
+  Minimize2,
   NotebookPen,
   Shuffle,
   X,
@@ -55,8 +60,9 @@ export const PracticePage: React.FC = () => {
   const paramQid = searchParams.get('qid') || '';
 
   const [shuffledIds, setShuffledIds] = useState<string[] | null>(null);
+  const [railExpanded, setRailExpanded] = useState(false);
+  const [focusMode, setFocusMode] = useState(false);
 
-  // Reset shuffle order cleanly if switching courses
   useEffect(() => {
     setShuffledIds(null);
   }, [currentCourse.id]);
@@ -100,6 +106,19 @@ export const PracticePage: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allQuestions, yearFilter, chapterFilter, typeFilter, kpFilter, methodFilter, poolFilter, shuffledIds]);
 
+  const queueStats = useMemo(() => {
+    let mastered = 0;
+    let partial = 0;
+    let wrong = 0;
+    for (const q of baseQueue) {
+      const st = getRecord(q.id).status;
+      if (st === 'mastered') mastered++;
+      else if (st === 'partial') partial++;
+      else if (st === 'wrong') wrong++;
+    }
+    return { mastered, partial, wrong, total: baseQueue.length };
+  }, [baseQueue, getRecord]);
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [revealed, setRevealed] = useState(false);
   const [judgePicked, setJudgePicked] = useState<boolean | null>(null);
@@ -126,6 +145,7 @@ export const PracticePage: React.FC = () => {
   }, [baseQueue.length, currentIndex]);
 
   useEffect(() => {
+    if (!railExpanded) return;
     const rail = railRef.current;
     if (!rail) return;
     const activeDot = rail.querySelector<HTMLElement>('.q-rail-dot.current');
@@ -137,7 +157,7 @@ export const PracticePage: React.FC = () => {
     } else if (dotBottom > rail.scrollTop + rail.clientHeight) {
       rail.scrollTop = dotBottom - rail.clientHeight + 4;
     }
-  }, [currentIndex, baseQueue.length]);
+  }, [currentIndex, baseQueue.length, railExpanded]);
 
   const currentQuestion = baseQueue[currentIndex] ?? null;
 
@@ -240,9 +260,10 @@ export const PracticePage: React.FC = () => {
 
   if (allQuestions.length === 0) {
     return (
-      <div className="page-container">
+      <div className="practice-shell">
         <div className="empty-state-card">
           <Mascot pose="study" size={140} />
+          <span className="hud-code">MODULE // PENDING_IMPORT</span>
           <h3>「{currentCourse.name}」真题包待导入</h3>
           <p>当前板块考纲与核心公式已就绪，导入第一套真题 JSON 后即可开始逐题刷题。</p>
           <div className="hero-cta-row">
@@ -261,99 +282,103 @@ export const PracticePage: React.FC = () => {
   const rec = currentQuestion ? getRecord(currentQuestion.id) : null;
   const chInfo = currentQuestion ? chapterMap[currentQuestion.chapter] : null;
   const tagsVisible = !state.settings.hideTagsBeforeAnswer || revealed || peekTags;
+  const totalQ = Math.max(1, queueStats.total);
 
   return (
-    <div className="page-container">
-      <div className="practice-filter-bar">
-        <div className="filter-selects">
-          <select
-            className="ui-select"
-            value={yearFilter}
-            onChange={(e) => updateFilters({ year: Number(e.target.value) })}
-            aria-label="按年份筛选"
-          >
-            <option value={0}>全部年份 ({allQuestions.length}题)</option>
-            {yearsMeta
-              .filter((ym) => ym.status === 'ready')
-              .map((ym) => (
-                <option key={ym.year} value={ym.year}>
-                  {ym.year} 真题 ({ym.questionCount}题)
+    <div className="practice-shell">
+      {!focusMode && (
+        <div className="practice-filter-bar">
+          <div className="filter-selects">
+            <select
+              className="ui-select"
+              value={yearFilter}
+              onChange={(e) => updateFilters({ year: Number(e.target.value) })}
+              aria-label="按年份筛选"
+            >
+              <option value={0}>全部年份 ({allQuestions.length}题)</option>
+              {yearsMeta
+                .filter((ym) => ym.status === 'ready')
+                .map((ym) => (
+                  <option key={ym.year} value={ym.year}>
+                    {ym.year} 真题 ({ym.questionCount}题)
+                  </option>
+                ))}
+            </select>
+
+            <select
+              className="ui-select"
+              value={chapterFilter}
+              onChange={(e) => updateFilters({ chapter: Number(e.target.value) })}
+              aria-label="按章节筛选"
+            >
+              <option value={0}>全部章节 ({chapters.length}章)</option>
+              {chapters.map((c) => (
+                <option key={c.chapter} value={c.chapter}>
+                  第 {c.chapter} 章 · {c.name}
                 </option>
               ))}
-          </select>
+            </select>
 
-          <select
-            className="ui-select"
-            value={chapterFilter}
-            onChange={(e) => updateFilters({ chapter: Number(e.target.value) })}
-            aria-label="按章节筛选"
-          >
-            <option value={0}>全部章节 ({chapters.length}章)</option>
-            {chapters.map((c) => (
-              <option key={c.chapter} value={c.chapter}>
-                第 {c.chapter} 章 · {c.name}
-              </option>
-            ))}
-          </select>
+            <select
+              className="ui-select"
+              value={typeFilter}
+              onChange={(e) => updateFilters({ type: e.target.value })}
+              aria-label="按题型筛选"
+            >
+              <option value="all">全部题型</option>
+              {availableTypes.map((tp) => (
+                <option key={tp} value={tp}>
+                  {QUESTION_TYPE_LABELS[tp] ?? tp}
+                </option>
+              ))}
+            </select>
 
-          <select
-            className="ui-select"
-            value={typeFilter}
-            onChange={(e) => updateFilters({ type: e.target.value })}
-            aria-label="按题型筛选"
-          >
-            <option value="all">全部题型</option>
-            {availableTypes.map((tp) => (
-              <option key={tp} value={tp}>
-                {QUESTION_TYPE_LABELS[tp] ?? tp}
-              </option>
-            ))}
-          </select>
+            <select
+              className="ui-select"
+              value={poolFilter}
+              onChange={(e) => updateFilters({ pool: e.target.value })}
+              aria-label="按范围筛选"
+            >
+              <option value="all">全部题目</option>
+              <option value="unmastered">仅刷未掌握</option>
+              <option value="wrong">仅刷错题本</option>
+              <option value="fav">仅刷收藏夹</option>
+            </select>
 
-          <select
-            className="ui-select"
-            value={poolFilter}
-            onChange={(e) => updateFilters({ pool: e.target.value })}
-            aria-label="按范围筛选"
-          >
-            <option value="all">全部题目</option>
-            <option value="unmastered">仅刷未掌握</option>
-            <option value="wrong">仅刷错题本</option>
-            <option value="fav">仅刷收藏夹</option>
-          </select>
+            {(kpFilter || methodFilter) && (
+              <button
+                type="button"
+                className="active-filter-chip"
+                onClick={() => updateFilters({ kp: null, method: null })}
+              >
+                <span>{kpFilter ? `考点：${kpFilter}` : `方法：${methodFilter}`}</span>
+                <X size={13} />
+              </button>
+            )}
+          </div>
 
-          {(kpFilter || methodFilter) && (
+          <div className="filter-right-tools">
             <button
               type="button"
-              className="active-filter-chip"
-              onClick={() => updateFilters({ kp: null, method: null })}
+              className="btn btn-secondary btn-sm"
+              onClick={() =>
+                updateSettings({ hideTagsBeforeAnswer: !state.settings.hideTagsBeforeAnswer })
+              }
             >
-              <span>{kpFilter ? `考点：${kpFilter}` : `方法：${methodFilter}`}</span>
-              <X size={13} />
+              {state.settings.hideTagsBeforeAnswer ? <EyeOff size={14} /> : <Eye size={14} />}
+              {state.settings.hideTagsBeforeAnswer ? '答前藏考点' : '始终显考点'}
             </button>
-          )}
+            <button type="button" className="btn btn-secondary btn-sm" onClick={handleShuffle}>
+              <Shuffle size={14} /> 乱序
+            </button>
+          </div>
         </div>
-
-        <div className="filter-right-tools">
-          <button
-            type="button"
-            className="btn btn-secondary btn-sm"
-            onClick={() =>
-              updateSettings({ hideTagsBeforeAnswer: !state.settings.hideTagsBeforeAnswer })
-            }
-          >
-            {state.settings.hideTagsBeforeAnswer ? <EyeOff size={14} /> : <Eye size={14} />}
-            {state.settings.hideTagsBeforeAnswer ? '考点：答前藏起' : '考点：始终显示'}
-          </button>
-          <button type="button" className="btn btn-secondary btn-sm" onClick={handleShuffle}>
-            <Shuffle size={14} /> 随机乱序
-          </button>
-        </div>
-      </div>
+      )}
 
       {baseQueue.length === 0 ? (
         <div className="empty-state-card">
           <Mascot pose="think" size={130} />
+          <span className="hud-code">QUEUE // EMPTY</span>
           <h3>当前筛选条件下暂无题目</h3>
           <p>可能是该范围题目已全部掌握，或尚未添加收藏 / 错题。</p>
           <button type="button" className="btn btn-primary" onClick={clearSpecialFilters}>
@@ -364,31 +389,83 @@ export const PracticePage: React.FC = () => {
         currentQuestion &&
         rec && (
           <>
-            <div ref={railRef} className="q-rail">
-              {baseQueue.map((q, idx) => {
-                const r = getRecord(q.id);
-                return (
+            {/* Compact Queue HUD Strip + Collapsible Matrix Drawer */}
+            <div className="queue-hud-bar">
+              <div className="queue-hud-top">
+                <div className="queue-hud-left">
+                  <span className="hud-code">QUEUE //</span>
+                  <span className="queue-counter-big">
+                    {String(currentIndex + 1).padStart(2, '0')} / {baseQueue.length}
+                  </span>
+                  <span className="queue-mini-stats">
+                    <span className="text-emerald">掌握 {queueStats.mastered}</span>
+                    <span>·</span>
+                    <span className="text-amber">半会 {queueStats.partial}</span>
+                    <span>·</span>
+                    <span className="text-coral">错题 {queueStats.wrong}</span>
+                  </span>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
                   <button
-                    key={q.id}
                     type="button"
-                    className={`q-rail-dot ${idx === currentIndex ? 'current' : ''} status-${r.status}`}
-                    onClick={() => setCurrentIndex(idx)}
-                    title={`${q.year} 第 ${q.no} 题`}
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => setRailExpanded((v) => !v)}
+                    aria-expanded={railExpanded}
                   >
-                    {yearFilter === 0 && baseQueue.length > 30
-                      ? `${String(q.year).slice(-2)}·${q.no}`
-                      : q.no}
+                    <Grid size={13} />
+                    题号矩阵
+                    {railExpanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
                   </button>
-                );
-              })}
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-sm"
+                    onClick={() => setFocusMode((v) => !v)}
+                    title={focusMode ? '退出专注模式，显示顶部筛选栏' : '进入专注模式，隐藏顶部筛选干扰'}
+                  >
+                    {focusMode ? <Minimize2 size={13} /> : <Maximize2 size={13} />}
+                    {focusMode ? '显示筛选' : '专注'}
+                  </button>
+                </div>
+              </div>
+
+              <div className="queue-progress-rail" title="当前题单掌握进度分布">
+                <div className="progress-seg mastered" style={{ width: `${(queueStats.mastered / totalQ) * 100}%` }} />
+                <div className="progress-seg partial" style={{ width: `${(queueStats.partial / totalQ) * 100}%` }} />
+                <div className="progress-seg wrong" style={{ width: `${(queueStats.wrong / totalQ) * 100}%` }} />
+              </div>
+
+              {railExpanded && (
+                <div className="q-rail-drawer">
+                  <div ref={railRef} className="q-rail">
+                    {baseQueue.map((q, idx) => {
+                      const r = getRecord(q.id);
+                      return (
+                        <button
+                          key={q.id}
+                          type="button"
+                          className={`q-rail-dot ${idx === currentIndex ? 'current' : ''} status-${r.status}`}
+                          onClick={() => setCurrentIndex(idx)}
+                          title={`${q.year} 第 ${q.no} 题：${q.title}`}
+                        >
+                          {yearFilter === 0 && baseQueue.length > 30
+                            ? `${String(q.year).slice(-2)}·${q.no}`
+                            : q.no}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
 
+            {/* Academic Precision Question Studio Card */}
             <article className="studio-card">
               <div className="studio-header">
                 <div className="q-meta-left">
                   <span className="q-year-pill">{currentQuestion.year} 真题</span>
                   <span className="q-no-badge">
-                    第 {currentQuestion.no} 题 · {QUESTION_TYPE_LABELS[currentQuestion.type]}
+                    T{String(currentQuestion.no).padStart(2, '0')} · {QUESTION_TYPE_LABELS[currentQuestion.type]}
                   </span>
                   <span className="q-score-badge">{currentQuestion.score} 分</span>
                   <span className="q-diff-badge">难度 {'★'.repeat(currentQuestion.difficulty)}</span>
@@ -431,9 +508,6 @@ export const PracticePage: React.FC = () => {
                 </div>
 
                 <div className="q-meta-right">
-                  <span className="studio-counter">
-                    {currentIndex + 1} / {baseQueue.length}
-                  </span>
                   <button
                     type="button"
                     className={`icon-action-btn ${rec.favorite ? 'fav-active' : ''}`}
@@ -453,19 +527,21 @@ export const PracticePage: React.FC = () => {
                 </div>
               </div>
 
-              {currentQuestion.note && (
-                <div className="q-calc-const-note">
-                  <MathText text={currentQuestion.note} inline />
+              <div key={currentQuestion.id} className="q-switch-fade">
+                {currentQuestion.note && (
+                  <div className="q-calc-const-note">
+                    <MathText text={currentQuestion.note} inline />
+                  </div>
+                )}
+
+                <div className="studio-stem">
+                  <MathText text={currentQuestion.stem} />
                 </div>
-              )}
 
-              <div className="studio-stem">
-                <MathText text={currentQuestion.stem} />
+                {currentQuestion.figures.length > 0 && (
+                  <FigureGallery figures={currentQuestion.figures} variant="exam" />
+                )}
               </div>
-
-              {currentQuestion.figures.length > 0 && (
-                <FigureGallery figures={currentQuestion.figures} variant="exam" />
-              )}
 
               {/* Interactive Answering Zone */}
               {currentQuestion.type === 'judge' ? (
@@ -483,7 +559,7 @@ export const PracticePage: React.FC = () => {
                     }`}
                     onClick={() => handleJudgeAnswer(true)}
                   >
-                    <Check size={18} /> 正确（√） <kbd>1</kbd>
+                    <Check size={17} /> 正确（√） <kbd>1</kbd>
                   </button>
                   <button
                     type="button"
@@ -498,7 +574,7 @@ export const PracticePage: React.FC = () => {
                     }`}
                     onClick={() => handleJudgeAnswer(false)}
                   >
-                    <X size={18} /> 错误（×） <kbd>2</kbd>
+                    <X size={17} /> 错误（×） <kbd>2</kbd>
                   </button>
 
                   {judgePicked !== null && (
@@ -509,8 +585,8 @@ export const PracticePage: React.FC = () => {
                       className="judge-mascot-tip"
                     >
                       {judgePicked === currentQuestion.judgeAnswer
-                        ? '判断正确！这一题已标记为掌握，继续冲～'
-                        : '哎呀判断反了！已帮你收进错题本，看看下面的解析找找陷阱吧。'}
+                        ? '判断正确！本题已归档为已掌握，继续保持节奏～'
+                        : '判断失误！已自动同步至错题本，展开下方精解核查陷阱吧。'}
                     </MascotTip>
                   )}
                 </div>
@@ -568,10 +644,10 @@ export const PracticePage: React.FC = () => {
 
                 <button
                   type="button"
-                  className="btn btn-primary"
+                  className={revealed ? 'btn btn-secondary' : 'btn btn-tactical'}
                   onClick={() => setRevealed((v) => !v)}
                 >
-                  {revealed ? '收起答案与解析 (Space)' : '查看答案与规范解析 (Space)'}
+                  {revealed ? '收起答案与解析 (Space)' : '展开参考答案与规范解析 (Space)'}
                 </button>
 
                 <button
@@ -608,7 +684,7 @@ export const PracticePage: React.FC = () => {
                   </div>
 
                   <div className="sol-answer-box">
-                    <span className="sol-badge">参考答案</span>
+                    <span className="sol-badge">ANSWER // 参考答案</span>
                     <div className="sol-answer-content">
                       <MathText text={currentQuestion.answer} />
                     </div>
@@ -617,12 +693,12 @@ export const PracticePage: React.FC = () => {
                   {currentQuestion.rubric && (
                     <div className="sol-rubric-preview">
                       <div className="sol-section-label">
-                        步骤采分点参考（满分 {currentQuestion.score} 分）
+                        RUBRIC // 步骤采分点参考（满分 {currentQuestion.score} 分）
                       </div>
                       <ul className="rubric-list">
                         {currentQuestion.rubric.map((rItem, i) => (
                           <li key={i}>
-                            <span className="rubric-pts">+{rItem.pts}分</span>
+                            <span className="rubric-pts">+{String(rItem.pts).padStart(2, '0')} 分</span>
                             <MathText text={rItem.label} inline />
                           </li>
                         ))}
@@ -631,7 +707,7 @@ export const PracticePage: React.FC = () => {
                   )}
 
                   <div className="sol-detail-box">
-                    <div className="sol-section-label">规范推导与详细解析</div>
+                    <div className="sol-section-label">DERIVATION // 规范推导与详细解析</div>
                     <MathText text={currentQuestion.analysis} />
                     {currentQuestion.analysisFigures.length > 0 && (
                       <FigureGallery figures={currentQuestion.analysisFigures} variant="solution" />
@@ -641,14 +717,14 @@ export const PracticePage: React.FC = () => {
                   {currentQuestion.pitfalls && (
                     <div className="sol-pitfall-box">
                       <div className="pitfall-title">
-                        <AlertTriangle size={15} /> 考点与易错提示
+                        <AlertTriangle size={15} /> CAUTION // 考点与易错提示
                       </div>
                       <MathText text={currentQuestion.pitfalls} />
                     </div>
                   )}
 
                   <div className="self-eval-box">
-                    <span className="self-eval-prompt">对照解析自评掌握度（记录进度并驱动错题闭环）：</span>
+                    <span className="self-eval-prompt">EVAL // 对照解析自评掌握度（驱动错题闭环）：</span>
                     <div className="self-eval-btns">
                       <button
                         type="button"
@@ -677,8 +753,8 @@ export const PracticePage: React.FC = () => {
               )}
 
               <div className="shortcut-footer">
-                快捷键：<kbd>←</kbd> <kbd>→</kbd> 切换题目 · <kbd>Space</kbd> 显隐解析 · 判断题按{' '}
-                <kbd>1</kbd> 正确 / <kbd>2</kbd> 错误 · <kbd>S</kbd> 收藏
+                SHORTCUTS // <kbd>←</kbd> <kbd>→</kbd> 切题 · <kbd>Space</kbd> 显隐解析 · 判断题{' '}
+                <kbd>1</kbd>/<kbd>2</kbd> · <kbd>S</kbd> 收藏
               </div>
             </article>
           </>

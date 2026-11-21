@@ -26,8 +26,8 @@ import { copyText } from '../utils/clipboard';
 function getExamCountdown(): { examYear: number; dateStr: string; daysLeft: number } {
   const now = new Date();
   const candidates = [
-    { examYear: 2027, date: new Date('2026-12-19T08:30:00+08:00'), label: '2026 年 12 月 19 日' },
-    { examYear: 2028, date: new Date('2027-12-18T08:30:00+08:00'), label: '2027 年 12 月 18 日' },
+    { examYear: 2027, date: new Date('2026-12-19T08:30:00+08:00'), label: '2026-12-19' },
+    { examYear: 2028, date: new Date('2027-12-18T08:30:00+08:00'), label: '2027-12-18' },
   ];
   const target = candidates.find((c) => c.date.getTime() >= now.getTime()) ?? candidates[candidates.length - 1];
   const diffMs = Math.max(0, target.date.getTime() - now.getTime());
@@ -35,12 +35,29 @@ function getExamCountdown(): { examYear: number; dateStr: string; daysLeft: numb
   return { examYear: target.examYear, dateStr: target.label, daysLeft };
 }
 
+const EXTRA_QUIPS = [
+  '伯努利方程先定基准面、再找渐变流断面，水头损失一项都别漏！',
+  '静水总压力曲面算水平与铅垂分力，压力体虚实一定先画箭头判断方向～',
+  '明渠非均匀流 12 条水面线：先判坡度（缓/陡），再看水深落在 1/2/3 哪一区！',
+  '刷错的题会自动同步进错题本，考前清零错题本就能稳稳上岸！',
+];
+
 export const HomePage: React.FC = () => {
-  const { courses, currentCourse, setCourseId, allQuestions, chapters, formulas, yearsMeta, latestAnnouncement } =
-    useData();
+  const {
+    courses,
+    currentCourse,
+    setCourseId,
+    allQuestions,
+    papersByYear,
+    chapters,
+    formulas,
+    yearsMeta,
+    latestAnnouncement,
+  } = useData();
   const { state, getRecord } = useStudy();
   const countdown = useMemo(getExamCountdown, []);
   const [copiedQq, setCopiedQq] = useState(false);
+  const [quipIdx, setQuipIdx] = useState<number>(-1);
 
   const handleCopyQq = async () => {
     const ok = await copyText(BRAND.qqGroup);
@@ -78,58 +95,83 @@ export const HomePage: React.FC = () => {
     };
   }, [allQuestions, getRecord]);
 
+  const bestMockByYear = useMemo(() => {
+    const map: Record<number, { score: number; max: number }> = {};
+    for (const m of state.mockHistory) {
+      if (!map[m.year] || m.totalScore > map[m.year].score) {
+        map[m.year] = { score: m.totalScore, max: m.maxScore };
+      }
+    }
+    return map;
+  }, [state.mockHistory]);
+
   const readyYears = useMemo(() => yearsMeta.filter((y) => y.status === 'ready'), [yearsMeta]);
   const plannedYears = useMemo(() => yearsMeta.filter((y) => y.status !== 'ready'), [yearsMeta]);
 
   const progressPct = stats.total > 0 ? Math.round((stats.practiced / stats.total) * 100) : 0;
   const masteryPct = stats.total > 0 ? Math.round((stats.mastered / stats.total) * 100) : 0;
+  const wrongPct = stats.total > 0 ? Math.min(100, Math.round((stats.wrongBook / stats.total) * 100)) : 0;
+  const mockPct = readyYears.length > 0 ? Math.min(100, Math.round((state.mockHistory.length / readyYears.length) * 100)) : 0;
 
-  const greeting =
+  const defaultGreeting =
     stats.total === 0
-      ? `「${currentCourse.shortLabel}」板块考纲与 ${formulas.length} 组必背公式已就位！真题包转换导入后就能开刷啦～`
+      ? `「${currentCourse.shortLabel}」考纲与 ${formulas.length} 组公式已就位，导入真题即可开刷！`
       : stats.practiced === 0
-        ? `你好呀，我是${BRAND.mascotName}！今天先从「${currentCourse.shortLabel}」真题第 1 题开始吧～`
+        ? `你好呀，我是${BRAND.mascotName}！今天先从「${currentCourse.shortLabel}」第 1 题开始吧～`
         : stats.wrongBook > 0
-          ? `还有 ${stats.wrongBook} 道错题在等你，先把它们“斩”掉吧！`
+          ? `终端检测到 ${stats.wrongBook} 道待斩错题，先把它们逐一击破吧！`
           : masteryPct >= 80
-            ? '掌握率超过 80% 啦！来一场 180 分钟全真模考检验一下？'
-            : `已经刷了 ${stats.practiced} 题，保持节奏，专业课稳稳拿下！`;
+            ? '掌握率突破 80% 啦！来一场 180 分钟全真模考检验实战水准？'
+            : `已累计突破 ${stats.practiced} 题，保持节奏，专业课稳稳拿下！`;
+
+  const activeDialogue = quipIdx >= 0 ? EXTRA_QUIPS[quipIdx % EXTRA_QUIPS.length] : defaultGreeting;
 
   return (
     <div className="page-container">
-      {/* Hero Banner */}
-      <section className="hero-card">
-        <div className="hero-bubbles" aria-hidden="true">
-          <i /><i /><i /><i /><i />
+      {/* PRTS Command Terminal Hero */}
+      <section className="hero-terminal">
+        <div className="hero-terminal-bg" aria-hidden="true" />
+        <div className="hero-watermark" aria-hidden="true">
+          {currentCourse.code}
         </div>
-        <div className="hero-grid">
-          <div className="hero-main">
-            <div className="hero-top-row">
-              <div className="countdown-pill">
-                <Flame size={15} className="accent-amber" />
-                <span>
-                  距 {countdown.examYear} 考研初试 <strong>{countdown.daysLeft} 天</strong> · {countdown.dateStr}
-                </span>
-              </div>
-              <span className="syllabus-pill">{currentCourse.examMetaBadge}</span>
-            </div>
 
+        {/* Top System Telemetry Bar */}
+        <div className="hero-sys-bar">
+          <div className="hero-countdown-block">
+            <span className="countdown-tag">COUNTDOWN</span>
+            <Flame size={14} className="text-yellow" />
+            <span>距 {countdown.examYear} 考研初试</span>
+            <strong className="countdown-days">T-{countdown.daysLeft} DAYS</strong>
+            <span className="countdown-date">// {countdown.dateStr}</span>
+          </div>
+          <div className="hero-meta-code">
+            <span className="hide-xs">MODULE // {currentCourse.id.toUpperCase()}</span>
+            <span className="hide-xs">·</span>
+            <span>{currentCourse.examMetaBadge}</span>
+          </div>
+        </div>
+
+        {/* Main Hero Grid */}
+        <div className="hero-body-grid">
+          <div className="hero-main">
             <h1 className="hero-title">
-              <span className="hero-title-grad">
-                {currentCourse.code} {currentCourse.subject} · {BRAND.fullName}
+              <span className="hero-title-main">
+                <span className="hero-title-code">{currentCourse.code}</span>
+                {currentCourse.subject} · {BRAND.fullName}
               </span>
               <span className="hero-title-sub">
                 适用目标院校：{currentCourse.school}（非官方个人复习工具）
               </span>
             </h1>
+
             <p className="hero-subtitle">
-              {BRAND.tagline} —— 结构化真题精析 · <strong>章节 × 方法</strong>双线串联 · 错题自评闭环
+              {BRAND.tagline} —— 结构化真题精析 · <strong>章节 × 方法</strong>双轴串联 · 采分点与错题自评闭环
             </p>
 
-            {/* Quick Course Pills */}
+            {/* Quick Course Module Switcher */}
             {courses.length > 1 && (
               <div className="hero-course-pills">
-                <span className="hero-course-lbl">快速切换板块：</span>
+                <span className="hero-course-lbl">MODULE //</span>
                 {courses.map((c) => (
                   <button
                     key={c.id}
@@ -144,68 +186,118 @@ export const HomePage: React.FC = () => {
             )}
 
             <div className="hero-cta-row">
-              <Link to="/practice" className="btn btn-primary btn-lg">
-                <Sparkles size={17} /> 开始逐题刷题
+              <Link to="/practice" className="btn btn-tactical btn-lg">
+                <Sparkles size={16} /> 开始逐题刷题
               </Link>
-              <Link to="/mock" className="btn btn-secondary btn-lg">
-                <Timer size={17} /> {state.activeMock ? '继续全真模考' : '180 分钟全真模考'}
+              <Link to="/mock" className="btn btn-primary btn-lg">
+                <Timer size={16} /> {state.activeMock ? '继续全真模考' : '180 分钟全真模考'}
               </Link>
-              <Link to="/year" className="btn btn-ghost btn-lg">
-                <BookOpen size={17} /> 历年真题整卷
+              <Link to="/year" className="btn btn-secondary btn-lg">
+                <BookOpen size={16} /> 历年真题整卷
               </Link>
               <Link to="/formulas" className="btn btn-ghost btn-lg">
-                <FileSpreadsheet size={17} /> 必背公式闪卡 ({formulas.length})
+                <FileSpreadsheet size={16} /> 公式闪卡 ({formulas.length})
               </Link>
             </div>
           </div>
 
-          <div className="hero-mascot-col">
-            <div className="hero-mascot-bubble">{greeting}</div>
-            <Mascot pose={stats.practiced > 0 && masteryPct >= 80 ? 'cheer' : 'hero'} size={230} float />
-          </div>
-        </div>
-
-        {/* Live Personal Progress Strip */}
-        <div className="hero-stats-strip">
-          <div className="stat-metric">
-            <span className="stat-val">{stats.practiced} / {stats.total}</span>
-            <span className="stat-lbl">已刷真题 ({progressPct}%)</span>
-            <span className="stat-bar"><i style={{ width: `${progressPct}%` }} /></span>
-          </div>
-          <div className="stat-metric">
-            <span className="stat-val text-emerald">{stats.mastered}</span>
-            <span className="stat-lbl">已掌握 ({masteryPct}%)</span>
-            <span className="stat-bar ok"><i style={{ width: `${masteryPct}%` }} /></span>
-          </div>
-          <div className="stat-metric">
-            <span className="stat-val text-coral">{stats.wrongBook}</span>
-            <span className="stat-lbl">错题待攻克</span>
-          </div>
-          <div className="stat-metric">
-            <span className="stat-val text-sky">{state.mockHistory.length}</span>
-            <span className="stat-lbl">已完成模考</span>
-          </div>
-        </div>
-        <svg className="hero-wave" viewBox="0 0 1200 80" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M0 40 C150 10 300 70 450 40 C600 10 750 70 900 40 C1050 10 1150 55 1200 40 L1200 80 L0 80 Z" />
-          <path className="w2" d="M0 55 C200 30 350 80 600 52 C850 25 1000 78 1200 50 L1200 80 L0 80 Z" />
-        </svg>
-      </section>
-
-      {/* Latest Announcement Strip */}
-      {latestAnnouncement && (
-        <section className="home-announcement-bar" aria-label="最新站点公告">
-          <div className="home-ann-left">
-            <span className="home-ann-icon">
-              <Megaphone size={16} />
-            </span>
-            <span className="ann-tag-chip">{latestAnnouncement.tag}</span>
-            <div className="home-ann-copy">
-              <strong className="home-ann-title">{latestAnnouncement.title}</strong>
-              <span className="home-ann-summary">{latestAnnouncement.summary}</span>
+          {/* Operator Mascot Terminal Stage */}
+          <div
+            className="hero-operator-stage"
+            role="button"
+            tabIndex={0}
+            title="点击切换大肥鱼备考提示"
+            onClick={() => setQuipIdx((i) => (i + 1) % EXTRA_QUIPS.length)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setQuipIdx((i) => (i + 1) % EXTRA_QUIPS.length);
+              }
+            }}
+          >
+            <div className="operator-stage-top">
+              <span>
+                ASSISTANT // <strong>DF-01</strong>
+              </span>
+              <span>{stats.practiced > 0 && masteryPct >= 80 ? 'CHEER' : 'ONLINE'}</span>
+            </div>
+            <Mascot pose={stats.practiced > 0 && masteryPct >= 80 ? 'cheer' : 'hero'} size={196} float />
+            <div className="operator-dialogue-strip">
+              <div className="operator-dialogue-head">
+                <span>{BRAND.mascotName} // BRIEFING</span>
+                <span>NEXT ▸</span>
+              </div>
+              <span>{activeDialogue}</span>
             </div>
           </div>
-          <div className="home-ann-actions">
+        </div>
+
+        {/* 4-Cell Precision Telemetry Strip */}
+        <div className="hero-telemetry-grid">
+          <div className="telemetry-cell">
+            <span className="telemetry-code">PROGRESS // 01</span>
+            <div className="telemetry-val-row">
+              <span className="telemetry-val">{stats.practiced}</span>
+              <span className="telemetry-unit">/ {stats.total} 题</span>
+            </div>
+            <span className="telemetry-lbl">已刷真题 ({progressPct}%)</span>
+            <span className="telemetry-bar">
+              <i style={{ width: `${progressPct}%` }} />
+            </span>
+          </div>
+
+          <div className="telemetry-cell">
+            <span className="telemetry-code">MASTERY // 02</span>
+            <div className="telemetry-val-row">
+              <span className="telemetry-val text-emerald">{stats.mastered}</span>
+              <span className="telemetry-unit">{masteryPct}%</span>
+            </div>
+            <span className="telemetry-lbl">已完全掌握</span>
+            <span className="telemetry-bar ok">
+              <i style={{ width: `${masteryPct}%` }} />
+            </span>
+          </div>
+
+          <div className="telemetry-cell">
+            <span className="telemetry-code">ERRATA // 03</span>
+            <div className="telemetry-val-row">
+              <span className={`telemetry-val ${stats.wrongBook > 0 ? 'text-coral' : 'text-emerald'}`}>
+                {stats.wrongBook}
+              </span>
+              <span className="telemetry-unit">{stats.wrongBook > 0 ? 'PENDING' : 'CLEAR'}</span>
+            </div>
+            <span className="telemetry-lbl">错题待攻克</span>
+            <span className={`telemetry-bar ${stats.wrongBook > 0 ? 'warn' : 'ok'}`}>
+              <i style={{ width: `${stats.wrongBook > 0 ? Math.max(8, wrongPct) : 100}%` }} />
+            </span>
+          </div>
+
+          <div className="telemetry-cell">
+            <span className="telemetry-code">SIMULATION // 04</span>
+            <div className="telemetry-val-row">
+              <span className="telemetry-val text-sky">{state.mockHistory.length}</span>
+              <span className="telemetry-unit">场 / {readyYears.length} 卷</span>
+            </div>
+            <span className="telemetry-lbl">已完成全真模考</span>
+            <span className="telemetry-bar yellow">
+              <i style={{ width: `${Math.max(state.mockHistory.length > 0 ? 10 : 0, mockPct)}%` }} />
+            </span>
+          </div>
+        </div>
+      </section>
+
+      {/* System Broadcast Strip */}
+      {latestAnnouncement && (
+        <section className="broadcast-bar" aria-label="最新站点公告">
+          <div className="broadcast-left">
+            <Megaphone size={16} className="text-yellow" style={{ flexShrink: 0 }} />
+            <span className="broadcast-tag">{latestAnnouncement.tag}</span>
+            <div className="broadcast-copy">
+              <strong className="broadcast-title">{latestAnnouncement.title}</strong>
+              <span className="broadcast-summary">{latestAnnouncement.summary}</span>
+            </div>
+          </div>
+          <div className="broadcast-actions">
             <button
               type="button"
               className={`copy-pill compact ${copiedQq ? 'copied' : ''}`}
@@ -223,66 +315,116 @@ export const HomePage: React.FC = () => {
         </section>
       )}
 
-      {/* 5-Layer Study Architecture Map */}
+      {/* De-Nested 5-Layer Architecture Map */}
       <section className="arch-section">
         <div className="section-head">
-          <h2 className="section-title">复习体系导览 · {currentCourse.shortLabel}</h2>
+          <h2 className="section-title">复习体系作战图 · {currentCourse.shortLabel}</h2>
           <span className="section-hint">
             {readyYears.length > 0
-              ? `已上线 ${readyYears.length} 套真题（共 ${stats.total} 题）${
-                  plannedYears.length > 0 ? `，另有 ${plannedYears.length} 套历年卷待按需导入` : ''
+              ? `ONLINE ${readyYears.length} SETS // ${stats.total} QUESTIONS${
+                  plannedYears.length > 0 ? ` (+${plannedYears.length} PLANNED)` : ''
                 }`
-              : `已预置 ${chapters.length} 章考纲与 ${formulas.length} 组核心公式，共 ${plannedYears.length} 套真题待导入`}
+              : `SYLLABUS ${chapters.length} CH // ${formulas.length} FORMULAS`}
           </span>
         </div>
 
         <div className="arch-stack">
-          {/* Layer 1 */}
-          <div className="arch-layer">
-            <div className="arch-layer-head">
-              <div className="arch-badge layer-1">
-                ① 底座 · 历年真题精解池（已上线 {readyYears.length} 套 / 规划 {yearsMeta.length} 套）
+          {/* Layer 01: Live Year Dossier Pool */}
+          <div className="arch-group">
+            <div className="arch-group-head">
+              <div className="arch-layer-tag">
+                <span className="arch-layer-num">01</span>
+                <span>底座 · 历年真题档案池（已上线 {readyYears.length} 套 / 共 {yearsMeta.length} 套）</span>
               </div>
               {yearsMeta.length > 6 && (
                 <Link to="/year" className="btn-inline-link">
-                  查看全部 {yearsMeta.length} 套历年真题 →
+                  查看全部 {yearsMeta.length} 套真题 →
                 </Link>
               )}
             </div>
+
             <div className="arch-cards-grid cols-3">
               {yearsMeta.slice(0, 6).map((ym) => {
                 const isReady = ym.status === 'ready';
+                const paper = papersByYear[ym.year];
+                const qs = paper?.questions ?? [];
+                let mCnt = 0;
+                let pCnt = 0;
+                let wCnt = 0;
+                for (const q of qs) {
+                  const st = getRecord(q.id).status;
+                  if (st === 'mastered') mCnt++;
+                  else if (st === 'partial') pCnt++;
+                  else if (st === 'wrong') wCnt++;
+                }
+                const doneCnt = mCnt + pCnt + wCnt;
+                const totalCnt = qs.length || ym.questionCount || 1;
+                const yrMasteryPct = qs.length > 0 ? Math.round((mCnt / qs.length) * 100) : 0;
+                const bestMock = bestMockByYear[ym.year];
+
                 return (
                   <Link
                     key={ym.year}
                     to={isReady ? `/year?year=${ym.year}` : '/year'}
-                    className={`arch-card ${!isReady ? 'muted-card' : ''}`}
+                    className={`year-dossier-card ${!isReady ? 'muted-card' : ''}`}
                   >
-                    <div className="arch-card-top">
-                      <span className="arch-card-title">
-                        {ym.year} {currentCourse.shortLabel} 真题
+                    <span className="year-dossier-wm" aria-hidden="true">
+                      {ym.year}
+                    </span>
+                    <div className="year-dossier-head">
+                      <span className="year-dossier-num">
+                        {ym.year} <small style={{ fontSize: '0.72rem', fontWeight: 600 }}>真题卷</small>
                       </span>
                       <span className={`status-chip ${isReady ? 'ready' : 'planned'}`}>
-                        {isReady ? `已上线 · ${ym.questionCount} 题` : '待导入'}
+                        {isReady ? 'ONLINE' : 'PENDING'}
                       </span>
                     </div>
-                    <p className="arch-card-desc">
-                      {isReady
-                        ? `满分 ${ym.totalScore} 分，含题目配图、规范推导解析与步骤采分点。`
-                        : `标准目录接口已就绪，使用一键入库脚本即可激活 ${ym.year} 真题。`}
-                    </p>
+
+                    <div className="year-dossier-meta">
+                      <span>{ym.questionCount} 题</span>
+                      <span>·</span>
+                      <span>满分 {ym.totalScore} 分</span>
+                      {bestMock && (
+                        <>
+                          <span>·</span>
+                          <span className="text-sky">
+                            模考最高 {bestMock.score}/{bestMock.max}
+                          </span>
+                        </>
+                      )}
+                    </div>
+
+                    <div className="year-dossier-foot">
+                      <div className="progress-bar-track">
+                        <div className="progress-seg mastered" style={{ width: `${(mCnt / totalCnt) * 100}%` }} />
+                        <div className="progress-seg partial" style={{ width: `${(pCnt / totalCnt) * 100}%` }} />
+                        <div className="progress-seg wrong" style={{ width: `${(wCnt / totalCnt) * 100}%` }} />
+                      </div>
+                      <div className="year-dossier-stat">
+                        <span>
+                          已练 {doneCnt}/{qs.length || ym.questionCount}
+                        </span>
+                        <span>掌握 {yrMasteryPct}%</span>
+                      </div>
+                    </div>
                   </Link>
                 );
               })}
             </div>
           </div>
 
-          {/* Orthogonal Axes Row: Layer 2 & Layer 3 */}
+          {/* Layer 02 & 03: Orthogonal Axes */}
           <div className="arch-dual-row">
-            <div className="arch-layer">
-              <div className="arch-badge layer-2">② 轴一 · 按考纲章节体系</div>
+            <div className="arch-group">
+              <div className="arch-group-head">
+                <div className="arch-layer-tag">
+                  <span className="arch-layer-num">02</span>
+                  <span>轴一 · 按考纲章节体系</span>
+                </div>
+                <span className="hud-code">AXIS-A // SYLLABUS</span>
+              </div>
               <div className="arch-cards-grid cols-2">
-                <Link to="/chapters" className="arch-card">
+                <Link to="/chapters" className="arch-card accent-cyan">
                   <div className="arch-card-top">
                     <span className="arch-card-title">{chapters.length} 章考纲练习</span>
                     <Layers size={16} className="text-sky" />
@@ -291,88 +433,106 @@ export const HomePage: React.FC = () => {
                     围绕「{currentCourse.shortLabel}」重点章节与分值比重，定向突破薄弱板块。
                   </p>
                 </Link>
-                <Link to="/dashboard" className="arch-card">
+                <Link to="/dashboard" className="arch-card accent-cyan">
                   <div className="arch-card-top">
                     <span className="arch-card-title">命题结构大盘</span>
                     <BarChart3 size={16} className="text-sky" />
                   </div>
                   <p className="arch-card-desc">
-                    章节考察规律与历年真题实考分值同屏对照，精准锁定高性价比复习区。
+                    历年真题实考分值热力矩阵同屏对照，锁定高性价比大题重镇。
                   </p>
                 </Link>
               </div>
             </div>
 
-            <div className="arch-layer">
-              <div className="arch-badge layer-3">③ 轴二 · 按通用解题方法</div>
+            <div className="arch-group">
+              <div className="arch-group-head">
+                <div className="arch-layer-tag">
+                  <span className="arch-layer-num">03</span>
+                  <span>轴二 · 按通用解题方法</span>
+                </div>
+                <span className="hud-code">AXIS-B // METHOD</span>
+              </div>
               <div className="arch-cards-grid cols-2">
-                <Link to="/methods" className="arch-card">
+                <Link to="/methods" className="arch-card accent-purple">
                   <div className="arch-card-top">
                     <span className="arch-card-title">解题方法库 ({stats.uniqueMethods} 种)</span>
                     <Compass size={16} className="text-purple" />
                   </div>
                   <p className="arch-card-desc">
-                    跳出章节壁垒，将历年高频同类设问归纳为标准化解题方法集中训练。
+                    跳出章节壁垒，将历年高频同类设问归纳为标准破题流程集中训练。
                   </p>
                 </Link>
-                <Link to="/practice?type=calc" className="arch-card">
+                <Link to="/practice?type=calc" className="arch-card accent-purple">
                   <div className="arch-card-top">
                     <span className="arch-card-title">计算与推导大题专练</span>
                     <ArrowRight size={16} className="text-purple" />
                   </div>
                   <p className="arch-card-desc">
-                    专攻高分值计算与推导大题，配套分步采分点（Rubric）规范考场书写步骤。
+                    专攻高分值计算与推导大题，配套分步采分点规范考场书写步骤。
                   </p>
                 </Link>
               </div>
             </div>
           </div>
 
-          {/* Layer 4 & Layer 5 */}
+          {/* Layer 04 & 05: Closed-Loop & Exam Tools */}
           <div className="arch-dual-row">
-            <div className="arch-layer">
-              <div className="arch-badge layer-4">④ 闭环 · 错题诊断与掌握追踪</div>
+            <div className="arch-group">
+              <div className="arch-group-head">
+                <div className="arch-layer-tag">
+                  <span className="arch-layer-num">04</span>
+                  <span>闭环 · 错题诊断与掌握追踪</span>
+                </div>
+                <span className="hud-code">LOOP // DIAGNOSTICS</span>
+              </div>
               <div className="arch-cards-grid cols-2">
-                <Link to="/wrong-book" className="arch-card">
+                <Link to="/wrong-book" className="arch-card accent-emerald">
                   <div className="arch-card-top">
                     <span className="arch-card-title">错题本 & 私人笔记</span>
                     <BookMarked size={16} className="text-coral" />
                   </div>
                   <p className="arch-card-desc">
-                    客观题判错与主观题自评「不会 / 半会」自动入库，各专业课错题独立管理。
+                    判错与自评「不会 / 半会」自动归档，支持分板块独立斩题与笔记沉淀。
                   </p>
                 </Link>
-                <Link to="/progress" className="arch-card">
+                <Link to="/progress" className="arch-card accent-emerald">
                   <div className="arch-card-top">
                     <span className="arch-card-title">掌握度热力图</span>
                     <CheckCircle2 size={16} className="text-emerald" />
                   </div>
                   <p className="arch-card-desc">
-                    分年份、分章节可视化追踪每道真题的掌握状态、做题流水与模考得分曲线。
+                    分年份折叠矩阵与章节掌握进度条，完整记录做题流水与折算得分。
                   </p>
                 </Link>
               </div>
             </div>
 
-            <div className="arch-layer">
-              <div className="arch-badge layer-5">⑤ 工具 · 考场模拟与公式背诵</div>
+            <div className="arch-group">
+              <div className="arch-group-head">
+                <div className="arch-layer-tag">
+                  <span className="arch-layer-num">05</span>
+                  <span>工具 · 考场模拟与公式背诵</span>
+                </div>
+                <span className="hud-code">TOOLS // COMBAT</span>
+              </div>
               <div className="arch-cards-grid cols-2">
-                <Link to="/mock" className="arch-card">
+                <Link to="/mock" className="arch-card accent-yellow">
                   <div className="arch-card-top">
                     <span className="arch-card-title">整卷限时模考</span>
                     <Timer size={16} className="text-amber" />
                   </div>
                   <p className="arch-card-desc">
-                    180 分钟全真计时、答题卡标记、交卷后客观题秒判 + 主观题采分点自评生成成绩单。
+                    180 分钟全真计时、分段答题卡、交卷秒判 + 采分点自评生成评级报告。
                   </p>
                 </Link>
-                <Link to="/formulas" className="arch-card">
+                <Link to="/formulas" className="arch-card accent-yellow">
                   <div className="arch-card-top">
                     <span className="arch-card-title">公式速记手册 ({formulas.length} 组)</span>
                     <FileSpreadsheet size={16} className="text-amber" />
                   </div>
                   <p className="arch-card-desc">
-                    整理本科目核心必背公式、物理量纲与适用边界，支持章节精读与闪卡翻面抽背。
+                    整理本科目核心必背方程、量纲与边界，支持精读与 3D 翻面闪卡抽背。
                   </p>
                 </Link>
               </div>

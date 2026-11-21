@@ -45,7 +45,6 @@ export const FormulasPage: React.FC = () => {
     setCardFlipped(false);
   }, [chapterFilter, onlyFav, query, cardMode]);
 
-  // Keyboard navigation in Flashcard mode
   useEffect(() => {
     if (!cardMode || filtered.length === 0) return;
     const onKey = (e: KeyboardEvent) => {
@@ -69,17 +68,19 @@ export const FormulasPage: React.FC = () => {
   }, [cardMode, filtered.length]);
 
   const activeCard = filtered[cardIdx] ?? null;
+  const cardProgressPct = filtered.length > 0 ? Math.round(((cardIdx + 1) / filtered.length) * 100) : 0;
 
   return (
-    <div className="page-container">
+    <div className="page-container reading-narrow">
       <div className="page-header-card">
+        <div className="page-kicker">FORMULA CODEX // {currentCourse.id.toUpperCase()}</div>
         <div className="header-flex">
           <div>
             <h1 className="page-title">
-              <FileSpreadsheet size={22} className="text-amber" /> {currentCourse.name} · 核心公式速记手册
+              <FileSpreadsheet size={22} className="text-yellow" /> {currentCourse.name} · 核心公式速记手册
             </h1>
             <p className="page-desc">
-              精选 {formulas.length} 组考场必背核心方程、物理量纲与适用边界，支持列表精读与闪卡默写自测
+              精选 {formulas.length} 组考场必背核心方程、物理量纲与适用边界，支持列表精读与 3D 翻面闪卡抽背
             </p>
           </div>
 
@@ -89,19 +90,22 @@ export const FormulasPage: React.FC = () => {
               className={`seg-btn ${!cardMode ? 'active' : ''}`}
               onClick={() => setCardMode(false)}
             >
-              <Layers size={14} /> 列表精读模式
+              <Layers size={14} /> 列表精读
             </button>
             <button
               type="button"
               className={`seg-btn ${cardMode ? 'active' : ''}`}
               onClick={() => setCardMode(true)}
             >
-              <RotateCw size={14} /> 闪卡默写模式
+              <RotateCw size={14} /> 3D 闪卡抽背
             </button>
           </div>
         </div>
 
-        <div className="practice-filter-bar" style={{ marginTop: '0.85rem', padding: 0, border: 'none', background: 'transparent' }}>
+        <div
+          className="practice-filter-bar"
+          style={{ marginTop: '0.95rem', padding: 0, border: 'none', background: 'transparent', boxShadow: 'none' }}
+        >
           <div className="filter-selects">
             <select
               className="ui-select"
@@ -119,7 +123,7 @@ export const FormulasPage: React.FC = () => {
 
             <button
               type="button"
-              className={`btn btn-sm ${onlyFav ? 'btn-primary' : 'btn-secondary'}`}
+              className={`btn btn-sm ${onlyFav ? 'btn-tactical' : 'btn-secondary'}`}
               onClick={() => setOnlyFav((v) => !v)}
             >
               <Star size={14} fill={onlyFav ? 'currentColor' : 'none'} /> 收藏 ({state.favoriteFormulas.length})
@@ -141,60 +145,108 @@ export const FormulasPage: React.FC = () => {
       {filtered.length === 0 ? (
         <div className="empty-state-card">
           <Mascot pose="think" size={120} />
+          <span className="hud-code">QUERY // ZERO_MATCH</span>
           <h3>没有匹配的公式</h3>
           <p>请尝试切换章节或清空搜索关键词。</p>
         </div>
       ) : cardMode && activeCard ? (
         <div className="flashcard-stage">
-          <div className="flashcard-box" onClick={() => setCardFlipped((f) => !f)}>
-            <div className="flashcard-top">
-              <span className="q-tag chapter-tag">
-                第{activeCard.chapter}章 · {chapterMap[activeCard.chapter]?.name}
-              </span>
-              <span className="studio-counter">
-                卡片 {cardIdx + 1} / {filtered.length}
-              </span>
-              <button
-                type="button"
-                className={`icon-action-btn ${
-                  state.favoriteFormulas.includes(activeCard.id) ? 'fav-active' : ''
-                }`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleFavoriteFormula(activeCard.id);
-                }}
-              >
-                <Star
-                  size={16}
-                  fill={state.favoriteFormulas.includes(activeCard.id) ? 'currentColor' : 'none'}
-                />
-              </button>
+          <div className="flashcard-progress-bar" title={`进度 ${cardProgressPct}%`}>
+            <i style={{ width: `${cardProgressPct}%` }} />
+          </div>
+
+          <div className="flashcard-scene">
+            <div
+              className={`flashcard-3d ${cardFlipped ? 'flipped' : ''}`}
+              onClick={() => setCardFlipped((f) => !f)}
+              role="button"
+              tabIndex={0}
+              aria-label="点击翻面查看公式"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  setCardFlipped((f) => !f);
+                }
+              }}
+            >
+              {/* Front Face */}
+              <div className="flashcard-face front ak-brackets">
+                <div className="flashcard-top">
+                  <span className="q-tag chapter-tag">
+                    CH.{String(activeCard.chapter).padStart(2, '0')} · {chapterMap[activeCard.chapter]?.name}
+                  </span>
+                  <span className="studio-counter">
+                    CARD {String(cardIdx + 1).padStart(2, '0')} / {String(filtered.length).padStart(2, '0')}
+                  </span>
+                  <button
+                    type="button"
+                    className={`icon-action-btn ${
+                      state.favoriteFormulas.includes(activeCard.id) ? 'fav-active' : ''
+                    }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleFavoriteFormula(activeCard.id);
+                    }}
+                    title="收藏该公式"
+                  >
+                    <Star
+                      size={16}
+                      fill={state.favoriteFormulas.includes(activeCard.id) ? 'currentColor' : 'none'}
+                    />
+                  </button>
+                </div>
+
+                <h2 className="flashcard-name">{activeCard.name}</h2>
+
+                <div className="flashcard-prompt">
+                  <p style={{ margin: 0 }}>请先在脑海中或草稿纸上默写该方程、量纲及适用条件</p>
+                  <span className="btn btn-tactical btn-sm">
+                    <Eye size={14} /> 点击卡片或按 Space 翻面核对
+                  </span>
+                </div>
+              </div>
+
+              {/* Back Face */}
+              <div className="flashcard-face back ak-brackets">
+                <div className="flashcard-top">
+                  <span className="hud-code">EQUATION VERIFICATION // BACK</span>
+                  <span className="studio-counter">
+                    {String(cardIdx + 1).padStart(2, '0')} / {String(filtered.length).padStart(2, '0')}
+                  </span>
+                  <button
+                    type="button"
+                    className={`icon-action-btn ${
+                      state.favoriteFormulas.includes(activeCard.id) ? 'fav-active' : ''
+                    }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleFavoriteFormula(activeCard.id);
+                    }}
+                  >
+                    <Star
+                      size={16}
+                      fill={state.favoriteFormulas.includes(activeCard.id) ? 'currentColor' : 'none'}
+                    />
+                  </button>
+                </div>
+
+                <h3 className="flashcard-back-title">{activeCard.name}</h3>
+
+                <div onClick={(e) => e.stopPropagation()}>
+                  <div className="formula-math-box">
+                    <KaTeXFormula latex={activeCard.latex} />
+                  </div>
+                  <div className="formula-vars">
+                    <strong>符号说明：</strong>
+                    <MathText text={activeCard.variables} inline />
+                  </div>
+                  <div className="formula-note">
+                    <strong>适用边界与考场提醒：</strong>
+                    <MathText text={activeCard.note} inline />
+                  </div>
+                </div>
+              </div>
             </div>
-
-            <h2 className="flashcard-name">{activeCard.name}</h2>
-
-            {!cardFlipped ? (
-              <div className="flashcard-prompt">
-                <p>请先在脑海中或草稿纸上默写该公式及其适用条件</p>
-                <span className="btn btn-primary btn-sm">
-                  <Eye size={14} /> 点击或按空格键翻面核对
-                </span>
-              </div>
-            ) : (
-              <div className="flashcard-answer" onClick={(e) => e.stopPropagation()}>
-                <div className="formula-math-box">
-                  <KaTeXFormula latex={activeCard.latex} />
-                </div>
-                <div className="formula-vars">
-                  <strong>符号说明：</strong>
-                  <MathText text={activeCard.variables} inline />
-                </div>
-                <div className="formula-note">
-                  <strong>适用边界与考场提醒：</strong>
-                  <MathText text={activeCard.note} inline />
-                </div>
-              </div>
-            )}
           </div>
 
           <div className="flashcard-controls">
@@ -206,14 +258,14 @@ export const FormulasPage: React.FC = () => {
                 setCardIdx((i) => (i > 0 ? i - 1 : filtered.length - 1));
               }}
             >
-              <ChevronLeft size={16} /> 上一张 (←)
+              <ChevronLeft size={16} /> 上一张 <kbd>←</kbd>
             </button>
             <button
               type="button"
-              className="btn btn-primary"
+              className={cardFlipped ? 'btn btn-secondary' : 'btn btn-tactical'}
               onClick={() => setCardFlipped((f) => !f)}
             >
-              {cardFlipped ? '盖上重默 (Space)' : '翻开看公式 (Space)'}
+              <RotateCw size={15} /> {cardFlipped ? '盖上重默 (Space)' : '翻开核对 (Space)'}
             </button>
             <button
               type="button"
@@ -223,18 +275,19 @@ export const FormulasPage: React.FC = () => {
                 setCardIdx((i) => (i + 1 < filtered.length ? i + 1 : 0));
               }}
             >
-              下一张 (→) <ChevronRight size={16} />
+              下一张 <kbd>→</kbd> <ChevronRight size={16} />
             </button>
           </div>
         </div>
       ) : (
         <div className="formulas-stack">
-          {filtered.map((f) => {
+          {filtered.map((f, idx) => {
             const isFav = state.favoriteFormulas.includes(f.id);
             return (
               <article key={f.id} className="formula-card">
                 <div className="formula-card-head">
                   <div className="q-meta-left">
+                    <span className="hud-code">EQ.{String(idx + 1).padStart(2, '0')}</span>
                     <Link to={`/practice?chapter=${f.chapter}`} className="q-tag chapter-tag">
                       第{f.chapter}章 · {chapterMap[f.chapter]?.name}
                     </Link>

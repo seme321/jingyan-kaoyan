@@ -198,12 +198,16 @@ export interface ActiveMockSession {
   rubricChecks: Record<string, boolean[]>;
 }
 
+export type DiagramDarkMode = 'blueprint' | 'soft' | 'original';
+
 export interface AppSettings {
   theme: 'dark' | 'light' | 'system';
   fontSize: 'md' | 'lg' | 'xl' | '2xl';
   fontFamily: 'sans' | 'serif';
   hideTagsBeforeAnswer: boolean;
   softDiagramInDark: boolean;
+  diagramDarkMode?: DiagramDarkMode;
+  animatedBg?: boolean;
 }
 
 export interface CourseStudySlice {

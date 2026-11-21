@@ -53,6 +53,7 @@ export const MethodsPage: React.FC = () => {
   return (
     <div className="page-container">
       <div className="page-header-card">
+        <div className="page-kicker">AXIS-B // METHOD REPOSITORY</div>
         <div className="header-flex">
           <div>
             <h1 className="page-title">
@@ -100,7 +101,7 @@ export const MethodsPage: React.FC = () => {
             return (
               <div key={item.method} className="method-card">
                 <div className="method-card-head">
-                  <div className="method-rank">方法 #{String(idx + 1).padStart(2, '0')}</div>
+                  <div className="method-rank">M-{String(idx + 1).padStart(2, '0')}</div>
                   <span className="method-score-pill">
                     {item.questions.length} 题 · 共 {item.scoreSum} 分
                   </span>
@@ -138,7 +139,7 @@ export const MethodsPage: React.FC = () => {
 
                 <div className="method-card-foot">
                   <span className="method-mastery">
-                    已掌握 {masteredCount}/{item.questions.length}
+                    MASTERED {masteredCount}/{item.questions.length}
                   </span>
                   <Link
                     to={`/practice?method=${encodeURIComponent(item.method)}`}

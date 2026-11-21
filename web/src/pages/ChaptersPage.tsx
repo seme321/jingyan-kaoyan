@@ -42,6 +42,7 @@ export const ChaptersPage: React.FC = () => {
   return (
     <div className="page-container">
       <div className="page-header-card">
+        <div className="page-kicker">AXIS-A // SYLLABUS BREAKDOWN</div>
         <div className="header-flex">
           <div>
             <h1 className="page-title">
@@ -83,7 +84,7 @@ export const ChaptersPage: React.FC = () => {
           <div className="syllabus-highlights">
             {chaptersPayload.highlights.map((h, i) => (
               <span key={i} className="highlight-chip">
-                <Flame size={13} /> {h}
+                <Flame size={13} className="text-amber" /> {h}
               </span>
             ))}
           </div>
@@ -103,11 +104,14 @@ export const ChaptersPage: React.FC = () => {
           const pct = st.total > 0 ? Math.round((st.mastered / st.total) * 100) : 0;
 
           return (
-            <div key={ch.chapter} className="chapter-card">
+            <div key={ch.chapter} className={`chapter-card ${ch.hasBigQuestion ? 'is-big' : ''}`}>
+              <span className="chapter-watermark" aria-hidden="true">
+                CH.{String(ch.chapter).padStart(2, '0')}
+              </span>
               <div className="chapter-card-top">
                 <div>
                   <div className="chapter-title-row">
-                    <span className="chapter-index">第 {ch.chapter} 章</span>
+                    <span className="chapter-index">CH.{String(ch.chapter).padStart(2, '0')}</span>
                     <h2 className="chapter-name">{ch.name}</h2>
                     {ch.hasBigQuestion ? (
                       <span className="badge-big">大题重镇</span>
@@ -116,7 +120,7 @@ export const ChaptersPage: React.FC = () => {
                     )}
                   </div>
                   <div className="chapter-meta-line">
-                    <span>考纲题型：{ch.questionTypes}</span>
+                    <span>题型：{ch.questionTypes}</span>
                     <span>·</span>
                     <span>常规分值：{ch.scoreLabel} 分</span>
                     <span>·</span>
@@ -130,9 +134,9 @@ export const ChaptersPage: React.FC = () => {
 
                 <Link
                   to={`/practice?chapter=${ch.chapter}`}
-                  className="btn btn-primary btn-sm"
+                  className={ch.hasBigQuestion ? 'btn btn-tactical btn-sm' : 'btn btn-primary btn-sm'}
                 >
-                  <Play size={14} /> 刷本章 ({st.total}题)
+                  <Play size={13} /> 刷本章 ({st.total})
                 </Link>
               </div>
 
@@ -177,8 +181,8 @@ export const ChaptersPage: React.FC = () => {
                       <>考纲参考分值：{ch.scoreLabel} 分</>
                     )}
                   </span>
-                  <span>
-                    已练 {done}/{st.total} · 掌握率 <strong>{pct}%</strong>
+                  <span className="font-mono">
+                    已练 {done}/{st.total} · 掌握 {pct}%
                   </span>
                 </div>
               </div>

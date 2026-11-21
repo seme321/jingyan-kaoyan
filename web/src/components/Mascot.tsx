@@ -11,7 +11,7 @@ interface MascotProps {
   float?: boolean;
 }
 
-/** 本站原创吉祥物「小鲸」立绘；图片缺失时回退为原创矢量小胖鲸。 */
+/** 看板娘「大肥鱼」立绘；图片缺失时回退为原创矢量小胖鲸。 */
 export const Mascot: React.FC<MascotProps> = ({ pose, size = 160, className = '', float = false }) => {
   const [failed, setFailed] = useState(false);
   return (
@@ -41,12 +41,20 @@ interface MascotTipProps {
   className?: string;
 }
 
-/** 吉祥物 + 对话气泡提示。 */
-export const MascotTip: React.FC<MascotTipProps> = ({ pose, children, size = 76, tone = 'info', className = '' }) => (
+/** 看板娘 + 战术终端提示条。 */
+export const MascotTip: React.FC<MascotTipProps> = ({
+  pose,
+  children,
+  size = 76,
+  tone = 'info',
+  className = '',
+}) => (
   <div className={`mascot-tip tone-${tone} ${className}`}>
     <Mascot pose={pose} size={size} />
     <div className="mascot-bubble">
-      <span className="mascot-bubble-name">{BRAND.mascotName}</span>
+      <span className="mascot-bubble-name">
+        UNIT DF-01 // {BRAND.mascotName}
+      </span>
       <div>{children}</div>
     </div>
   </div>

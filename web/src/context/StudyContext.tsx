@@ -19,6 +19,8 @@ const DEFAULT_SETTINGS: AppSettings = {
   fontFamily: 'sans',
   hideTagsBeforeAnswer: true,
   softDiagramInDark: true,
+  diagramDarkMode: 'blueprint',
+  animatedBg: true,
 };
 
 const EMPTY_SLICE: CourseStudySlice = {
@@ -77,6 +79,7 @@ interface ScopedStudyState extends CourseStudySlice {
 
 interface StudyContextValue {
   state: ScopedStudyState;
+  resolvedTheme: 'dark' | 'light';
   getRecord: (qid: string) => QuestionRecord;
   recordAttempt: (
     qid: string,
@@ -114,20 +117,23 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   }, [multi]);
 
+  const [resolvedTheme, setResolvedTheme] = useState<'dark' | 'light'>('dark');
+
   useEffect(() => {
     const root = document.documentElement;
     const { theme, fontSize, fontFamily } = multi.settings;
     const media = window.matchMedia('(prefers-color-scheme: light)');
 
     const applyTheme = () => {
-      const resolvedTheme: 'dark' | 'light' =
+      const nextTheme: 'dark' | 'light' =
         theme === 'system' ? (media.matches ? 'light' : 'dark') : theme;
-      root.setAttribute('data-theme', resolvedTheme);
+      setResolvedTheme(nextTheme);
+      root.setAttribute('data-theme', nextTheme);
       root.setAttribute('data-font-size', fontSize);
       root.setAttribute('data-font-family', fontFamily);
       const metaTheme = document.querySelector('meta[name="theme-color"]');
       if (metaTheme) {
-        metaTheme.setAttribute('content', resolvedTheme === 'dark' ? '#06101f' : '#eef6ff');
+        metaTheme.setAttribute('content', nextTheme === 'dark' ? '#0a0e14' : '#eceff3');
       }
     };
 
@@ -389,6 +395,7 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     <StudyContext.Provider
       value={{
         state: scopedState,
+        resolvedTheme,
         getRecord,
         recordAttempt,
         toggleFavorite,

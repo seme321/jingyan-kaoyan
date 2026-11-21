@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
+  Activity,
   BarChart3,
   BookMarked,
   BookOpen,
@@ -12,8 +13,10 @@ import {
   Layers,
   Megaphone,
   Menu,
+  Moon,
   Settings,
   Sparkles,
+  Sun,
   Timer,
   X,
 } from 'lucide-react';
@@ -26,12 +29,16 @@ interface HeaderProps {
   onOpenSettings: () => void;
 }
 
+const MATRIX_PATHS = ['/chapters', '/methods', '/dashboard'];
+
 export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
-  const { state } = useStudy();
+  const { state, resolvedTheme, updateSettings } = useStudy();
   const { courses, currentCourse, setCourseId, questionsById, hasUnreadAnnouncement } = useData();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [switcherOpen, setSwitcherOpen] = useState(false);
+  const [matrixOpen, setMatrixOpen] = useState(false);
   const switcherRef = useRef<HTMLDivElement | null>(null);
+  const matrixRef = useRef<HTMLDivElement | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -42,6 +49,8 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
       ).length,
     [state.records, questionsById]
   );
+
+  const isMatrixActive = MATRIX_PATHS.includes(location.pathname);
 
   const handleSelectCourse = (nextId: string) => {
     if (nextId !== currentCourse.id) {
@@ -54,35 +63,50 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
     setMobileOpen(false);
   };
 
+  const handleQuickThemeToggle = () => {
+    updateSettings({ theme: resolvedTheme === 'dark' ? 'light' : 'dark' });
+  };
+
   useEffect(() => {
     setMobileOpen(false);
     setSwitcherOpen(false);
+    setMatrixOpen(false);
   }, [location.pathname, location.search]);
 
   useEffect(() => {
-    if (!switcherOpen) return;
+    if (!switcherOpen && !matrixOpen) return;
     const onClickOutside = (e: MouseEvent) => {
-      if (switcherRef.current && !switcherRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      if (switcherRef.current && !switcherRef.current.contains(target)) {
         setSwitcherOpen(false);
+      }
+      if (matrixRef.current && !matrixRef.current.contains(target)) {
+        setMatrixOpen(false);
       }
     };
     document.addEventListener('mousedown', onClickOutside);
     return () => document.removeEventListener('mousedown', onClickOutside);
-  }, [switcherOpen]);
+  }, [switcherOpen, matrixOpen]);
 
   return (
     <header className="top-header">
       <div className="header-inner">
         <div className="brand-cluster" ref={switcherRef}>
           <Link to="/" className="brand-link">
-            <WhaleLogo size={33} className="brand-logo" />
-            <span className="brand-name">{BRAND.name}</span>
+            <WhaleLogo size={32} className="brand-logo" />
+            <span className="brand-wordmark">
+              <span className="brand-name">{BRAND.name}</span>
+              <span className="brand-sub-code">HYDRO // TERMINAL</span>
+            </span>
           </Link>
 
           <button
             type="button"
             className={`course-switcher-btn ${switcherOpen ? 'open' : ''}`}
-            onClick={() => setSwitcherOpen((v) => !v)}
+            onClick={() => {
+              setSwitcherOpen((v) => !v);
+              setMatrixOpen(false);
+            }}
             title="切换院校与考研专业课板块"
           >
             <span>{currentCourse.shortLabel}</span>
@@ -91,7 +115,10 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
 
           {switcherOpen && (
             <div className="course-popover">
-              <div className="course-popover-head">切换考研专业课板块（各科学习记录独立保存）</div>
+              <div className="course-popover-head">
+                <span>SELECT MODULE // 切换专业课</span>
+                <span>ISOLATED</span>
+              </div>
               <div className="course-popover-list">
                 {courses.map((c) => {
                   const active = c.id === currentCourse.id;
@@ -105,7 +132,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
                       <div className="course-opt-top">
                         <span className="course-opt-name">{c.name}</span>
                         <span className={`status-chip ${c.status === 'ready' ? 'ready' : 'planned'}`}>
-                          {c.status === 'ready' ? '已上线' : '框架就绪'}
+                          {c.status === 'ready' ? 'ONLINE' : 'STANDBY'}
                         </span>
                         {active && <Check size={15} className="text-sky" />}
                       </div>
@@ -118,55 +145,135 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
           )}
         </div>
 
+        {/* Streamlined 6-Item Primary Desktop Navigation */}
         <nav className="desktop-nav" aria-label="主导航">
           <NavLink to="/practice" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <Sparkles size={15} /> 逐题刷题
+            <span className="nav-idx">01</span>
+            <Sparkles size={14} /> 逐题刷题
           </NavLink>
+
           <NavLink to="/year" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <BookOpen size={15} /> 按年整卷
+            <span className="nav-idx">02</span>
+            <BookOpen size={14} /> 按年整卷
           </NavLink>
-          <NavLink to="/chapters" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <Layers size={15} /> 章节练习
-          </NavLink>
-          <NavLink to="/methods" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <Compass size={15} /> 解题方法
-          </NavLink>
+
+          <div className="nav-dropdown-wrap" ref={matrixRef}>
+            <button
+              type="button"
+              className={`nav-item ${isMatrixActive || matrixOpen ? 'active' : ''}`}
+              aria-expanded={matrixOpen}
+              onClick={() => {
+                setMatrixOpen((v) => !v);
+                setSwitcherOpen(false);
+              }}
+            >
+              <span className="nav-idx">03</span>
+              <Layers size={14} /> 专题矩阵
+              <ChevronDown size={13} />
+            </button>
+
+            {matrixOpen && (
+              <div className="nav-dropdown-menu" role="menu">
+                <div className="nav-drop-head">ORTHOGONAL MATRIX // 双轴专题与命题分析</div>
+                <NavLink
+                  to="/chapters"
+                  className={({ isActive }) => `nav-drop-item ${isActive ? 'active' : ''}`}
+                >
+                  <span className="nav-drop-icon text-sky">
+                    <Layers size={15} />
+                  </span>
+                  <span className="nav-drop-text">
+                    <span className="nav-drop-title">
+                      考纲章节练习 <span className="nav-drop-code">AXIS-A</span>
+                    </span>
+                    <span className="nav-drop-desc">按章节重心与常规分值定向攻克薄弱章</span>
+                  </span>
+                </NavLink>
+
+                <NavLink
+                  to="/methods"
+                  className={({ isActive }) => `nav-drop-item ${isActive ? 'active' : ''}`}
+                >
+                  <span className="nav-drop-icon text-purple">
+                    <Compass size={15} />
+                  </span>
+                  <span className="nav-drop-text">
+                    <span className="nav-drop-title">
+                      通用解题方法库 <span className="nav-drop-code">AXIS-B</span>
+                    </span>
+                    <span className="nav-drop-desc">跨章节聚合同类破题动作与标准流程</span>
+                  </span>
+                </NavLink>
+
+                <NavLink
+                  to="/dashboard"
+                  className={({ isActive }) => `nav-drop-item ${isActive ? 'active' : ''}`}
+                >
+                  <span className="nav-drop-icon text-yellow">
+                    <BarChart3 size={15} />
+                  </span>
+                  <span className="nav-drop-text">
+                    <span className="nav-drop-title">
+                      命题结构大盘 <span className="nav-drop-code">DATA</span>
+                    </span>
+                    <span className="nav-drop-desc">历年各章实考分值热力矩阵与规律对照</span>
+                  </span>
+                </NavLink>
+              </div>
+            )}
+          </div>
+
           <NavLink to="/mock" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <Timer size={15} /> 全真模考
+            <span className="nav-idx">04</span>
+            <Timer size={14} /> 全真模考
             {state.activeMock && <span className="nav-dot" title="有进行中的模考" />}
           </NavLink>
+
           <NavLink to="/wrong-book" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <BookMarked size={15} /> 错题与收藏
+            <span className="nav-idx">05</span>
+            <BookMarked size={14} /> 错题笔记
             {wrongCount > 0 && <span className="nav-pill">{wrongCount}</span>}
           </NavLink>
-          <NavLink to="/dashboard" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <BarChart3 size={15} /> 命题大盘
-          </NavLink>
+
           <NavLink to="/formulas" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <FileSpreadsheet size={15} /> 公式手册
+            <span className="nav-idx">06</span>
+            <FileSpreadsheet size={14} /> 公式手册
           </NavLink>
         </nav>
 
         <div className="header-actions">
           <NavLink
+            to="/progress"
+            className={({ isActive }) => `nav-util-chip ${isActive ? 'active' : ''}`}
+            title="我的掌握进度与热力图"
+          >
+            <Activity size={13} /> 进度
+          </NavLink>
+          <NavLink
             to="/board"
-            className={({ isActive }) => `nav-progress-chip nav-board-chip ${isActive ? 'active' : ''}`}
+            className={({ isActive }) => `nav-util-chip ${isActive ? 'active' : ''}`}
             title="查看站点公告与考研留言板"
           >
-            <Megaphone size={13} /> 公告留言
+            <Megaphone size={13} /> 公告
             {hasUnreadAnnouncement && <span className="nav-dot" title="有最新站点公告" />}
           </NavLink>
-          <NavLink to="/progress" className={({ isActive }) => `nav-progress-chip ${isActive ? 'active' : ''}`}>
-            我的进度
-          </NavLink>
+          <button
+            type="button"
+            className="icon-btn theme-toggle-btn"
+            onClick={handleQuickThemeToggle}
+            title={resolvedTheme === 'dark' ? '切换为工业晒图白昼（浅色）' : '切换为深海战术终端（深色）'}
+            aria-label="切换深浅色主题"
+          >
+            {resolvedTheme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
           <button
             type="button"
             className="icon-btn"
             onClick={onOpenSettings}
-            title="外观设置与数据备份"
+            title="终端偏好设置与数据备份"
             aria-label="设置"
           >
-            <Settings size={17} />
+            <Settings size={16} />
           </button>
           <button
             type="button"
@@ -174,7 +281,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
             onClick={() => setMobileOpen((v) => !v)}
             aria-label="打开菜单"
           >
-            {mobileOpen ? <X size={19} /> : <Menu size={19} />}
+            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
         </div>
       </div>
@@ -182,7 +289,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
       {mobileOpen && (
         <div className="mobile-drawer">
           <div className="mobile-course-row">
-            <span className="mobile-course-lbl">当前专业课板块：</span>
+            <span className="mobile-course-lbl">MODULE // 当前板块：</span>
             <div className="seg-group">
               {courses.map((c) => (
                 <button
@@ -197,31 +304,31 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
             </div>
           </div>
           <NavLink to="/practice" className="mobile-nav-link">
-            <Sparkles size={16} /> 逐题刷题
+            <Sparkles size={16} /> 01 · 逐题刷题
           </NavLink>
           <NavLink to="/year" className="mobile-nav-link">
-            <BookOpen size={16} /> 按年整卷
+            <BookOpen size={16} /> 02 · 按年整卷
           </NavLink>
           <NavLink to="/chapters" className="mobile-nav-link">
-            <Layers size={16} /> 考纲章节练习
+            <Layers size={16} /> 03A · 考纲章节练习
           </NavLink>
           <NavLink to="/methods" className="mobile-nav-link">
-            <Compass size={16} /> 解题方法库
-          </NavLink>
-          <NavLink to="/mock" className="mobile-nav-link">
-            <Timer size={16} /> 全真限时模考
-          </NavLink>
-          <NavLink to="/wrong-book" className="mobile-nav-link">
-            <BookMarked size={16} /> 错题本 / 收藏 / 笔记 {wrongCount > 0 ? `(${wrongCount})` : ''}
-          </NavLink>
-          <NavLink to="/progress" className="mobile-nav-link">
-            <BarChart3 size={16} /> 我的进度与掌握热力图
+            <Compass size={16} /> 03B · 通用解题方法库
           </NavLink>
           <NavLink to="/dashboard" className="mobile-nav-link">
-            <BarChart3 size={16} /> 命题结构大盘
+            <BarChart3 size={16} /> 03C · 命题结构大盘
+          </NavLink>
+          <NavLink to="/mock" className="mobile-nav-link">
+            <Timer size={16} /> 04 · 全真限时模考
+          </NavLink>
+          <NavLink to="/wrong-book" className="mobile-nav-link">
+            <BookMarked size={16} /> 05 · 错题本 / 收藏 / 笔记 {wrongCount > 0 ? `(${wrongCount})` : ''}
           </NavLink>
           <NavLink to="/formulas" className="mobile-nav-link">
-            <FileSpreadsheet size={16} /> 核心公式速记手册
+            <FileSpreadsheet size={16} /> 06 · 核心公式速记手册
+          </NavLink>
+          <NavLink to="/progress" className="mobile-nav-link">
+            <Activity size={16} /> 我的进度与掌握热力图
           </NavLink>
           <NavLink to="/board" className="mobile-nav-link">
             <Megaphone size={16} /> 站点公告与考研留言板

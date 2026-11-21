@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import {
   AlertCircle,
   Award,
+  Check,
   CheckCircle2,
   Clock,
   Flag,
@@ -10,6 +11,7 @@ import {
   Play,
   Send,
   Timer,
+  X,
 } from 'lucide-react';
 import { useData } from '../context/DataContext';
 import { useStudy } from '../context/StudyContext';
@@ -41,6 +43,14 @@ function getScoreStepPresets(maxPts: number): number[] {
     0,
   ]);
   return Array.from(presets).sort((a, b) => b - a);
+}
+
+function getRankGrade(pct: number): { rank: string; label: string } {
+  if (pct >= 90) return { rank: 'S', label: 'TOP CLEAR' };
+  if (pct >= 80) return { rank: 'A', label: 'EXCELLENT' };
+  if (pct >= 70) return { rank: 'B', label: 'SOLID PASS' };
+  if (pct >= 60) return { rank: 'C', label: 'QUALIFIED' };
+  return { rank: 'D', label: 'RETRAIN' };
 }
 
 export const MockPage: React.FC = () => {
@@ -235,30 +245,39 @@ export const MockPage: React.FC = () => {
 
   const remainingSec = session ? paper.durationMinutes * 60 - session.elapsedSeconds : paper.durationMinutes * 60;
 
-  // 1. Scorecard View
+  // 1. Tactical Rank Evaluation Scorecard View
   if (finishedAttempt) {
     const pct = Math.round((finishedAttempt.totalScore / finishedAttempt.maxScore) * 100);
+    const { rank, label } = getRankGrade(pct);
     const secList = finishedAttempt.sectionScores ?? [];
     return (
-      <div className="page-container">
+      <div className="page-container reading-narrow">
         <div className="scorecard-hero">
-          <Mascot pose={pct >= 60 ? 'cheer' : 'study'} size={150} float />
+          <Mascot pose={pct >= 60 ? 'cheer' : 'study'} size={146} float />
           <div className="scorecard-badge">
-            <Award size={22} /> {finishedAttempt.year} · {currentCourse.shortLabel} 全真模考成绩单
+            <Award size={16} /> EVALUATION REPORT // {finishedAttempt.year} · {currentCourse.shortLabel}
           </div>
-          <div className="scorecard-main-num">
-            <strong>{finishedAttempt.totalScore}</strong>
-            <span>/ {finishedAttempt.maxScore} 分</span>
+
+          <div className="scorecard-rank-row">
+            <div className="scorecard-rank-stamp">
+              <strong>{rank}</strong>
+              <span>{label}</span>
+            </div>
+            <div className="scorecard-main-num">
+              <strong>{finishedAttempt.totalScore}</strong>
+              <span>/ {finishedAttempt.maxScore} 分</span>
+            </div>
           </div>
+
           <p className="scorecard-sub">
             得分率 {pct}% · 用时 {formatSeconds(finishedAttempt.elapsedSeconds)} ·
-            所有失分题已自动同步至错题本与掌握度记录
+            失分题已自动同步至错题本与掌握度记录
           </p>
 
           {secList.length > 0 && (
             <div
               className="scorecard-sections-row"
-              style={{ gridTemplateColumns: `repeat(${Math.min(secList.length, 4)}, 1fr)` }}
+              style={{ gridTemplateColumns: `repeat(${Math.min(secList.length, 4)}, minmax(0, 1fr))` }}
             >
               {secList.map((sec) => (
                 <div key={sec.id} className="sc-box">
@@ -272,7 +291,7 @@ export const MockPage: React.FC = () => {
           )}
 
           <div className="hero-cta-row" style={{ justifyContent: 'center' }}>
-            <Link to="/wrong-book" className="btn btn-primary">
+            <Link to="/wrong-book" className="btn btn-tactical">
               前往错题本复盘失分题
             </Link>
             <button type="button" className="btn btn-secondary" onClick={() => setFinishedAttempt(null)}>
@@ -282,7 +301,7 @@ export const MockPage: React.FC = () => {
         </div>
 
         <div className="card-panel">
-          <h3 className="panel-title">各章节得分诊断</h3>
+          <h3 className="panel-title">CHAPTER DIAGNOSTICS // 各章节得分诊断</h3>
           <div className="diag-table-wrap">
             <table className="data-table">
               <thead>
@@ -310,7 +329,7 @@ export const MockPage: React.FC = () => {
                           <div className="mini-bar">
                             <div style={{ width: `${rate}%` }} />
                           </div>
-                          <span>{rate}%</span>
+                          <span className="font-mono">{rate}%</span>
                         </div>
                       </td>
                     </tr>
@@ -327,15 +346,15 @@ export const MockPage: React.FC = () => {
   // 2. Lobby View
   if (!session) {
     return (
-      <div className="page-container">
+      <div className="page-container reading-narrow">
         <div className="mock-lobby-card">
-          <Mascot pose="study" size={150} float />
+          <Mascot pose="study" size={146} float />
           <div className="mock-lobby-badge">
-            <Timer size={18} /> 考场全真模拟
+            <Timer size={16} /> SIMULATION CHAMBER // 考场全真模拟
           </div>
 
           {readyYears.length > 1 && (
-            <div className="seg-group mock-year-selector" style={{ marginBottom: '0.9rem' }}>
+            <div className="seg-group mock-year-selector" style={{ marginBottom: '1rem' }}>
               {readyYears.map((ym) => (
                 <button
                   key={ym.year}
@@ -343,7 +362,7 @@ export const MockPage: React.FC = () => {
                   className={`seg-btn ${selectedYear === ym.year ? 'active' : ''}`}
                   onClick={() => setSearchParams({ year: String(ym.year) }, { replace: true })}
                 >
-                  {ym.year} 真题卷
+                  {ym.year} 卷
                 </button>
               ))}
             </div>
@@ -369,11 +388,11 @@ export const MockPage: React.FC = () => {
               </div>
             )}
 
-          <h1 className="hero-title">
+          <h1 className="page-title" style={{ justifyContent: 'center', fontSize: '1.6rem' }}>
             {paper.year} 年{paper.school} {paper.code} {paper.subject}整卷模考
           </h1>
-          <p className="hero-subtitle">
-            严格复刻真实考场节奏：满分 <strong>{paper.totalScore} 分</strong> · 限时{' '}
+          <p className="hero-subtitle" style={{ textAlign: 'center', marginBottom: '1.1rem' }}>
+            严格复刻考场节奏：满分 <strong>{paper.totalScore} 分</strong> · 限时{' '}
             <strong>{paper.durationMinutes} 分钟</strong>
             {!paper.calculatorAllowed && (
               <>
@@ -387,23 +406,23 @@ export const MockPage: React.FC = () => {
             {paper.examNotes.map((note, idx) => (
               <div key={idx} className="rule-item">
                 {idx === 0 ? (
-                  <AlertCircle size={16} className="text-amber" />
+                  <AlertCircle size={16} className="text-amber" style={{ flexShrink: 0, marginTop: 2 }} />
                 ) : (
-                  <CheckCircle2 size={16} className="text-emerald" />
+                  <CheckCircle2 size={16} className="text-emerald" style={{ flexShrink: 0, marginTop: 2 }} />
                 )}
                 <MathText text={note} inline />
               </div>
             ))}
           </div>
 
-          <button type="button" className="btn btn-primary btn-lg" onClick={startNewMock}>
-            <Play size={17} /> 立即开始 {paper.durationMinutes} 分钟计时模考
+          <button type="button" className="btn btn-tactical btn-lg" onClick={startNewMock}>
+            <Play size={17} /> 启动 {paper.durationMinutes} 分钟全真计时模考
           </button>
         </div>
 
         {state.mockHistory.length > 0 && (
           <div className="card-panel">
-            <h3 className="panel-title">「{currentCourse.shortLabel}」历次模考成绩记录</h3>
+            <h3 className="panel-title">HISTORY // 「{currentCourse.shortLabel}」历次模考成绩记录</h3>
             <div className="diag-table-wrap">
               <table className="data-table">
                 <thead>
@@ -418,17 +437,17 @@ export const MockPage: React.FC = () => {
                 <tbody>
                   {state.mockHistory.map((m) => (
                     <tr key={m.id}>
-                      <td>{new Date(m.submittedAt).toLocaleString('zh-CN')}</td>
+                      <td className="font-mono">{new Date(m.submittedAt).toLocaleString('zh-CN')}</td>
                       <td>{m.year} 真题</td>
-                      <td>
+                      <td className="font-mono">
                         <strong className="text-sky">{m.totalScore}</strong> / {m.maxScore} 分
                       </td>
-                      <td>
+                      <td className="font-mono">
                         {m.sectionScores
                           ? m.sectionScores.map((s) => `${s.earned}/${s.max}`).join(' · ')
                           : `${m.judgeScore ?? 0} / ${m.fillScore ?? 0} / ${m.calcScore ?? 0}`}
                       </td>
-                      <td>{formatSeconds(m.elapsedSeconds)}</td>
+                      <td className="font-mono">{formatSeconds(m.elapsedSeconds)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -444,21 +463,21 @@ export const MockPage: React.FC = () => {
   if (session.phase === 'grading') {
     const runningTotal = Object.values(session.selfScores).reduce((a, b) => a + b, 0);
     return (
-      <div className="page-container">
+      <div className="page-container reading-narrow">
         <div className="mock-sticky-bar grading-mode">
           <div className="mock-grading-meta">
-            <strong>交卷自评与采分点核分</strong>
+            <strong>GRADING // 交卷自评与采分点核分</strong>
             <span className="grading-sub">
-              客观题已自动判分，请核对主观题得分（当前累计：
-              <strong>
+              当前累计：
+              <strong className="text-yellow font-mono">
+                {' '}
                 {runningTotal} / {paper.totalScore} 分
               </strong>
-              ）
             </span>
             <span className="ai-gen-notice">AI 辅助精解与自拟采分点 · 仅供学习参考</span>
           </div>
-          <button type="button" className="btn btn-primary" onClick={finalizeMock}>
-            <CheckCircle2 size={16} /> 完成核分 · 生成成绩单
+          <button type="button" className="btn btn-tactical btn-sm" onClick={finalizeMock}>
+            <CheckCircle2 size={15} /> 完成核分 · 生成报告
           </button>
         </div>
 
@@ -474,7 +493,7 @@ export const MockPage: React.FC = () => {
               <div key={q.id} className="q-card grading-card">
                 <div className="q-card-header">
                   <div className="q-meta-left">
-                    <span className="q-no-badge">第 {q.no} 题</span>
+                    <span className="q-no-badge">T{String(q.no).padStart(2, '0')}</span>
                     <span className="q-score-badge">满分 {q.score} 分</span>
                     <MathText text={q.title} inline className="grading-q-title" />
                   </div>
@@ -483,7 +502,7 @@ export const MockPage: React.FC = () => {
 
                 <div className="grading-compare-grid">
                   <div className="grading-user-box">
-                    <span className="grading-box-lbl">你的考场作答</span>
+                    <span className="grading-box-lbl">YOUR ANSWER // 你的考场作答</span>
                     <div>
                       {q.type === 'judge'
                         ? userJudge === true
@@ -497,7 +516,7 @@ export const MockPage: React.FC = () => {
                     </div>
                   </div>
                   <div className="grading-std-box">
-                    <span className="grading-box-lbl">标准参考答案</span>
+                    <span className="grading-box-lbl">REFERENCE // 标准参考答案</span>
                     <MathText text={q.answer} />
                   </div>
                 </div>
@@ -508,7 +527,7 @@ export const MockPage: React.FC = () => {
                   </div>
                 ) : q.rubric && q.rubric.length > 0 ? (
                   <div className="calc-rubric-grader">
-                    <div className="sol-section-label">勾选你做对的步骤采分点（自动累加得分）：</div>
+                    <div className="sol-section-label">勾选做对的步骤采分点（自动累加得分）：</div>
                     <div className="rubric-check-list">
                       {q.rubric.map((r, idx) => {
                         const checked = session.rubricChecks[q.id]?.[idx] ?? false;
@@ -530,30 +549,32 @@ export const MockPage: React.FC = () => {
                 ) : (
                   <div className="fill-score-selector">
                     <span>对照答案赋分：</span>
-                    {getScoreStepPresets(q.score).map((pts) => (
-                      <button
-                        key={pts}
-                        type="button"
-                        className={`seg-btn ${curScore === pts ? 'active' : ''}`}
-                        onClick={() =>
-                          setActiveMock({
-                            ...session,
-                            selfScores: { ...session.selfScores, [q.id]: pts },
-                          })
-                        }
-                      >
-                        {pts} 分
-                      </button>
-                    ))}
+                    <div className="seg-group">
+                      {getScoreStepPresets(q.score).map((pts) => (
+                        <button
+                          key={pts}
+                          type="button"
+                          className={`seg-btn ${curScore === pts ? 'active' : ''}`}
+                          onClick={() =>
+                            setActiveMock({
+                              ...session,
+                              selfScores: { ...session.selfScores, [q.id]: pts },
+                            })
+                          }
+                        >
+                          {pts} 分
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 )}
 
                 {q.analysis && (
-                  <details className="grading-details" style={{ marginTop: '0.65rem' }}>
+                  <details className="grading-details" style={{ marginTop: '0.7rem' }}>
                     <summary>展开完整规范推导与解析图核对过程</summary>
-                    <div className="sol-detail-box" style={{ marginTop: '0.6rem' }}>
+                    <div className="sol-detail-box" style={{ marginTop: '0.65rem' }}>
                       <div className="sol-section-label-row">
-                        <div className="sol-section-label">规范推导与解析核对</div>
+                        <div className="sol-section-label">DERIVATION // 规范推导与解析核对</div>
                         <span className="ai-gen-notice">AI 辅助精解与自拟采分点 · 仅供学习参考</span>
                       </div>
                       <MathText text={q.analysis} />
@@ -571,7 +592,7 @@ export const MockPage: React.FC = () => {
     );
   }
 
-  // 4. Live Answering Phase
+  // 4. Live Answering Phase (Tactical HUD + Sectioned Answer Sheet)
   const answeredCount = paper.questions.filter((q) => {
     if (q.type === 'judge') {
       return session.judgeChoices[q.id] !== undefined && session.judgeChoices[q.id] !== null;
@@ -582,16 +603,22 @@ export const MockPage: React.FC = () => {
     return Boolean((session.textAnswers[q.id] ?? '').trim());
   }).length;
 
+  const answeredPct = paper.questions.length > 0 ? Math.round((answeredCount / paper.questions.length) * 100) : 0;
+  const timerTone = remainingSec < 900 ? 'urgent' : remainingSec < 1800 ? 'warn' : '';
+
   return (
     <div className="page-container">
       <div className="mock-sticky-bar">
         <div className="mock-timer-left">
-          <Clock size={18} className={remainingSec < 900 ? 'text-coral' : 'text-sky'} />
-          <span className={`timer-digits ${remainingSec < 900 ? 'urgent' : ''}`}>
+          <Clock
+            size={18}
+            className={timerTone === 'urgent' ? 'text-coral' : timerTone === 'warn' ? 'text-yellow' : 'text-sky'}
+          />
+          <span className={`timer-digits ${timerTone}`}>
             {remainingSec >= 0 ? formatSeconds(remainingSec) : `超时 ${formatSeconds(-remainingSec)}`}
           </span>
           <span className="mock-progress-tag">
-            已答 {answeredCount} / {paper.questions.length} 题
+            已答 {answeredCount} / {paper.questions.length} ({answeredPct}%)
           </span>
           {!paper.calculatorAllowed && <span className="no-calc-chip">禁用计算器</span>}
         </div>
@@ -608,9 +635,13 @@ export const MockPage: React.FC = () => {
           >
             放弃本场
           </button>
-          <button type="button" className="btn btn-primary btn-sm" onClick={enterGradingPhase}>
+          <button type="button" className="btn btn-tactical btn-sm" onClick={enterGradingPhase}>
             <Send size={14} /> 交卷判分
           </button>
+        </div>
+
+        <div className="mock-hud-progress">
+          <i style={{ width: `${answeredPct}%` }} />
         </div>
       </div>
 
@@ -626,7 +657,7 @@ export const MockPage: React.FC = () => {
               <article key={q.id} id={`mock-q-${q.no}`} className="q-card">
                 <div className="q-card-header">
                   <div className="q-meta-left">
-                    <span className="q-no-badge">第 {q.no} 题</span>
+                    <span className="q-no-badge">T{String(q.no).padStart(2, '0')}</span>
                     <span className="q-score-badge">{q.score} 分</span>
                   </div>
                   <button
@@ -639,7 +670,7 @@ export const MockPage: React.FC = () => {
                       })
                     }
                   >
-                    <Flag size={14} /> {isFlagged ? '已标待查' : '标记待查'}
+                    <Flag size={13} /> {isFlagged ? '已标待查' : '标记待查'}
                   </button>
                 </div>
 
@@ -659,7 +690,7 @@ export const MockPage: React.FC = () => {
                   <div className="mock-judge-row">
                     <button
                       type="button"
-                      className={`seg-btn ${jVal === true ? 'active' : ''}`}
+                      className={`mock-judge-btn ${jVal === true ? 'active' : ''}`}
                       onClick={() =>
                         setActiveMock({
                           ...session,
@@ -667,11 +698,11 @@ export const MockPage: React.FC = () => {
                         })
                       }
                     >
-                      ✓ 正确
+                      <Check size={16} /> 正确（√）
                     </button>
                     <button
                       type="button"
-                      className={`seg-btn ${jVal === false ? 'active' : ''}`}
+                      className={`mock-judge-btn ${jVal === false ? 'active' : ''}`}
                       onClick={() =>
                         setActiveMock({
                           ...session,
@@ -679,11 +710,11 @@ export const MockPage: React.FC = () => {
                         })
                       }
                     >
-                      ✗ 错误
+                      <X size={16} /> 错误（×）
                     </button>
                   </div>
                 ) : q.type === 'single_choice' && q.options ? (
-                  <div className="choice-options-grid interactive" style={{ marginTop: '0.75rem' }}>
+                  <div className="choice-options-grid interactive" style={{ marginTop: '0.85rem' }}>
                     {q.options.map((opt) => (
                       <button
                         key={opt.label}
@@ -706,7 +737,7 @@ export const MockPage: React.FC = () => {
                 ) : (
                   <textarea
                     className="draft-textarea"
-                    style={{ marginTop: '0.75rem' }}
+                    style={{ marginTop: '0.85rem', maxWidth: 'var(--reading-max)' }}
                     rows={['calc', 'proof', 'short'].includes(q.type) ? 3 : 2}
                     placeholder={
                       ['calc', 'proof'].includes(q.type)
@@ -727,32 +758,49 @@ export const MockPage: React.FC = () => {
           })}
         </div>
 
+        {/* Sectioned Tactical Answer Sheet Palette */}
         <aside className="mock-palette">
-          <div className="palette-title">答题卡导航</div>
-          <div className="palette-grid">
-            {paper.questions.map((q) => {
-              const answered =
-                q.type === 'judge'
-                  ? session.judgeChoices[q.id] !== undefined && session.judgeChoices[q.id] !== null
-                  : q.type === 'single_choice'
-                    ? Boolean(session.choiceAnswers?.[q.id])
-                    : Boolean((session.textAnswers[q.id] ?? '').trim());
-              const flagged = Boolean(session.flagged[q.id]);
-              return (
-                <button
-                  key={q.id}
-                  type="button"
-                  className={`palette-cell ${answered ? 'done' : ''} ${flagged ? 'flagged' : ''}`}
-                  onClick={(e) => {
-                    e.currentTarget.blur();
-                    scrollToElement(`mock-q-${q.no}`, 136);
-                  }}
-                >
-                  {q.no}
-                </button>
-              );
-            })}
+          <div className="palette-title">
+            <span>答题卡导航</span>
+            <span className="hud-code">
+              {answeredCount}/{paper.questions.length}
+            </span>
           </div>
+
+          {paper.sections.map((sec) => {
+            const secQs = paper.questions.filter((q) => q.no >= sec.range[0] && q.no <= sec.range[1]);
+            if (secQs.length === 0) return null;
+            return (
+              <div key={sec.id} className="palette-section-block">
+                <span className="palette-section-lbl">{sec.title}</span>
+                <div className="palette-grid">
+                  {secQs.map((q) => {
+                    const answered =
+                      q.type === 'judge'
+                        ? session.judgeChoices[q.id] !== undefined && session.judgeChoices[q.id] !== null
+                        : q.type === 'single_choice'
+                          ? Boolean(session.choiceAnswers?.[q.id])
+                          : Boolean((session.textAnswers[q.id] ?? '').trim());
+                    const flagged = Boolean(session.flagged[q.id]);
+                    return (
+                      <button
+                        key={q.id}
+                        type="button"
+                        className={`palette-cell ${answered ? 'done' : ''} ${flagged ? 'flagged' : ''}`}
+                        onClick={(e) => {
+                          e.currentTarget.blur();
+                          scrollToElement(`mock-q-${q.no}`, 142);
+                        }}
+                      >
+                        {q.no}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+
           <div className="palette-legend">
             <span>
               <i className="dot done" /> 已答

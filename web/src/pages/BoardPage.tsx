@@ -170,12 +170,12 @@ export const BoardPage: React.FC = () => {
 
   return (
     <div className="page-container">
-      {/* Page Hero */}
       <section className="page-header-card board-hero">
         <Mascot pose="cheer" size={120} />
         <div className="board-hero-main">
+          <div className="page-kicker">BROADCAST // COMMUNITY TERMINAL</div>
           <h1 className="page-title">
-            <Megaphone size={22} className="text-sky" /> 站点公告与考研留言板
+            <Megaphone size={22} className="text-yellow" /> 站点公告与考研留言板
           </h1>
           <p className="page-desc">
             发布最新真题上线动态、勘误更新日志与备考交流打卡；欢迎加入考研 QQ 群或直接发邮件联系站长。
@@ -190,7 +190,7 @@ export const BoardPage: React.FC = () => {
               <Users size={14} />
               <span>QQ 交流群：{BRAND.qqGroup}</span>
               {copiedKey === 'qq' ? <Check size={13} /> : <Copy size={13} />}
-              <span className="copy-pill-hint">{copiedKey === 'qq' ? '已复制' : '复制群号'}</span>
+              <span className="copy-pill-hint">{copiedKey === 'qq' ? 'COPIED' : 'COPY'}</span>
             </button>
 
             <a href={`mailto:${BRAND.contact}`} className="copy-pill">
@@ -217,12 +217,13 @@ export const BoardPage: React.FC = () => {
       </section>
 
       <div className="board-layout">
-        {/* Left: Announcements */}
+        {/* Left: System Broadcasts */}
         <section className="board-announcements-col" aria-label="站点公告">
           <div className="section-head">
             <h2 className="section-title">
-              <Megaphone size={18} className="text-sky" /> 站点公告 ({announcements.length})
+              <Megaphone size={17} className="text-sky" /> 站点公告 ({announcements.length})
             </h2>
+            <span className="hud-code">FEED // SYSTEM</span>
           </div>
 
           <div className="ann-list">
@@ -234,7 +235,7 @@ export const BoardPage: React.FC = () => {
                   <div className="ann-meta-row">
                     {ann.pinned && (
                       <span className="status-chip ready">
-                        <Pin size={11} /> 置顶
+                        <Pin size={11} /> PINNED
                       </span>
                     )}
                     <span className="ann-tag-chip">{ann.tag}</span>
@@ -258,7 +259,7 @@ export const BoardPage: React.FC = () => {
                           <button
                             key={cid}
                             type="button"
-                            className="btn btn-ghost btn-sm"
+                            className="btn btn-secondary btn-sm"
                             onClick={() => handleJumpCourse(c.id)}
                           >
                             前往 {c.name} 真题 <ArrowRight size={13} />
@@ -273,12 +274,13 @@ export const BoardPage: React.FC = () => {
           </div>
         </section>
 
-        {/* Right: Guestbook */}
+        {/* Right: Guestbook Terminal */}
         <section className="board-guestbook-col" aria-label="考研留言板">
           <div className="section-head">
             <h2 className="section-title">
-              <MessageSquare size={18} className="text-aqua" /> 考研留言板 ({allEntries.length})
+              <MessageSquare size={17} className="text-aqua" /> 考研留言板 ({allEntries.length})
             </h2>
+            <span className="hud-code">CHECKIN // LOCAL</span>
           </div>
 
           <form className="card-panel guestbook-composer" onSubmit={handleSubmit}>
@@ -334,12 +336,12 @@ export const BoardPage: React.FC = () => {
             </div>
 
             <div className="gb-submit-row">
-              <button type="submit" className="btn btn-primary btn-sm">
+              <button type="submit" className="btn btn-tactical btn-sm">
                 <Send size={14} /> 发布留言
               </button>
               <a
                 href={mailtoDraftHref}
-                className="btn btn-ghost btn-sm"
+                className="btn btn-secondary btn-sm"
                 title={`一键生成邮件发送至 ${BRAND.contact}`}
               >
                 <Mail size={14} /> 邮件投稿给站长
@@ -354,7 +356,6 @@ export const BoardPage: React.FC = () => {
             </p>
           </form>
 
-          {/* Filter pills */}
           <div className="gb-filter-row">
             <button
               type="button"
@@ -375,7 +376,6 @@ export const BoardPage: React.FC = () => {
             ))}
           </div>
 
-          {/* Guestbook Feed */}
           <div className="gb-feed">
             {visibleEntries.length === 0 ? (
               <div className="card-panel empty-mini">该分类下暂时还没有留言，欢迎抢占沙发～</div>
@@ -403,9 +403,9 @@ export const BoardPage: React.FC = () => {
                         <div>
                           <div className="gb-author-row">
                             <strong className="gb-author-name">{entry.author}</strong>
-                            {entry.role === 'admin' && <span className="gb-role-badge admin">站长</span>}
+                            {entry.role === 'admin' && <span className="gb-role-badge admin">ADMIN</span>}
                             {entry.role === 'assistant' && <span className="gb-role-badge ai">AI 助教</span>}
-                            {entry.isLocal && <span className="gb-role-badge local">我的留言</span>}
+                            {entry.isLocal && <span className="gb-role-badge local">LOCAL</span>}
                             {entry.pinned && (
                               <span className="gb-role-badge pin">
                                 <Pin size={10} /> 置顶
@@ -417,7 +417,7 @@ export const BoardPage: React.FC = () => {
                             <span>·</span>
                             <span>{courseLabelMap[entry.courseId] ?? entry.courseId}</span>
                             <span>·</span>
-                            <time>{formatTime(entry.createdAt)}</time>
+                            <time className="font-mono">{formatTime(entry.createdAt)}</time>
                           </div>
                         </div>
                       </div>

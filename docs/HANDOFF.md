@@ -10,7 +10,7 @@
 - **站点名称**：鲸研专业课（品牌配置集中于 `web/src/brand.ts`）
 - **定位**：对标“数砖”正交刷题体验的多院校、多专业课考研复习纯静态 PWA 网站（支持按年整卷、按考纲章节、按解题方法、逐题刷题、180 分钟全真模考+步骤采分点自评、错题本/收藏夹/笔记墙、掌握热力图、命题结构大盘、核心公式闪卡背诵）。
 - **技术栈**：`Vite 6 + React 19 + TypeScript + React Router (HashRouter) + KaTeX`；无后端，学习进度按 `courseId` 隔离存储于浏览器 `localStorage`（支持全量 JSON 导入/导出备份）。
-- **视觉与看板娘**：深海/浅海双主题毛玻璃风格；看板娘采用二头身 Q 版“蓝色大肥鱼”四姿态透明 WebP（`web/public/mascot/{hero,think,cheer,study}.webp`），并在「关于本站 → 角色图鉴」额外展示特别鸣谢角色 **Gemini** 定制立绘（`web/public/mascot/gemini.webp`）；`assets_src/mascot_raw/_original_v1/` 下保留有一套纯原创“小鲸”备用立绘。
+- **视觉与看板娘**：明日方舟工业机能终端 × 深海水利工程蓝图双主题（深海战术终端 Dark / 工业晒图白昼 Light），配备 4 层 PRTS 动态水力学公式流与流线遥测背景、PRTS 斜切路由切换动效、深色工程配图「蓝图夜视」模式、自托管 Rajdhani / JetBrains Mono 英数展示字体及 3D 翻面公式闪卡；看板娘采用二头身 Q 版“蓝色大肥鱼”四姿态透明 WebP（`web/public/mascot/{hero,think,cheer,study}.webp`），并在「关于本站 → 角色图鉴」以干员档案卡展示特别鸣谢角色 **Gemini** 定制立绘（`web/public/mascot/gemini.webp`）；`assets_src/mascot_raw/_original_v1/` 下保留有一套纯原创“小鲸”备用立绘。
 - **联系与互动功能**：站长邮箱 `amassss321@gmail.com`、考研交流 QQ 群 `1058675261`，内置公告栏（`web/public/data/announcements.json`）、考研留言板（`/board`，本地存储+邮件投稿）及角色图鉴（`/about?section=codex`）。
 
 ---
@@ -59,7 +59,7 @@ c:\Users\6\Desktop\水力学\
     │   │   ├── hhu-814/                            # 河海 814 题库、章节、公式与图片
     │   │   └── yzu-849/                            # 扬大 849 题库、章节、公式与图片
     │   ├── mascot/                                 # 看板娘（hero/think/cheer/study）与 Gemini 角色立绘 WebP
-    │   └── sw.js                                   # PWA 离线缓存 Service Worker（当前 jingyan-multi-v15）
+    │   └── sw.js                                   # PWA 离线缓存 Service Worker（当前 jingyan-multi-v16）
     └── src/
         ├── brand.ts                                # 站名、联系邮箱、QQ 群及留言 API 扩展配置
         ├── types.ts                                # 8 种通用题型、公告与留言类型定义

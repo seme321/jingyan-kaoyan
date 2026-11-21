@@ -42,15 +42,16 @@ export const WrongBookPage: React.FC = () => {
   const activeList = tab === 'wrong' ? wrongList : tab === 'fav' ? favList : notesList;
 
   return (
-    <div className="page-container">
+    <div className="page-container reading-narrow">
       <div className="page-header-card">
+        <div className="page-kicker">ERRATA LOOP // REVIEW & NOTES</div>
         <div className="header-flex">
           <div>
             <h1 className="page-title">
-              <BookMarked size={22} className="text-coral" /> {currentCourse.shortLabel} · 复习闭环 · 错题 / 收藏 / 笔记墙
+              <BookMarked size={22} className="text-coral" /> {currentCourse.shortLabel} · 错题 / 收藏 / 笔记墙
             </h1>
             <p className="page-desc">
-              做错的判断题与自评「不会 / 半会」的题目自动归集至此，攻克后可「斩题」移出
+              判错的客观题与自评「不会 / 半会」的题目自动归集至此，攻克后可「斩题」移出
             </p>
           </div>
 
@@ -81,15 +82,19 @@ export const WrongBookPage: React.FC = () => {
 
         {tab === 'wrong' && wrongList.length > 0 && (
           <div className="review-cta-bar">
-            <span>共 {wrongList.length} 道待攻克错题 / 半会题</span>
-            <Link to="/practice?pool=wrong" className="btn btn-primary btn-sm">
+            <span>
+              PENDING // 共 <strong className="font-mono text-coral">{wrongList.length}</strong> 道待攻克错题 / 半会题
+            </span>
+            <Link to="/practice?pool=wrong" className="btn btn-tactical btn-sm">
               <Play size={14} /> 集中重刷全部错题
             </Link>
           </div>
         )}
         {tab === 'fav' && favList.length > 0 && (
           <div className="review-cta-bar">
-            <span>共收藏 {favList.length} 道重点真题</span>
+            <span>
+              STARRED // 共收藏 <strong className="font-mono text-sky">{favList.length}</strong> 道重点真题
+            </span>
             <Link to="/practice?pool=fav" className="btn btn-primary btn-sm">
               <Play size={14} /> 集中刷收藏夹
             </Link>
@@ -100,9 +105,10 @@ export const WrongBookPage: React.FC = () => {
       {activeList.length === 0 ? (
         <div className="empty-state-card">
           <Mascot pose={tab === 'wrong' ? 'cheer' : 'think'} size={130} />
+          <span className="hud-code">STATUS // ALL_CLEAR</span>
           <h3>
             {tab === 'wrong'
-              ? '太棒了！当前错题本为空'
+              ? '太棒了！当前错题本已清零'
               : tab === 'fav'
                 ? '尚未收藏题目'
                 : '尚未写下复习笔记'}
@@ -112,7 +118,7 @@ export const WrongBookPage: React.FC = () => {
               ? '去逐题刷题或进行一次整卷限时模考，检验真实薄弱点吧。'
               : '在浏览试卷或逐题练习时，点击右上角书签或笔记图标即可随时收录。'}
           </p>
-          <Link to="/practice" className="btn btn-primary">
+          <Link to="/practice" className="btn btn-tactical">
             前往逐题刷题
           </Link>
         </div>
@@ -126,7 +132,7 @@ export const WrongBookPage: React.FC = () => {
                 <div className="q-card-header">
                   <div className="q-meta-left">
                     <span className="q-year-pill">{q.year} 真题</span>
-                    <span className="q-no-badge">第 {q.no} 题</span>
+                    <span className="q-no-badge">T{String(q.no).padStart(2, '0')}</span>
                     <span className="q-score-badge">{q.score} 分</span>
                     <span className="q-tag chapter-tag">
                       第{q.chapter}章 · {chapterMap[q.chapter]?.name}
@@ -193,7 +199,7 @@ export const WrongBookPage: React.FC = () => {
                 {q.figures.length > 0 && <FigureGallery figures={q.figures} variant="exam" />}
 
                 {(rec.note || tab === 'notes') && (
-                  <div className="personal-note-box" style={{ marginTop: '0.75rem' }}>
+                  <div className="personal-note-box" style={{ marginTop: '0.85rem' }}>
                     <div className="note-box-head">
                       <span className="note-box-label">
                         <NotebookPen size={13} /> 我的复习笔记
@@ -220,12 +226,16 @@ export const WrongBookPage: React.FC = () => {
                 {isOpen && (
                   <div className="q-solution-panel">
                     <div className="sol-answer-box">
-                      <span className="sol-badge">参考答案</span>
+                      <span className="sol-badge">ANSWER // 参考答案</span>
                       <div className="sol-answer-content">
                         <MathText text={q.answer} />
                       </div>
                     </div>
                     <div className="sol-detail-box">
+                      <div className="sol-section-label-row">
+                        <div className="sol-section-label">DERIVATION // 规范推导与精解</div>
+                        <span className="ai-gen-notice">AI 辅助精解 · 仅供学习参考</span>
+                      </div>
                       <MathText text={q.analysis} />
                       {q.analysisFigures.length > 0 && (
                         <FigureGallery figures={q.analysisFigures} variant="solution" />
@@ -234,7 +244,7 @@ export const WrongBookPage: React.FC = () => {
                     {q.pitfalls && (
                       <div className="sol-pitfall-box">
                         <div className="pitfall-title">
-                          <AlertTriangle size={15} /> 考点与易错提示
+                          <AlertTriangle size={15} /> CAUTION // 考点与易错提示
                         </div>
                         <MathText text={q.pitfalls} />
                       </div>

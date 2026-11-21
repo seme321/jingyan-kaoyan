@@ -69,10 +69,11 @@ export const YearPage: React.FC = () => {
   }, [paper]);
 
   return (
-    <div className="page-container">
-      {/* Year Switcher Bar */}
+    <div className="page-container reading-narrow">
+      {/* Year Dossier Switcher Bar */}
       <div className="page-header-card">
-        <div className="year-tabs">
+        <div className="page-kicker">EXAM ARCHIVE // {currentCourse.id.toUpperCase()}</div>
+        <div className="year-tabs-scroll">
           {yearsMeta.map((ym) => {
             const isReady = ym.status === 'ready';
             return (
@@ -89,9 +90,9 @@ export const YearPage: React.FC = () => {
                 }}
                 title={isReady ? ym.title : `${ym.year} 真题待导入`}
               >
-                <span className="year-num">{ym.year} 真题</span>
+                <span className="year-num">{ym.year}</span>
                 <span className="year-sub">
-                  {isReady ? `${ym.questionCount} 题 · ${ym.totalScore} 分` : '待导入'}
+                  {isReady ? `${ym.questionCount}题·${ym.totalScore}分` : '待导入'}
                 </span>
               </button>
             );
@@ -106,29 +107,29 @@ export const YearPage: React.FC = () => {
                 className={`seg-btn ${mode === 'paper' ? 'active' : ''}`}
                 onClick={() => setMode('paper')}
               >
-                <EyeOff size={14} /> 原卷看题模式
+                <EyeOff size={14} /> 原卷看题
               </button>
               <button
                 type="button"
                 className={`seg-btn ${mode === 'recite' ? 'active' : ''}`}
                 onClick={() => setMode('recite')}
               >
-                <CheckCircle2 size={14} /> 答案速查模式
+                <CheckCircle2 size={14} /> 答案速查
               </button>
               <button
                 type="button"
                 className={`seg-btn ${mode === 'full' ? 'active' : ''}`}
                 onClick={() => setMode('full')}
               >
-                <Eye size={14} /> 精讲全解模式
+                <Eye size={14} /> 精讲全解
               </button>
             </div>
 
             <div className="paper-toolbar-actions">
-              <Link to={`/practice?year=${paper.year}`} className="btn btn-primary btn-sm">
+              <Link to={`/practice?year=${paper.year}`} className="btn btn-tactical btn-sm">
                 <Play size={14} /> 逐题刷本卷
               </Link>
-              <Link to={`/mock?year=${paper.year}`} className="btn btn-secondary btn-sm">
+              <Link to={`/mock?year=${paper.year}`} className="btn btn-primary btn-sm">
                 <Timer size={14} /> 限时模考
               </Link>
             </div>
@@ -156,9 +157,12 @@ export const YearPage: React.FC = () => {
         <>
           <div className="exam-notice-box">
             <div className="exam-notice-head">
-              <h2>
-                {paper.year} 年{paper.school} {paper.code} {paper.subject}考研真题
-              </h2>
+              <div>
+                <div className="hud-code">PAPER DOSSIER // {paper.year} · CODE {paper.code}</div>
+                <h2>
+                  {paper.year} 年{paper.school} {paper.code} {paper.subject}考研真题
+                </h2>
+              </div>
               <div className="section-jump-pills">
                 {paper.sections.map((s) => (
                   <button
@@ -167,7 +171,7 @@ export const YearPage: React.FC = () => {
                     className="jump-pill"
                     onClick={(e) => {
                       e.currentTarget.blur();
-                      scrollToElement(`sec-${s.id}`, 76);
+                      scrollToElement(`sec-${s.id}`, 78);
                     }}
                   >
                     {s.title} ({s.totalScore}分)
@@ -202,7 +206,7 @@ export const YearPage: React.FC = () => {
                     <article key={q.id} className="q-card">
                       <div className="q-card-header">
                         <div className="q-meta-left">
-                          <span className="q-no-badge">第 {q.no} 题</span>
+                          <span className="q-no-badge">T{String(q.no).padStart(2, '0')}</span>
                           <span className="q-score-badge">{q.score} 分</span>
                           {statusBadge(q.id)}
                           {(showFull || mode === 'recite') && chInfo && (
@@ -307,7 +311,7 @@ export const YearPage: React.FC = () => {
                           </div>
 
                           <div className="sol-answer-box">
-                            <span className="sol-badge">参考答案</span>
+                            <span className="sol-badge">ANSWER // 参考答案</span>
                             <div className="sol-answer-content">
                               <MathText text={q.answer} />
                             </div>
@@ -315,7 +319,7 @@ export const YearPage: React.FC = () => {
 
                           <div className="sol-detail-box">
                             <div className="sol-section-label-row">
-                              <div className="sol-section-label">规范推导与精解</div>
+                              <div className="sol-section-label">DERIVATION // 规范推导与精解</div>
                               <span className="ai-gen-notice">AI 辅助精解 · 仅供学习参考</span>
                             </div>
                             <MathText text={q.analysis} />
@@ -327,7 +331,7 @@ export const YearPage: React.FC = () => {
                           {q.pitfalls && (
                             <div className="sol-pitfall-box">
                               <div className="pitfall-title">
-                                <AlertTriangle size={15} /> 考点与易错提示
+                                <AlertTriangle size={15} /> CAUTION // 考点与易错提示
                               </div>
                               <MathText text={q.pitfalls} />
                             </div>

@@ -72,8 +72,9 @@ export const AboutPage: React.FC = () => {
   return (
     <div className="page-container">
       <div className="page-header-card about-hero">
-        <Mascot pose="study" size={150} />
+        <Mascot pose="study" size={146} />
         <div>
+          <div className="page-kicker">ARCHIVE // COMPLIANCE & CREDITS</div>
           <h1 className="page-title">
             <Info size={22} className="text-sky" /> 关于{BRAND.name}、鸣谢与角色图鉴
           </h1>
@@ -102,34 +103,36 @@ export const AboutPage: React.FC = () => {
               <Users size={14} />
               <span>QQ 交流群：{BRAND.qqGroup}</span>
               {copiedKey === 'qq' ? <Check size={13} /> : <Copy size={13} />}
-              <span className="copy-pill-hint">{copiedKey === 'qq' ? '已复制' : '复制群号'}</span>
+              <span className="copy-pill-hint">{copiedKey === 'qq' ? 'COPIED' : 'COPY'}</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Special Acknowledgements & Character Codex */}
+      {/* Special Acknowledgements & Operator Dossier Character Codex */}
       <section id="character-codex" className="card-panel codex-section">
         <div className="codex-head">
           <div>
+            <div className="page-kicker">OPERATOR DOSSIER // CHARACTER CODEX</div>
             <h2 className="panel-title">
-              <Sparkles size={19} className="text-sky" /> 角色图鉴与特别鸣谢
+              <Sparkles size={19} className="text-yellow" /> 角色图鉴与特别鸣谢
             </h2>
             <p className="codex-subtitle">
               感谢以下创作者与 AI 伙伴对本站题库整理、工程配图重绘与前端研发的支持 —— 点击立绘可放大查看高清角色形象。
             </p>
           </div>
-          <Link to="/board" className="btn btn-ghost btn-sm">
+          <Link to="/board" className="btn btn-secondary btn-sm">
             <MessageSquare size={14} /> 前往公告与留言板
           </Link>
         </div>
 
         <div className="codex-grid">
-          {/* Gemini Acknowledgement Card */}
+          {/* Gemini Acknowledgement Dossier Card */}
           <article className="codex-card gemini-card">
+            <span className="codex-dossier-wm" aria-hidden="true">GMN</span>
             <button
               type="button"
-              className="codex-portrait-stage"
+              className="codex-portrait-stage ak-brackets"
               onClick={() =>
                 setZoomTarget({
                   src: './mascot/gemini.webp',
@@ -141,13 +144,13 @@ export const AboutPage: React.FC = () => {
             >
               <img src="./mascot/gemini.webp" alt="Gemini 拟人角色形象" className="codex-portrait-img" />
               <span className="codex-zoom-chip">
-                <Maximize2 size={12} /> 点击大图
+                <Maximize2 size={11} /> ZOOM
               </span>
             </button>
 
             <div className="codex-info">
               <div className="codex-title-row">
-                <span className="codex-badge gemini">特别鸣谢 · AI 伙伴</span>
+                <span className="codex-badge gemini">PARTNER // AI 伙伴</span>
                 <h3 className="codex-name">Gemini</h3>
               </div>
               <p className="codex-role">Google Gemini · 真题精解协研与站点共创角色</p>
@@ -168,11 +171,12 @@ export const AboutPage: React.FC = () => {
             </div>
           </article>
 
-          {/* 大肥鱼 Mascot Card */}
+          {/* 大肥鱼 Mascot Dossier Card */}
           <article className="codex-card fish-card">
+            <span className="codex-dossier-wm" aria-hidden="true">DF-01</span>
             <button
               type="button"
-              className="codex-portrait-stage"
+              className="codex-portrait-stage ak-brackets"
               onClick={() =>
                 setZoomTarget({
                   src: `./mascot/${fishPose}.webp`,
@@ -188,13 +192,13 @@ export const AboutPage: React.FC = () => {
                 className="codex-portrait-img"
               />
               <span className="codex-zoom-chip">
-                <Maximize2 size={12} /> 点击大图
+                <Maximize2 size={11} /> ZOOM
               </span>
             </button>
 
             <div className="codex-info">
               <div className="codex-title-row">
-                <span className="codex-badge fish">站点看板娘</span>
+                <span className="codex-badge fish">UNIT DF-01 // 看板娘</span>
                 <h3 className="codex-name">{BRAND.mascotName}（鲸鱼娘）</h3>
               </div>
               <p className="codex-role">DeepSeek 拟人同人形象（原型「溟月」）· 全程陪读陪伴</p>
@@ -327,6 +331,7 @@ export const AboutPage: React.FC = () => {
             <li>特别鸣谢 Google <strong>Gemini</strong> 协助真题梳理、配图重置与页面开发。</li>
             <li>React、React Router（MIT License）</li>
             <li>KaTeX 数学公式渲染（MIT License，字体 SIL OFL 1.1）</li>
+            <li>Rajdhani & JetBrains Mono 开源英数展示字体（SIL OFL 1.1）</li>
             <li>Lucide 图标（ISC License）、Vite 构建工具（MIT License）</li>
           </ul>
         </section>
@@ -334,7 +339,7 @@ export const AboutPage: React.FC = () => {
 
       <section className="card-panel about-card notice-card">
         <h3 className="panel-title">
-          <Mail size={18} className="text-amber" /> 联系方式、考研交流群与权利通知
+          <Mail size={18} className="text-yellow" /> 联系方式、考研交流群与权利通知
         </h3>
         <p className="about-text">
           真题勘误、新科目许愿或版权/权益通知，请发送邮件至{' '}
@@ -347,10 +352,10 @@ export const AboutPage: React.FC = () => {
           学习进度、错题、笔记与本地留言等数据只保存在你自己的浏览器本地（localStorage），本站不收集、不上传任何个人信息。
         </p>
         <div className="about-actions-row">
-          <Link to="/" className="btn btn-primary btn-sm">
+          <Link to="/" className="btn btn-tactical btn-sm">
             返回首页
           </Link>
-          <Link to="/board" className="btn btn-ghost btn-sm">
+          <Link to="/board" className="btn btn-secondary btn-sm">
             <MessageSquare size={14} /> 前往公告与留言板
           </Link>
         </div>
@@ -359,18 +364,23 @@ export const AboutPage: React.FC = () => {
       {zoomTarget && (
         <div className="lightbox-backdrop" onClick={() => setZoomTarget(null)}>
           <div className="lightbox-content codex-lightbox" onClick={(e) => e.stopPropagation()}>
-            <button
-              type="button"
-              className="lightbox-close"
-              onClick={() => setZoomTarget(null)}
-              aria-label="关闭大图"
-            >
-              <X size={20} />
-            </button>
+            <div className="lightbox-toolbar">
+              <span className="hud-code">CHARACTER ARCHIVE // {zoomTarget.title}</span>
+              <button
+                type="button"
+                className="lightbox-close"
+                onClick={() => setZoomTarget(null)}
+                aria-label="关闭大图"
+              >
+                <X size={18} />
+              </button>
+            </div>
             <img src={zoomTarget.src} alt={zoomTarget.title} />
             <div className="lightbox-caption">
               <strong>{zoomTarget.title}</strong>
-              <div>{zoomTarget.subtitle}</div>
+              <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: 2 }}>
+                {zoomTarget.subtitle}
+              </div>
             </div>
           </div>
         </div>

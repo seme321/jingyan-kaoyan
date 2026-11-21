@@ -1,0 +1,186 @@
+/* ============================================================================
+   PRTS // ABYSSAL HYDRAULICS DESIGN TOKENS
+   Arknights Industrial Terminal x Deep-Sea Engineering Blueprint x Editorial Math
+   ============================================================================ */
+
+:root,
+html[data-theme='dark'] {
+  color-scheme: dark;
+
+  /* Surfaces (3-tier obsidian graphite + crisp edges) */
+  --bg-page: #090d13;
+  --bg-surface: #111722;
+  --bg-surface-glass: rgba(17, 23, 34, 0.88);
+  --bg-elevated: #172030;
+  --bg-hover: #1f2b40;
+  --bg-input: #0b1018;
+  --bg-slab: #06090e;
+  --bg-slab-text: #edf2f8;
+
+  /* Hairline Borders & Reticles */
+  --border-subtle: rgba(214, 230, 248, 0.10);
+  --border-strong: rgba(214, 230, 248, 0.22);
+  --border-accent: rgba(34, 199, 242, 0.56);
+  --border-yellow: rgba(244, 196, 48, 0.58);
+  --reticle-color: rgba(34, 199, 242, 0.65);
+
+  /* Typography Ink */
+  --text-main: #edf2f8;
+  --text-body: #d6e0ec;
+  --text-muted: #93a4ba;
+  --text-dim: #61738b;
+
+  /* Tactical Signal Palette (Strictly Disciplined) */
+  --primary: #22c7f2;
+  --primary-hover: #4ed6fb;
+  --primary-ink: #071019;
+  --primary-soft: rgba(34, 199, 242, 0.13);
+
+  --sky: #38d2fc;
+  --sky-soft: rgba(56, 210, 252, 0.12);
+  --aqua: #2dd4bf;
+
+  /* Rhodes Action / Warning Yellow */
+  --yellow: #f4c430;
+  --yellow-hover: #ffd44d;
+  --yellow-ink: #0a0e14;
+  --yellow-soft: rgba(244, 196, 48, 0.14);
+
+  /* Industrial Semantic Status */
+  --emerald: #10b981;
+  --emerald-soft: rgba(16, 185, 129, 0.14);
+  --amber: #f59e0b;
+  --amber-soft: rgba(245, 158, 11, 0.14);
+  --coral: #f43f5e;
+  --coral-soft: rgba(244, 63, 94, 0.15);
+  --purple: #a78bfa;
+  --purple-soft: rgba(167, 139, 250, 0.14);
+
+  /* Blueprint Grid, Watermarks & Hazard Tape */
+  --grid-minor: rgba(148, 186, 224, 0.042);
+  --grid-major: rgba(34, 199, 242, 0.085);
+  --watermark-color: rgba(237, 242, 248, 0.032);
+  --hazard-bg: repeating-linear-gradient(
+    -45deg,
+    rgba(244, 196, 48, 0.85) 0 6px,
+    rgba(10, 14, 20, 0.9) 6px 12px
+  );
+  --hazard-subtle: repeating-linear-gradient(
+    -45deg,
+    rgba(244, 196, 48, 0.14) 0 8px,
+    transparent 8px 16px
+  );
+  --scanline: rgba(34, 199, 242, 0.04);
+
+  /* Shadows & Focus */
+  --shadow-card: 0 10px 28px rgba(0, 4, 12, 0.42);
+  --shadow-pop: 0 18px 42px rgba(0, 4, 12, 0.65);
+  --glow-cyan: 0 0 0 1px rgba(34, 199, 242, 0.48), 0 8px 26px rgba(34, 199, 242, 0.14);
+  --glow-yellow: 0 0 0 1px rgba(244, 196, 48, 0.55), 0 6px 20px rgba(244, 196, 48, 0.16);
+}
+
+html[data-theme='light'] {
+  color-scheme: light;
+
+  /* Drafting Lab Light (Swiss Industrial Plate + High-Contrast Ink) */
+  --bg-page: #e9edf2;
+  --bg-surface: #ffffff;
+  --bg-surface-glass: rgba(255, 255, 255, 0.92);
+  --bg-elevated: #f3f6f9;
+  --bg-hover: #e5ebf2;
+  --bg-input: #f8fafc;
+  --bg-slab: #141b26;
+  --bg-slab-text: #f4f7fb;
+
+  /* Hairline Borders & Reticles */
+  --border-subtle: #d2dbe6;
+  --border-strong: #adbac9;
+  --border-accent: rgba(0, 119, 200, 0.55);
+  --border-yellow: rgba(217, 155, 0, 0.65);
+  --reticle-color: #141b26;
+
+  /* Typography Ink */
+  --text-main: #0f1724;
+  --text-body: #1f2b3d;
+  --text-muted: #4b5c73;
+  --text-dim: #74859b;
+
+  /* Tactical Signal Palette (Blueprint Blue + Black/Yellow Industrial Accent) */
+  --primary: #0077c8;
+  --primary-hover: #005fa3;
+  --primary-ink: #ffffff;
+  --primary-soft: rgba(0, 119, 200, 0.095);
+
+  --sky: #0077c8;
+  --sky-soft: rgba(0, 119, 200, 0.09);
+  --aqua: #0d9488;
+
+  /* Rhodes Yellow paired with dark graphite ink for crisp light contrast */
+  --yellow: #f2be00;
+  --yellow-hover: #dfad00;
+  --yellow-ink: #0f1724;
+  --yellow-soft: rgba(242, 190, 0, 0.19);
+
+  /* Industrial Semantic Status */
+  --emerald: #047857;
+  --emerald-soft: rgba(4, 120, 87, 0.10);
+  --amber: #b45309;
+  --amber-soft: rgba(180, 83, 9, 0.11);
+  --coral: #be123c;
+  --coral-soft: rgba(190, 18, 60, 0.10);
+  --purple: #6d28d9;
+  --purple-soft: rgba(109, 40, 217, 0.095);
+
+  /* Blueprint Grid, Watermarks & Hazard Tape */
+  --grid-minor: rgba(15, 23, 36, 0.045);
+  --grid-major: rgba(0, 119, 200, 0.08);
+  --watermark-color: rgba(15, 23, 36, 0.042);
+  --hazard-bg: repeating-linear-gradient(
+    -45deg,
+    #f2be00 0 6px,
+    #141b26 6px 12px
+  );
+  --hazard-subtle: repeating-linear-gradient(
+    -45deg,
+    rgba(242, 190, 0, 0.18) 0 8px,
+    transparent 8px 16px
+  );
+  --scanline: rgba(0, 119, 200, 0.03);
+
+  /* Shadows & Focus */
+  --shadow-card: 0 2px 10px rgba(15, 23, 36, 0.055), 0 1px 2px rgba(15, 23, 36, 0.04);
+  --shadow-pop: 0 14px 36px rgba(15, 23, 36, 0.16);
+  --glow-cyan: 0 0 0 1px rgba(0, 119, 200, 0.45), 0 6px 20px rgba(0, 119, 200, 0.10);
+  --glow-yellow: 0 0 0 1px rgba(217, 155, 0, 0.6), 0 6px 18px rgba(217, 155, 0, 0.14);
+}
+
+/* Shared Geometry & Font Tokens */
+:root {
+  --font-display: 'Rajdhani', 'DIN Alternate', 'Bahnschrift', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --font-serif: 'Songti SC', 'Noto Serif SC', 'STSong', 'SimSun', Georgia, serif;
+
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --chamfer-sm: 7px;
+  --chamfer-md: 11px;
+  --chamfer-lg: 18px;
+
+  --reading-max: 78ch;
+  --header-h: 60px;
+}
+
+/* User-Configurable Font Scaling & Reading Font Family */
+html[data-font-size='md'] { font-size: 15.5px; }
+html[data-font-size='lg'] { font-size: 17px; }
+html[data-font-size='xl'] { font-size: 18.5px; }
+html[data-font-size='2xl'] { font-size: 20px; }
+
+html[data-font-family='sans'] body {
+  font-family: var(--font-sans);
+}
+html[data-font-family='serif'] body {
+  font-family: var(--font-serif);
+}
