@@ -401,14 +401,72 @@ html[data-theme='light'] .nav-item.active .nav-idx {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.mobile-account-btn {
+.mobile-account-card {
   width: 100%;
-  background: transparent;
-  border: none;
-  border-left: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.68rem 0.78rem;
+  margin-bottom: 0.25rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-strong);
+  border-left: 3px solid var(--primary);
+  background: var(--bg-elevated);
   font-family: inherit;
   text-align: left;
   cursor: pointer;
+  transition: border-color 0.14s, background 0.14s;
+}
+.mobile-account-card:hover {
+  border-color: var(--primary);
+  background: var(--bg-hover);
+}
+.mobile-account-card.authed {
+  border-color: var(--border-accent);
+  border-left-color: var(--yellow);
+  background: var(--primary-soft);
+}
+.mobile-account-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sky);
+  flex-shrink: 0;
+}
+.mobile-account-text {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+}
+.mobile-account-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+.mobile-account-sub {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  line-height: 1.38;
+}
+.mobile-account-cta {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-xs);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  color: var(--sky);
 }
 
 .theme-toggle-btn {
@@ -427,6 +485,9 @@ html[data-theme='light'] .theme-toggle-btn {
   border-top: 1px solid var(--border-accent);
   background: var(--bg-surface);
   padding: 0.8rem 1rem 1.15rem;
+  max-height: calc(100dvh - var(--header-h));
+  overflow-y: auto;
+  overscroll-behavior: contain;
   display: grid;
   gap: 0.32rem;
   box-shadow: var(--shadow-pop);
@@ -441,6 +502,10 @@ html[data-theme='light'] .theme-toggle-btn {
   padding: 0.35rem 0.45rem 0.7rem;
   border-bottom: 1px solid var(--border-subtle);
   margin-bottom: 0.25rem;
+}
+
+.mobile-course-row .seg-group {
+  flex-wrap: wrap;
 }
 
 .mobile-course-lbl {
@@ -739,7 +804,7 @@ html[data-theme='light'] .footer-link:hover {
 
 @media (max-width: 1120px) {
   .desktop-nav,
-  .nav-util-chip {
+  .nav-util-chip:not(.account-chip) {
     display: none;
   }
   .mobile-menu-btn {

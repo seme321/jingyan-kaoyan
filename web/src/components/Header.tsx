@@ -297,6 +297,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
             type="button"
             className={`nav-util-chip account-chip ${user ? 'authed' : ''}`}
             onClick={() => openAccountModal('sync')}
+            aria-label={user ? `账号：${user.displayName}` : '登录或注册账号'}
             title={
               user
                 ? `已登录账号：${user.displayName}（@${user.username}），点击管理云端同步与私密投递`
@@ -358,6 +359,40 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
               ))}
             </div>
           </div>
+          <button
+            type="button"
+            className={`mobile-account-card ${user ? 'authed' : ''}`}
+            onClick={() => {
+              setMobileOpen(false);
+              openAccountModal(repliedAccountInboxCount > 0 && !syncConflict ? 'inbox' : 'sync');
+            }}
+          >
+            <span className="mobile-account-icon">
+              {user ? <UserCheck size={18} /> : <User size={18} />}
+            </span>
+            <span className="mobile-account-text">
+              <span className="mobile-account-title">
+                <span>{user ? user.displayName : '登录 / 注册云端账号'}</span>
+                {user && <span className="hud-code">@{user.username}</span>}
+              </span>
+              <span className="mobile-account-sub">
+                {user
+                  ? syncConflict
+                    ? '存在双端差异，点击处理'
+                    : repliedAccountInboxCount > 0
+                      ? `收到 ${repliedAccountInboxCount} 条站长私密回复`
+                      : '云端同步已开启 · 管理进度与私密投递'
+                  : '跨设备同步刷题记录、图鉴与私密投递'}
+              </span>
+            </span>
+            <span className="mobile-account-cta">
+              <span>{user ? '管理' : '去登录'}</span>
+              {user && (syncConflict || syncStatus === 'error') && <span className="nav-dot" />}
+              {user && !syncConflict && repliedAccountInboxCount > 0 && (
+                <span className="nav-fish-badge">{repliedAccountInboxCount}</span>
+              )}
+            </span>
+          </button>
           <NavLink to="/practice" className="mobile-nav-link">
             <Sparkles size={16} /> 01 · 逐题刷题
           </NavLink>
@@ -403,19 +438,6 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
           <NavLink to="/about" className="mobile-nav-link">
             <Info size={16} /> 关于本站 · 鸣谢 Gemini 与角色图鉴
           </NavLink>
-          <button
-            type="button"
-            className="mobile-nav-link mobile-account-btn"
-            onClick={() => {
-              setMobileOpen(false);
-              openAccountModal('sync');
-            }}
-          >
-            {user ? <UserCheck size={16} /> : <User size={16} />}
-            <span>
-              {user ? `云端账号：${user.displayName} (@${user.username})` : '登录 / 注册云端同步账号'}
-            </span>
-          </button>
         </div>
       )}
     </header>

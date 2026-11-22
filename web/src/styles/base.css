@@ -1476,6 +1476,47 @@ html[data-theme='dark'] .fig-card.fig-mode-blueprint img {
   color: var(--coral);
 }
 
+@media (max-width: 640px) {
+  .modal-backdrop {
+    padding: 0.55rem;
+  }
+  .modal-panel {
+    padding: 1.05rem 0.95rem;
+    max-height: 92dvh;
+  }
+  .modal-header {
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.7rem;
+    gap: 0.5rem;
+  }
+  .modal-title {
+    font-size: 1.04rem;
+  }
+  .setting-row {
+    align-items: flex-start;
+    gap: 0.55rem;
+  }
+  .setting-row > div:first-child {
+    flex: 1 1 200px;
+    min-width: 0;
+  }
+  .setting-row .seg-group {
+    flex-wrap: wrap;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .backup-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .backup-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 /* ----------------------------------------------------------------------------
    PRTS Tactical Page Transitions, Diagonal Scan-Wipe & Staggered Reveal
    ---------------------------------------------------------------------------- */

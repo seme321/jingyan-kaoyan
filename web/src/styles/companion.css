@@ -2131,6 +2131,15 @@ html[data-theme='light'] .mascot-tip.bond-synergy .mascot-bubble-name {
     padding: 0.22rem 0.42rem;
     font-size: 0.7rem;
     gap: 0.22rem;
+    max-width: 108px;
+  }
+  .course-switcher-btn svg {
+    flex-shrink: 0;
+  }
+  .course-switcher-btn span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .header-actions {
     gap: 0.24rem;
@@ -2138,6 +2147,23 @@ html[data-theme='light'] .mascot-tip.bond-synergy .mascot-bubble-name {
   .header-actions .icon-btn {
     width: 30px;
     height: 30px;
+  }
+  .nav-util-chip.account-chip {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    justify-content: center;
+    gap: 0;
+  }
+  .account-chip-name {
+    display: none;
+  }
+  .nav-util-chip.account-chip .nav-dot,
+  .nav-util-chip.account-chip .nav-fish-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
   }
   .nav-fish-chip {
     padding: 0.22rem 0.42rem;
@@ -2148,6 +2174,42 @@ html[data-theme='light'] .mascot-tip.bond-synergy .mascot-bubble-name {
     min-width: 15px;
     height: 15px;
     font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .header-inner {
+    padding: 0 0.45rem;
+    gap: 0.25rem;
+  }
+  .brand-cluster {
+    gap: 0.28rem;
+  }
+  .brand-logo {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  .brand-name {
+    font-size: 0.84rem;
+    letter-spacing: 0.01em;
+  }
+  .course-switcher-btn {
+    padding: 0.2rem 0.36rem;
+    font-size: 0.68rem;
+    max-width: 98px;
+  }
+  .header-actions {
+    gap: 0.2rem;
+  }
+  .header-actions .icon-btn,
+  .nav-util-chip.account-chip {
+    width: 28px;
+    height: 28px;
+  }
+  .nav-fish-chip {
+    padding: 0.2rem 0.36rem;
+    font-size: 0.7rem;
+    gap: 0.18rem;
   }
 }
 
