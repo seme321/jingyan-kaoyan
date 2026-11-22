@@ -82,9 +82,11 @@ interface ScopedStudyState extends CourseStudySlice {
 
 interface StudyContextValue {
   state: ScopedStudyState;
+  multiState: MultiCourseStudyState;
   allCourses: Record<string, CourseStudySlice>;
   companionState: CompanionState | undefined;
   setCompanionState: (updater: (prev: CompanionState | undefined) => CompanionState) => void;
+  replaceMultiState: (next: MultiCourseStudyState) => void;
   subscribeStudyEvent: (listener: (ev: StudyEvent) => void) => () => void;
   resolvedTheme: 'dark' | 'light';
   getRecord: (qid: string) => QuestionRecord;
@@ -148,6 +150,17 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     },
     []
   );
+
+  const replaceMultiState = useCallback((next: MultiCourseStudyState) => {
+    const validCompanion =
+      next.companion && typeof next.companion === 'object' && !Array.isArray(next.companion);
+    const normalized: MultiCourseStudyState = {
+      courses: next.courses && typeof next.courses === 'object' ? next.courses : {},
+      settings: { ...DEFAULT_SETTINGS, ...(next.settings ?? {}) },
+      ...(validCompanion ? { companion: next.companion } : {}),
+    };
+    setMulti(normalized);
+  }, []);
 
   const lastSerializedRef = useRef<string | null>(null);
 
@@ -511,9 +524,11 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     <StudyContext.Provider
       value={{
         state: scopedState,
+        multiState: multi,
         allCourses: multi.courses,
         companionState: multi.companion,
         setCompanionState,
+        replaceMultiState,
         subscribeStudyEvent,
         resolvedTheme,
         getRecord,

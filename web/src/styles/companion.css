@@ -2079,8 +2079,8 @@ html[data-theme='light'] .mascot-tip.bond-synergy .mascot-bubble-name {
   font-size: 0.82rem;
 }
 
-/* Medium-viewport desktop nav tightening (1081px..1240px) */
-@media (max-width: 1240px) and (min-width: 1081px) {
+/* Medium-viewport desktop nav tightening (1121px..1360px) */
+@media (max-width: 1360px) and (min-width: 1121px) {
   .header-inner {
     gap: 0.5rem;
     padding: 0 0.85rem;
@@ -2092,6 +2092,9 @@ html[data-theme='light'] .mascot-tip.bond-synergy .mascot-bubble-name {
   .nav-item {
     padding: 0.4rem 0.5rem;
     font-size: 0.8rem;
+    gap: 0.28rem;
+  }
+  .header-actions {
     gap: 0.28rem;
   }
   .nav-util-chip {

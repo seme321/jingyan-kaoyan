@@ -417,6 +417,70 @@ export interface AdminGuestbookEntry extends GuestbookEntry {
   channel: GuestbookChannel;
   contact?: string;
   reviewedAt?: string;
+  hasReceipt?: boolean;
+  accountBound?: boolean;
+}
+
+export interface AuthUser {
+  id: string;
+  username: string;
+  displayName: string;
+  createdAt: string;
+  lastLoginAt?: string;
+}
+
+export interface CloudSyncMeta {
+  version: number;
+  updatedAt: string;
+  dataSize: number;
+}
+
+export interface CloudSyncConflict {
+  reason: 'initial' | 'concurrent';
+  cloudVersion: number;
+  cloudUpdatedAt: string;
+  cloudData: MultiCourseStudyState;
+}
+
+export type AccountSyncStatus = 'idle' | 'syncing' | 'synced' | 'conflict' | 'error' | 'offline';
+export type AccountModalTab = 'sync' | 'inbox' | 'security';
+
+export interface AccountInboxEntry {
+  id: string;
+  author: string;
+  category: GuestbookCategory;
+  courseId: string;
+  content: string;
+  status: GuestbookStatus;
+  channel: GuestbookChannel;
+  adminReply?: string;
+  adminRepliedAt?: string;
+  createdAt: string;
+  reviewedAt?: string;
+}
+
+export interface PrivateInboxEntry {
+  id: string;
+  receiptToken: string;
+  author: string;
+  category: GuestbookCategory;
+  courseId: string;
+  content: string;
+  createdAt: string;
+  status: GuestbookStatus;
+  channel: GuestbookChannel;
+  adminReply?: string;
+  adminRepliedAt?: string;
+  reviewedAt?: string;
+  removedOnServer?: boolean;
+}
+
+export interface PrivateInboxSyncItem {
+  status: GuestbookStatus;
+  channel: GuestbookChannel;
+  adminReply?: string;
+  adminRepliedAt?: string;
+  reviewedAt?: string;
 }
 
 export interface AdminGuestbookCounts {

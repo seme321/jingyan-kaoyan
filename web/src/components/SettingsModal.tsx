@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { Download, RotateCcw, Upload, X } from 'lucide-react';
+import { Cloud, Download, RotateCcw, Upload, X } from 'lucide-react';
 import { useStudy } from '../context/StudyContext';
 import { useData } from '../context/DataContext';
+import { useAccount } from '../context/AccountContext';
 import { BRAND } from '../brand';
 import type { DiagramDarkMode } from '../types';
 
@@ -14,6 +15,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) =
   const { state, updateSettings, exportBackupJson, importBackupJson, resetCurrentCourseProgress } =
     useStudy();
   const { currentCourse } = useData();
+  const { user, cloudMeta, openAccountModal } = useAccount();
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [feedback, setFeedback] = useState<{ ok: boolean; text: string } | null>(null);
   const [confirmReset, setConfirmReset] = useState(false);
@@ -62,7 +64,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) =
           <div>
             <div className="page-kicker">SYSTEM CONFIG // PREFERENCES</div>
             <h3 className="modal-title">终端偏好设置与跨板块备份</h3>
-            <p className="modal-sub">各专业课板块进度独立存储在本地浏览器中，无需注册登录</p>
+            <p className="modal-sub">各专业课板块进度独立存储在本地浏览器，亦支持登录账号跨设备云端同步</p>
           </div>
           <button type="button" className="icon-btn" onClick={onClose} aria-label="关闭设置">
             <X size={18} />
@@ -197,6 +199,29 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ open, onClose }) =
               aria-label="切换答题前隐藏考点与方法"
             >
               <span className="switch-thumb" />
+            </button>
+          </div>
+
+          <div className="setting-divider" />
+
+          <div className="setting-row">
+            <div>
+              <div className="setting-label">云端账号与跨设备同步</div>
+              <div className="setting-desc">
+                {user
+                  ? `已登录 ${user.displayName} (@${user.username})${cloudMeta ? ` · 云端存档 v${cloudMeta.version}` : ''}`
+                  : '游客可直接使用；登录账号可将全部做题记录、笔记、图鉴与私密投递跨设备同步'}
+              </div>
+            </div>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm"
+              onClick={() => {
+                onClose();
+                openAccountModal('sync');
+              }}
+            >
+              <Cloud size={14} /> {user ? '管理账号与云同步' : '登录 / 注册账号'}
             </button>
           </div>
 

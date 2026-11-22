@@ -223,12 +223,19 @@ export const GuestbookAdminModal: React.FC<GuestbookAdminModalProps> = ({
     setActionFeedback({ ok: true, text: '已永久删除该条留言。' });
   };
 
-  const handleSaveReply = async (id: string) => {
-    const ok = await handlePatch(
-      id,
-      { adminReply: replyDraft },
-      replyDraft.trim() ? '已保存站长回复。' : '已清空站长回复。'
-    );
+  const handleSaveReply = async (entry: AdminGuestbookEntry) => {
+    const trimmed = replyDraft.trim();
+    const canViewPrivately = Boolean(entry.accountBound || entry.hasReceipt);
+    const successText = !trimmed
+      ? '已清空站长回复。'
+      : entry.channel === 'inbox' && entry.accountBound
+        ? '已保存私密回复（已自动标记已阅，对方可在已绑定账号跨设备查看）。'
+        : entry.channel === 'inbox' && canViewPrivately
+          ? '已保存私密回复（已自动标记已阅，提交者可在本机查看）。'
+          : entry.channel === 'inbox'
+            ? '已保存后台回复（已自动标记已阅；旧版无回执投递仅后台可见）。'
+            : '已保存站长回复。';
+    const ok = await handlePatch(entry.id, { adminReply: replyDraft }, successText);
     if (ok) {
       setReplyingId(null);
       setReplyDraft('');
@@ -295,7 +302,7 @@ export const GuestbookAdminModal: React.FC<GuestbookAdminModalProps> = ({
               站长审核与私密投稿后台
             </h3>
             <p className="modal-sub">
-              先审后发管理台：公开留言审核通过后才会向所有访客展示；私密投递仅在此后台可见。
+              先审后发管理台：公开留言审核通过后才会向所有访客展示；私密投递不公开上墙，提交者可在本机凭回执私密查看站长回复。
             </p>
           </div>
           <button
@@ -474,6 +481,12 @@ export const GuestbookAdminModal: React.FC<GuestbookAdminModalProps> = ({
                           <span className={`gb-role-badge ${entry.channel === 'inbox' ? 'inbox' : 'local'}`}>
                             {entry.channel === 'inbox' ? '私密投递' : '公开区'}
                           </span>
+                          {entry.channel === 'inbox' && entry.accountBound && (
+                            <span className="gb-role-badge local">账号可跨设备看回复</span>
+                          )}
+                          {entry.channel === 'inbox' && !entry.accountBound && entry.hasReceipt && (
+                            <span className="gb-role-badge local">本机可看回复</span>
+                          )}
                           <span
                             className={`gb-role-badge ${
                               entry.status === 'pending'
@@ -508,6 +521,12 @@ export const GuestbookAdminModal: React.FC<GuestbookAdminModalProps> = ({
                         </div>
                       </div>
 
+                      {entry.channel === 'inbox' && !entry.accountBound && !entry.hasReceipt && (
+                        <div className="gb-admin-legacy-note">
+                          旧版私密投递（无本机回执）：仅私密回复对方不可见；如需通知对方，可转为「公开上墙」或另发官方留言。
+                        </div>
+                      )}
+
                       {entry.contact && (
                         <div className="gb-admin-contact">
                           联系方式（仅站长可见）：<code>{entry.contact}</code>
@@ -536,14 +555,20 @@ export const GuestbookAdminModal: React.FC<GuestbookAdminModalProps> = ({
                             maxLength={500}
                             value={replyDraft}
                             onChange={(e) => setReplyDraft(e.target.value)}
-                            placeholder="填写官方回复（留空保存可清空已有回复）…"
+                            placeholder={
+                              entry.channel === 'inbox'
+                                ? entry.accountBound || entry.hasReceipt
+                                  ? '填写私密回复（仅提交者本人可见，不公开上墙；保存后自动标记已阅）…'
+                                  : '填写后台回复/备注（旧版无回执投递，仅后台可见；公开上墙后访客方可见）…'
+                                : '填写官方回复（留空保存可清空已有回复）…'
+                            }
                           />
                           <div className="gb-admin-actions">
                             <button
                               type="button"
                               className="btn btn-tactical btn-sm"
                               disabled={isBusy}
-                              onClick={() => void handleSaveReply(entry.id)}
+                              onClick={() => void handleSaveReply(entry)}
                             >
                               <Check size={13} /> 保存回复
                             </button>

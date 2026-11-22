@@ -20,11 +20,14 @@ import {
   Sparkles,
   Sun,
   Timer,
+  User,
+  UserCheck,
   X,
 } from 'lucide-react';
 import { useStudy } from '../context/StudyContext';
 import { useData } from '../context/DataContext';
 import { useCompanionOptional } from '../context/CompanionContext';
+import { useAccount } from '../context/AccountContext';
 import { BRAND } from '../brand';
 import { WhaleLogo } from './WhaleLogo';
 
@@ -38,6 +41,8 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
   const { state, resolvedTheme, updateSettings } = useStudy();
   const { courses, currentCourse, setCourseId, questionsById, hasUnreadAnnouncement } = useData();
   const companionCtx = useCompanionOptional();
+  const { user, syncStatus, syncConflict, repliedAccountInboxCount, openAccountModal } =
+    useAccount();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [switcherOpen, setSwitcherOpen] = useState(false);
   const [matrixOpen, setMatrixOpen] = useState(false);
@@ -290,6 +295,25 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
           </NavLink>
           <button
             type="button"
+            className={`nav-util-chip account-chip ${user ? 'authed' : ''}`}
+            onClick={() => openAccountModal('sync')}
+            title={
+              user
+                ? `已登录账号：${user.displayName}（@${user.username}），点击管理云端同步与私密投递`
+                : '登录或注册账号以跨设备同步进度与查看私密投递'
+            }
+          >
+            {user ? <UserCheck size={13} /> : <User size={13} />}
+            <span className="account-chip-name">{user ? user.displayName : '登录'}</span>
+            {user && (syncConflict || syncStatus === 'error') && (
+              <span className="nav-dot" title="云端同步需要处理" />
+            )}
+            {user && !syncConflict && repliedAccountInboxCount > 0 && (
+              <span className="nav-fish-badge">{repliedAccountInboxCount}</span>
+            )}
+          </button>
+          <button
+            type="button"
             className="icon-btn theme-toggle-btn"
             onClick={handleQuickThemeToggle}
             title={resolvedTheme === 'dark' ? '切换为工业晒图白昼（浅色）' : '切换为深海战术终端（深色）'}
@@ -379,6 +403,19 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
           <NavLink to="/about" className="mobile-nav-link">
             <Info size={16} /> 关于本站 · 鸣谢 Gemini 与角色图鉴
           </NavLink>
+          <button
+            type="button"
+            className="mobile-nav-link mobile-account-btn"
+            onClick={() => {
+              setMobileOpen(false);
+              openAccountModal('sync');
+            }}
+          >
+            {user ? <UserCheck size={16} /> : <User size={16} />}
+            <span>
+              {user ? `云端账号：${user.displayName} (@${user.username})` : '登录 / 注册云端同步账号'}
+            </span>
+          </button>
         </div>
       )}
     </header>

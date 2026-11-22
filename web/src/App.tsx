@@ -3,9 +3,11 @@ import { HashRouter, Link, Navigate, Route, Routes, useLocation } from 'react-ro
 import { DataProvider, useData } from './context/DataContext';
 import { StudyProvider } from './context/StudyContext';
 import { CompanionProvider, useCompanion } from './context/CompanionContext';
+import { AccountProvider } from './context/AccountContext';
 import { WorkshopProvider } from './context/WorkshopContext';
 import { Header } from './components/Header';
 import { SettingsModal } from './components/SettingsModal';
+import { AccountModal } from './components/AccountModal';
 import { RewardToastHost } from './components/RewardToastHost';
 import { Mascot } from './components/Mascot';
 import { TacticalBackground } from './components/TacticalBackground';
@@ -124,6 +126,7 @@ const AppShell: React.FC = () => {
       </footer>
       <RewardToastHost />
       <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+      <AccountModal />
     </div>
   );
 };
@@ -133,9 +136,11 @@ export const App: React.FC = () => (
     <DataProvider>
       <StudyProvider>
         <CompanionProvider>
-          <HashRouter>
-            <AppShell />
-          </HashRouter>
+          <AccountProvider>
+            <HashRouter>
+              <AppShell />
+            </HashRouter>
+          </AccountProvider>
         </CompanionProvider>
       </StudyProvider>
     </DataProvider>

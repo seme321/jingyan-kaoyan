@@ -7,6 +7,8 @@ import type {
   GuestbookChannel,
   GuestbookEntry,
   GuestbookStatus,
+  PrivateInboxEntry,
+  PrivateInboxSyncItem,
 } from '../types';
 
 export const GUESTBOOK_CATEGORIES: Array<{
@@ -46,8 +48,10 @@ export const GUESTBOOK_CATEGORY_LABELS: Record<GuestbookCategory, string> = {
 const LOCAL_ENTRIES_KEY = 'jingyan_guestbook_local_v1';
 const LIKED_IDS_KEY = 'jingyan_guestbook_likes_v1';
 const PENDING_ENTRIES_KEY = 'jingyan_guestbook_pending_v2';
+const PRIVATE_INBOX_KEY = 'jingyan_guestbook_inbox_v1';
 const CLIENT_ID_KEY = 'jingyan_guestbook_client_id_v1';
 const ADMIN_TOKEN_KEY = 'jingyan_admin_token_v1';
+const MAX_PRIVATE_INBOX_ITEMS = 30;
 
 const SAFE_CLIENT_ID_RE = /^[a-zA-Z0-9_-]{8,64}$/;
 
@@ -125,6 +129,40 @@ export function savePendingGuestbookEntries(entries: GuestbookEntry[]): void {
   try {
     const stripped = entries.map((e) => ({ ...e, isPendingLocal: true }));
     localStorage.setItem(PENDING_ENTRIES_KEY, JSON.stringify(stripped));
+  } catch {
+    // ignore storage quota errors
+  }
+}
+
+export function loadPrivateInboxEntries(): PrivateInboxEntry[] {
+  try {
+    const raw = localStorage.getItem(PRIVATE_INBOX_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(
+      (item): item is PrivateInboxEntry =>
+        Boolean(
+          item &&
+            typeof item === 'object' &&
+            typeof item.id === 'string' &&
+            item.id.trim() &&
+            typeof item.receiptToken === 'string' &&
+            item.receiptToken.trim() &&
+            typeof item.content === 'string'
+        )
+    );
+  } catch {
+    return [];
+  }
+}
+
+export function savePrivateInboxEntries(entries: PrivateInboxEntry[]): void {
+  try {
+    localStorage.setItem(
+      PRIVATE_INBOX_KEY,
+      JSON.stringify(entries.slice(0, MAX_PRIVATE_INBOX_ITEMS))
+    );
   } catch {
     // ignore storage quota errors
   }
@@ -223,7 +261,9 @@ export async function submitPublicGuestbook(payload: {
   channel: GuestbookChannel;
   contact?: string;
   website?: string;
-}): Promise<{ ok: true; entry: GuestbookEntry } | { ok: false; error: string }> {
+}): Promise<
+  { ok: true; entry: GuestbookEntry; receiptToken?: string } | { ok: false; error: string }
+> {
   if (!BRAND.guestbookApiUrl) {
     return { ok: false, error: '当前未配置公开留言后端接口。' };
   }
@@ -237,9 +277,54 @@ export async function submitPublicGuestbook(payload: {
     if (!res.ok || !data?.ok || !data?.entry) {
       return { ok: false, error: data?.error || `提交失败（HTTP ${res.status}）` };
     }
-    return { ok: true, entry: data.entry as GuestbookEntry };
+    const receiptToken =
+      typeof data.receiptToken === 'string' && data.receiptToken.trim()
+        ? data.receiptToken.trim()
+        : undefined;
+    return { ok: true, entry: data.entry as GuestbookEntry, receiptToken };
   } catch {
     return { ok: false, error: '网络请求失败，请检查网络连接或使用「邮件助手」联系站长。' };
+  }
+}
+
+export async function syncPrivateInboxEntries(
+  entries: PrivateInboxEntry[]
+): Promise<
+  { ok: true; items: Record<string, PrivateInboxSyncItem>; syncedIds: string[] } | { ok: false }
+> {
+  if (!BRAND.guestbookApiUrl) {
+    return { ok: false };
+  }
+  const target = entries
+    .filter((e) => e.id.trim() && e.receiptToken.trim())
+    .slice(0, 20);
+  if (target.length === 0) {
+    return { ok: true, items: {}, syncedIds: [] };
+  }
+  try {
+    const res = await fetch(`${BRAND.guestbookApiUrl}/inbox-sync`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        receipts: target.map((e) => ({ id: e.id, token: e.receiptToken })),
+      }),
+      cache: 'no-store',
+    });
+    const contentType = res.headers.get('content-type') ?? '';
+    if (!res.ok || !contentType.includes('application/json')) {
+      return { ok: false };
+    }
+    const data = await res.json().catch(() => null);
+    if (!data?.ok || !data?.items || typeof data.items !== 'object' || Array.isArray(data.items)) {
+      return { ok: false };
+    }
+    return {
+      ok: true,
+      items: data.items as Record<string, PrivateInboxSyncItem>,
+      syncedIds: target.map((e) => e.id),
+    };
+  } catch {
+    return { ok: false };
   }
 }
 

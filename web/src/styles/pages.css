@@ -3149,6 +3149,252 @@ html[data-theme='light'] .dashboard-table td.heat-4 { background: rgba(242, 190,
   gap: 0.42rem;
   padding-top: 0.12rem;
 }
+.gb-role-badge.replied {
+  background: var(--primary-soft);
+  color: var(--sky);
+  border: 1px solid var(--border-accent);
+}
+.gb-private-panel {
+  border-left: 3px solid var(--purple);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.gb-private-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.gb-private-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+}
+.gb-private-tip {
+  margin: 0;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+.gb-private-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.gb-inbox-card {
+  padding: 0.72rem 0.86rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-elevated);
+  display: flex;
+  flex-direction: column;
+  gap: 0.48rem;
+}
+.gb-inbox-card.replied {
+  border-color: var(--border-accent);
+}
+.gb-inbox-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+}
+.gb-inbox-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.gb-private-foot-note {
+  font-size: 0.74rem;
+  color: var(--emerald);
+}
+.gb-admin-legacy-note {
+  font-size: 0.76rem;
+  line-height: 1.48;
+  color: var(--amber);
+  background: var(--amber-soft);
+  padding: 0.34rem 0.6rem;
+  border-radius: var(--radius-xs);
+}
+
+/* Cloud Account Modal & Cross-Device Sync */
+.account-modal {
+  max-width: 720px;
+}
+.acct-auth-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+.acct-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.acct-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.acct-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.acct-local-summary {
+  padding: 0.72rem 0.86rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-elevated);
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.acct-mini-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 0.95rem;
+  font-family: var(--font-mono);
+  font-size: 0.77rem;
+  color: var(--sky);
+}
+.acct-authed-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.acct-user-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-accent);
+  background: var(--bg-elevated);
+}
+.acct-user-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.acct-user-name-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+}
+.acct-user-sub {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+.acct-tab-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.acct-conflict-banner {
+  padding: 0.85rem 0.95rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--amber);
+  border-left: 3px solid var(--yellow);
+  background: var(--amber-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.acct-conflict-head {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.88rem;
+  color: var(--amber);
+}
+.acct-conflict-desc {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-main);
+}
+.acct-sync-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.acct-stat-card {
+  padding: 0.78rem 0.9rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-elevated);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.acct-stat-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+.acct-stat-list {
+  margin: 0;
+  padding-left: 1.05rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.79rem;
+  color: var(--text-muted);
+}
+.acct-sync-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.acct-inbox-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.acct-inbox-btns {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+.acct-inbox-list {
+  max-height: 44vh;
+  overflow-y: auto;
+  padding-right: 0.15rem;
+}
+.acct-settings-card {
+  padding: 0.78rem 0.9rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-elevated);
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.acct-inline-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem;
+}
+@media (max-width: 640px) {
+  .acct-sync-grid,
+  .acct-inline-row {
+    grid-template-columns: 1fr;
+  }
+}
 
 /* About Page & Arknights Operator Dossier Character Codex */
 .about-hero {

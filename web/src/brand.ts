@@ -13,5 +13,9 @@ export const BRAND = {
   guestbookApiUrl: '/api/guestbook',
   /** Cloudflare Workers + D1 创意工坊资源库接口 */
   workshopApiUrl: '/api/workshop',
+  /** Cloudflare Workers + D1 账号认证接口 */
+  authApiUrl: '/api/auth',
+  /** Cloudflare Workers + D1 云端数据同步与私密投递箱接口 */
+  accountApiUrl: '/api/account',
   backupPrefix: '鲸研考研_学习记录全量备份',
 } as const;

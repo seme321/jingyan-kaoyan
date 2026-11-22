@@ -11,6 +11,7 @@ import {
   Megaphone,
   MessageSquare,
   Pin,
+  RefreshCw,
   Send,
   ShieldCheck,
   Sparkles,
@@ -22,7 +23,13 @@ import { BRAND } from '../brand';
 import { GuestbookAdminModal } from '../components/GuestbookAdminModal';
 import { Mascot } from '../components/Mascot';
 import { useData } from '../context/DataContext';
-import type { GuestbookCategory, GuestbookChannel, GuestbookEntry } from '../types';
+import { useAccount } from '../context/AccountContext';
+import type {
+  GuestbookCategory,
+  GuestbookChannel,
+  GuestbookEntry,
+  PrivateInboxEntry,
+} from '../types';
 import { copyText } from '../utils/clipboard';
 import {
   GUESTBOOK_CATEGORIES,
@@ -33,9 +40,12 @@ import {
   loadLikedIds,
   loadLocalGuestbookEntries,
   loadPendingGuestbookEntries,
+  loadPrivateInboxEntries,
   saveLocalGuestbookEntries,
   savePendingGuestbookEntries,
+  savePrivateInboxEntries,
   submitPublicGuestbook,
+  syncPrivateInboxEntries,
   toggleLikedId,
   togglePublicGuestbookLike,
   type GuestbookMailDraft,
@@ -54,6 +64,8 @@ function formatTime(iso: string): string {
 
 export const BoardPage: React.FC = () => {
   const { courses, currentCourse, setCourseId, announcements, markAnnouncementsRead } = useData();
+  const { user, accountInbox, inboxLoading, refreshAccountInbox, openAccountModal } =
+    useAccount();
   const navigate = useNavigate();
 
   const clientIdRef = useRef<string>(getOrCreateGuestbookClientId());
@@ -63,6 +75,10 @@ export const BoardPage: React.FC = () => {
   const [copiedKey, setCopiedKey] = useState<'qq' | 'email' | null>(null);
   const [publicEntries, setPublicEntries] = useState<GuestbookEntry[]>([]);
   const [pendingEntries, setPendingEntries] = useState<GuestbookEntry[]>(loadPendingGuestbookEntries);
+  const [privateInboxEntries, setPrivateInboxEntries] = useState<PrivateInboxEntry[]>(
+    loadPrivateInboxEntries
+  );
+  const [inboxSyncing, setInboxSyncing] = useState(false);
   const [localEntries, setLocalEntries] = useState<GuestbookEntry[]>(loadLocalGuestbookEntries);
   const [likedIds, setLikedIds] = useState<string[]>(loadLikedIds);
   const [isOnline, setIsOnline] = useState(true);
@@ -114,10 +130,48 @@ export const BoardPage: React.FC = () => {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [isMailModalOpen]);
 
+  const syncPrivateInbox = useCallback(async () => {
+    const currentInbox = loadPrivateInboxEntries();
+    if (currentInbox.length === 0) {
+      setPrivateInboxEntries([]);
+      return;
+    }
+    setInboxSyncing(true);
+    try {
+      const res = await syncPrivateInboxEntries(currentInbox);
+      if (!res.ok) return;
+      const syncedSet = new Set(res.syncedIds);
+      const merged = currentInbox.map((item) => {
+        if (!syncedSet.has(item.id)) return item;
+        const remote = res.items[item.id];
+        if (!remote) {
+          return { ...item, removedOnServer: true };
+        }
+        return {
+          ...item,
+          status: remote.status,
+          channel: remote.channel,
+          adminReply: remote.adminReply || undefined,
+          adminRepliedAt: remote.adminRepliedAt || undefined,
+          reviewedAt: remote.reviewedAt || undefined,
+          removedOnServer: false,
+        };
+      });
+      savePrivateInboxEntries(merged);
+      setPrivateInboxEntries(merged);
+    } finally {
+      setInboxSyncing(false);
+    }
+  }, []);
+
   const refreshGuestbook = useCallback(async () => {
     const currentPending = loadPendingGuestbookEntries();
     const pendingIds = currentPending.map((e) => e.id);
-    const res = await fetchPublicGuestbook(pendingIds, clientIdRef.current);
+    const [res] = await Promise.all([
+      fetchPublicGuestbook(pendingIds, clientIdRef.current),
+      syncPrivateInbox(),
+      refreshAccountInbox(),
+    ]);
 
     setPublicEntries(res.entries);
     setIsOnline(res.online);
@@ -137,7 +191,7 @@ export const BoardPage: React.FC = () => {
       setPendingEntries(currentPending);
     }
     setBoardLoading(false);
-  }, []);
+  }, [syncPrivateInbox, refreshAccountInbox]);
 
   useEffect(() => {
     let active = true;
@@ -204,6 +258,38 @@ export const BoardPage: React.FC = () => {
     [allEntries, filterCat]
   );
 
+  const mergedInboxItems = useMemo(() => {
+    type DisplayInboxItem = {
+      id: string;
+      author: string;
+      category: GuestbookCategory;
+      courseId: string;
+      content: string;
+      status: GuestbookEntry['status'];
+      channel: GuestbookEntry['channel'];
+      adminReply?: string;
+      adminRepliedAt?: string;
+      createdAt: string;
+      removedOnServer?: boolean;
+      fromAccount: boolean;
+    };
+    const byId = new Map<string, DisplayInboxItem>();
+    for (const item of accountInbox) {
+      byId.set(item.id, { ...item, fromAccount: true });
+    }
+    for (const item of privateInboxEntries) {
+      if (!byId.has(item.id)) {
+        byId.set(item.id, { ...item, fromAccount: false });
+      }
+    }
+    return Array.from(byId.values()).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  }, [accountInbox, privateInboxEntries]);
+
+  const repliedInboxCount = useMemo(
+    () => mergedInboxItems.filter((item) => Boolean(item.adminReply)).length,
+    [mergedInboxItems]
+  );
+
   const activeCategoryMeta =
     GUESTBOOK_CATEGORIES.find((c) => c.id === category) ?? GUESTBOOK_CATEGORIES[0];
 
@@ -228,7 +314,7 @@ export const BoardPage: React.FC = () => {
 
     setSubmitting(true);
     const res = await submitPublicGuestbook({
-      author: author.trim(),
+      author: author.trim() || user?.displayName || '',
       category,
       courseId,
       content: trimmed,
@@ -260,6 +346,36 @@ export const BoardPage: React.FC = () => {
         true,
         '留言已提交！当前处于「待审核 · 仅自己可见」，站长审核通过后将全网公开显示。'
       );
+    } else if (res.receiptToken) {
+      const inboxItem: PrivateInboxEntry = {
+        id: res.entry.id,
+        receiptToken: res.receiptToken,
+        author: res.entry.author,
+        category: res.entry.category,
+        courseId: res.entry.courseId,
+        content: res.entry.content,
+        createdAt: res.entry.createdAt,
+        status: 'pending',
+        channel: 'inbox',
+      };
+      const nextInbox = [
+        inboxItem,
+        ...loadPrivateInboxEntries().filter((item) => item.id !== inboxItem.id),
+      ];
+      savePrivateInboxEntries(nextInbox);
+      setPrivateInboxEntries(loadPrivateInboxEntries());
+      if (user) {
+        void refreshAccountInbox();
+        showSubmitNotice(
+          true,
+          '已私密投递给站长后台（不公开上墙）！已绑定至当前账号，可在任意设备登录查看站长回复。'
+        );
+      } else {
+        showSubmitNotice(
+          true,
+          '已私密投递给站长后台（不公开上墙）！本机已保存专属回执，站长回复后可在下方「我的私密投递」中私密查看。'
+        );
+      }
     } else {
       showSubmitNotice(true, '已私密投递给站长后台（绝不会公开上墙），感谢你的反馈！');
     }
@@ -280,6 +396,12 @@ export const BoardPage: React.FC = () => {
     const next = pendingEntries.filter((item) => item.id !== id);
     setPendingEntries(next);
     savePendingGuestbookEntries(next);
+  };
+
+  const handleRemovePrivateInbox = (id: string) => {
+    const next = privateInboxEntries.filter((item) => item.id !== id);
+    savePrivateInboxEntries(next);
+    setPrivateInboxEntries(next);
   };
 
   const handleToggleLike = async (entry: GuestbookEntry) => {
@@ -514,7 +636,9 @@ export const BoardPage: React.FC = () => {
                 maxLength={20}
                 value={author}
                 onChange={(e) => setAuthor(e.target.value)}
-                placeholder="你的昵称（留空默认「考研人」）"
+                placeholder={
+                  user ? `你的昵称（留空默认「${user.displayName}」）` : '你的昵称（留空默认「考研人」）'
+                }
                 aria-label="昵称"
               />
               <select
@@ -596,10 +720,132 @@ export const BoardPage: React.FC = () => {
             )}
 
             <p className="gb-static-note">
-              说明：公开留言采用「先审后发」机制——提交后你本机可立即看到「待审核」状态，站长审核通过后全网可见；勘误或敏感反馈可选「私密投递给站长」，也可通过「邮件助手」（
+              说明：公开留言采用「先审后发」机制——提交后你本机可立即看到「待审核」状态，站长审核通过后全网可见；勘误或敏感反馈可选「私密投递给站长」，不会公开上墙，且本机浏览器会自动保留回执，站长回复后仅本人可见。也可通过「邮件助手」（
               <code>{BRAND.contact}</code>）或 QQ 群 <code>{BRAND.qqGroup}</code> 联系。
             </p>
           </form>
+
+          {mergedInboxItems.length > 0 && (
+            <section className="card-panel gb-private-panel" aria-label="我的私密投递">
+              <div className="gb-private-head">
+                <div className="gb-private-title">
+                  <Lock size={14} className="text-purple" />
+                  <strong>我的私密投递 ({mergedInboxItems.length})</strong>
+                  {user ? (
+                    <span className="gb-role-badge local">账号云端同步 · 跨设备可见</span>
+                  ) : (
+                    <span className="gb-role-badge inbox">仅本机可见</span>
+                  )}
+                  {repliedInboxCount > 0 && (
+                    <span className="gb-role-badge replied">
+                      已收到 {repliedInboxCount} 条站长回复
+                    </span>
+                  )}
+                </div>
+                <div className="gb-head-actions">
+                  {!user && (
+                    <button
+                      type="button"
+                      className="gb-action-link"
+                      onClick={() => openAccountModal('inbox')}
+                    >
+                      登录跨设备查看
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    className="gb-admin-trigger"
+                    disabled={inboxSyncing || inboxLoading}
+                    onClick={() => void Promise.all([syncPrivateInbox(), refreshAccountInbox()])}
+                    title="向服务器同步私密投递的查收状态与站长回复"
+                  >
+                    <RefreshCw size={12} /> {inboxSyncing || inboxLoading ? '同步中…' : '刷新回复'}
+                  </button>
+                </div>
+              </div>
+              <p className="gb-private-tip">
+                {user
+                  ? `当前已登录账号「${user.displayName}」，本区私密反馈与站长回复已关联账号并支持跨设备查看（绝不公开上墙）。`
+                  : '本区记录凭专属回执保存在当前浏览器，绝不公开上墙；登录账号后即可自动绑定并在其他设备同步查看。'}
+              </p>
+
+              <div className="gb-private-list">
+                {mergedInboxItems.map((item) => {
+                  let statusClass = 'pending';
+                  let statusLabel = '待站长查收';
+                  if (item.adminReply) {
+                    statusClass = 'replied';
+                    statusLabel = '站长已回复';
+                  } else if (item.channel === 'public' && item.status === 'approved') {
+                    statusClass = 'local';
+                    statusLabel = '已转为公开上墙';
+                  } else if (item.removedOnServer) {
+                    statusClass = 'rejected';
+                    statusLabel = '后台已清理';
+                  } else if (item.status === 'approved') {
+                    statusClass = 'admin';
+                    statusLabel = '站长已阅';
+                  }
+
+                  return (
+                    <article
+                      key={item.id}
+                      className={`gb-inbox-card ${item.adminReply ? 'replied' : ''}`}
+                    >
+                      <div className="gb-inbox-head">
+                        <div className="gb-author-row">
+                          <strong className="gb-author-name">{item.author}</strong>
+                          <span className="gb-role-badge inbox">私密投递</span>
+                          <span className={`gb-role-badge ${statusClass}`}>{statusLabel}</span>
+                        </div>
+                        <div className="gb-sub-meta">
+                          <span>{GUESTBOOK_CATEGORY_LABELS[item.category] ?? item.category}</span>
+                          <span>·</span>
+                          <span>{courseLabelMap[item.courseId] ?? item.courseId}</span>
+                          <span>·</span>
+                          <time className="font-mono">{formatTime(item.createdAt)}</time>
+                        </div>
+                      </div>
+
+                      <p className="gb-card-body">{item.content}</p>
+
+                      {item.adminReply && (
+                        <div className="gb-admin-reply-box">
+                          <div className="gb-admin-reply-head">
+                            <span>站长私密回复</span>
+                            {item.adminRepliedAt && (
+                              <time className="font-mono">{formatTime(item.adminRepliedAt)}</time>
+                            )}
+                          </div>
+                          <p className="gb-admin-reply-text">{item.adminReply}</p>
+                        </div>
+                      )}
+
+                      <div className="gb-inbox-foot">
+                        <span className="gb-private-foot-note">
+                          {item.channel === 'public' && item.status === 'approved'
+                            ? '站长已将其公开上墙展示'
+                            : item.fromAccount
+                              ? '已绑定账号 · 跨设备同步'
+                              : ''}
+                        </span>
+                        {!item.fromAccount && (
+                          <button
+                            type="button"
+                            className="gb-delete-btn"
+                            onClick={() => handleRemovePrivateInbox(item.id)}
+                            title="仅从当前浏览器移除本条回执，不影响站长后台记录"
+                          >
+                            <Trash2 size={12} /> 移除本机记录
+                          </button>
+                        )}
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            </section>
+          )}
 
           <div className="gb-filter-row">
             <button
