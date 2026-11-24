@@ -67,7 +67,11 @@ export interface PullResultItem {
   cardId: string;
   charId: string;
   charName: string;
+  code: string;
   subtitle: string;
+  hook: string;
+  motif: string;
+  tags: string[];
   variant: CardVariant;
   variantLabel: string;
   rarity: 'R' | 'SR' | 'SSR';
@@ -1313,7 +1317,11 @@ export const CompanionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
           cardId: asset.cardId,
           charId: chosen.char.id,
           charName: chosen.char.name,
-          subtitle: chosen.char.subtitle,
+          code: chosen.char.code || chosen.char.id.toUpperCase(),
+          subtitle: chosen.char.subtitle || '',
+          hook: chosen.char.hook || chosen.char.subtitle || '',
+          motif: chosen.char.motif || '',
+          tags: Array.isArray(chosen.char.tags) ? chosen.char.tags : [],
           variant: chosen.variant,
           variantLabel: VARIANT_LABELS[chosen.variant],
           rarity: asset.rarity,

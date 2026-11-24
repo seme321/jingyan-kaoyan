@@ -20,6 +20,7 @@ import {
   VARIANT_LABELS,
   getBondLevelInfo,
 } from '../data/companionConfig';
+import { LightConeCard } from './LightConeCard';
 
 interface CharacterDetailModalProps {
   character: CodexCharacter | null;
@@ -47,7 +48,7 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
   onGift,
 }) => {
   const [variant, setVariant] = useState<CardVariant>(initialVariant);
-  const [viewMode, setViewMode] = useState<'sprite' | 'sheet'>('sprite');
+  const [viewMode, setViewMode] = useState<'sprite' | 'lightcone' | 'sheet'>('sprite');
   const [tab, setTab] = useState<'profile' | 'quotes' | 'sources'>('profile');
   const [zoomSrc, setZoomSrc] = useState<string | null>(null);
   const [giftMsg, setGiftMsg] = useState<string | null>(null);
@@ -164,6 +165,13 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
                   </button>
                   <button
                     type="button"
+                    className={`seg-btn ${viewMode === 'lightcone' ? 'active' : ''}`}
+                    onClick={() => setViewMode('lightcone')}
+                  >
+                    <Sparkles size={12} /> 光锥卡面
+                  </button>
+                  <button
+                    type="button"
                     className={`seg-btn ${viewMode === 'sheet' ? 'active' : ''}`}
                     onClick={() => setViewMode('sheet')}
                   >
@@ -173,25 +181,46 @@ export const CharacterDetailModal: React.FC<CharacterDetailModalProps> = ({
               )}
             </div>
 
-            <div className={`char-portrait-stage ${!isVariantOwned ? 'is-locked' : ''}`}>
+            <div
+              className={`char-portrait-stage ${!isVariantOwned ? 'is-locked' : ''} ${
+                isVariantOwned && viewMode === 'lightcone' ? 'is-lightcone' : ''
+              }`}
+            >
               {isVariantOwned ? (
-                <>
-                  <img
-                    src={viewMode === 'sprite' ? activeAsset.sprite : activeAsset.sheet}
-                    alt={`${character.name} ${activeAsset.label}`}
-                    className={viewMode === 'sprite' ? 'char-sprite-img' : 'char-sheet-img'}
+                viewMode === 'lightcone' ? (
+                  <LightConeCard
+                    name={character.name}
+                    code={character.code}
+                    subtitle={character.subtitle}
+                    variantLabel={activeAsset.label}
+                    rarity={activeAsset.rarity}
+                    color={character.color}
+                    sprite={activeAsset.sprite}
+                    tags={character.tags}
+                    isEquipped={isEquipped}
+                    bloomOnMount
+                    interactive
+                    size="md"
                   />
-                  <button
-                    type="button"
-                    className="codex-zoom-chip"
-                    onClick={() =>
-                      setZoomSrc(viewMode === 'sprite' ? activeAsset.sprite : activeAsset.sheet)
-                    }
-                    title="放大高清查看"
-                  >
-                    <Maximize2 size={11} /> ZOOM
-                  </button>
-                </>
+                ) : (
+                  <>
+                    <img
+                      src={viewMode === 'sprite' ? activeAsset.sprite : activeAsset.sheet}
+                      alt={`${character.name} ${activeAsset.label}`}
+                      className={viewMode === 'sprite' ? 'char-sprite-img' : 'char-sheet-img'}
+                    />
+                    <button
+                      type="button"
+                      className="codex-zoom-chip"
+                      onClick={() =>
+                        setZoomSrc(viewMode === 'sprite' ? activeAsset.sprite : activeAsset.sheet)
+                      }
+                      title="放大高清查看"
+                    >
+                      <Maximize2 size={11} /> ZOOM
+                    </button>
+                  </>
+                )
               ) : (
                 <div className="char-locked-overlay">
                   <img

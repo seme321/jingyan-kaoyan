@@ -1,4 +1,4 @@
-const CACHE_NAME = 'jingyan-multi-v28';
+const CACHE_NAME = 'jingyan-multi-v30';
 const PRECACHE_URLS = [
   './',
   './index.html',
@@ -81,6 +81,27 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   const reqUrl = new URL(event.request.url);
   if (reqUrl.pathname.startsWith('/api/')) return;
+
+  // Network-first for HTML document navigations so new deployments apply immediately
+  if (
+    event.request.mode === 'navigate' ||
+    reqUrl.pathname.endsWith('/index.html') ||
+    reqUrl.pathname === '/'
+  ) {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResp) => {
+          if (networkResp && networkResp.status === 200 && networkResp.type === 'basic') {
+            const copy = networkResp.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          }
+          return networkResp;
+        })
+        .catch(() => caches.match(event.request).then((c) => c || caches.match('./index.html')))
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((cached) => {
       const fetchPromise = fetch(event.request)
