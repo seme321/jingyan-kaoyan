@@ -126,9 +126,15 @@ export const HomePage: React.FC = () => {
   const mockPct = readyYears.length > 0 ? Math.min(100, Math.round((state.mockHistory.length / readyYears.length) * 100)) : 0;
 
   const unlockedQuotes = useMemo(() => {
-    const quotes = activeMascot.studyQuotes.length > 0 ? activeMascot.studyQuotes : EXTRA_QUIPS;
-    return activeMascot.bondLevel >= 2 ? quotes : quotes.slice(0, 3);
-  }, [activeMascot.bondLevel, activeMascot.studyQuotes]);
+    const baseQuotes = activeMascot.studyQuotes.length > 0 ? activeMascot.studyQuotes : EXTRA_QUIPS;
+    const sliced = activeMascot.bondLevel >= 2 ? baseQuotes : baseQuotes.slice(0, 3);
+    if (activeMascot.greetTemplate && !sliced.includes(activeMascot.greetTemplate)) {
+      return [activeMascot.greetTemplate, ...sliced];
+    }
+    return sliced;
+  }, [activeMascot.bondLevel, activeMascot.greetTemplate, activeMascot.studyQuotes]);
+
+  const mascotTrailGap = /[A-Za-z0-9]$/.test(activeMascot.name) ? ' ' : '';
 
   const defaultGreeting =
     stats.total === 0
@@ -136,10 +142,10 @@ export const HomePage: React.FC = () => {
       : stats.practiced === 0
         ? activeMascot.greetTemplate
         : stats.wrongBook > 0
-          ? `${activeMascot.name}检测到 ${stats.wrongBook} 道待斩错题，先把它们逐一击破吧！`
+          ? `${activeMascot.name}${mascotTrailGap}检测到 ${stats.wrongBook} 道待斩错题，先把它们逐一击破吧！`
           : masteryPct >= 80
-            ? `掌握率突破 80% 啦！${activeMascot.name}邀你来一场 180 分钟全真模考检验实力！`
-            : `已累计突破 ${stats.practiced} 题，${activeMascot.name}陪你稳住节奏拿下专业课！`;
+            ? `掌握率突破 80% 啦！${activeMascot.name}${mascotTrailGap}邀你来一场 180 分钟全真模考检验实力！`
+            : `已累计突破 ${stats.practiced} 题，${activeMascot.name}${mascotTrailGap}陪你稳住节奏拿下专业课！`;
 
   const activeDialogue =
     quipIdx >= 0 ? unlockedQuotes[quipIdx % unlockedQuotes.length] : defaultGreeting;
@@ -259,9 +265,10 @@ export const HomePage: React.FC = () => {
               </div>
               <Mascot
                 pose={stats.practiced > 0 && masteryPct >= 80 ? 'cheer' : 'hero'}
-                size={196}
+                size={activeMascot.rarity === 'SSR' ? 212 : 196}
                 float
                 isHomeStage
+                className="operator-stage-mascot"
               />
               <div className="operator-dialogue-strip">
                 <div className="operator-dialogue-head">

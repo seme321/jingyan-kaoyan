@@ -25,12 +25,16 @@
   --text-muted: #93a4ba;
 }
 
+.warp-cinema-backdrop .rarity-tag.rarity-SSR,
+.lc-stage .rarity-tag.rarity-SSR,
+.warp-banner-art .rarity-tag.rarity-SSR,
 html[data-theme='light'] .warp-cinema-backdrop .rarity-tag.rarity-SSR,
 html[data-theme='light'] .lc-stage .rarity-tag.rarity-SSR,
 html[data-theme='light'] .warp-banner-art .rarity-tag.rarity-SSR {
-  color: #fde047;
-  background: rgba(244, 196, 48, 0.18);
-  border-color: rgba(244, 196, 48, 0.62);
+  background: linear-gradient(135deg, #fef08a 0%, #f59e0b 100%);
+  color: #1c1200;
+  border-color: #fef08a;
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.5);
 }
 
 html[data-theme='light'] .warp-cinema-backdrop .gacha-refund-row,
@@ -762,6 +766,17 @@ html[data-theme='light'] .warp-pity-nums strong {
   border: 1px solid var(--lc-rim);
 }
 
+.lc-stage.rarity-SSR .lc-slab-back {
+  background: linear-gradient(155deg, rgba(254, 240, 138, 0.18), rgba(30, 22, 10, 0.72));
+  border-color: rgba(251, 191, 36, 0.48);
+  box-shadow: 0 18px 38px rgba(245, 158, 11, 0.24);
+}
+
+.lc-stage.rarity-SSR .lc-slab-mid {
+  background: linear-gradient(155deg, rgba(254, 249, 195, 0.24), rgba(42, 29, 12, 0.5));
+  border-color: rgba(253, 224, 71, 0.9);
+}
+
 /* Main Clipped Artwork Plate */
 .lc-face {
   position: relative;
@@ -803,6 +818,21 @@ html[data-theme='light'] .warp-pity-nums strong {
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.22),
     0 10px 26px var(--lc-glow);
+}
+
+.lc-stage.rarity-SSR .lc-face-clip {
+  border-color: rgba(253, 224, 71, 0.92);
+  background:
+    radial-gradient(
+      circle at 50% 38%,
+      rgba(251, 191, 36, 0.28),
+      color-mix(in srgb, var(--card-accent) 26%, transparent) 46%,
+      transparent 72%
+    ),
+    linear-gradient(175deg, #161326 0%, #1d1932 50%, #090c18 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(254, 240, 138, 0.38),
+    0 14px 36px rgba(245, 158, 11, 0.36);
 }
 
 .lc-blueprint-grid {
@@ -894,6 +924,12 @@ html[data-theme='light'] .warp-pity-nums strong {
   animation: lcMoteFloat 4.6s ease-in-out infinite;
 }
 
+.lc-stage.rarity-SSR .lc-mote {
+  background: #fde047;
+  filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.85));
+  opacity: 0.72;
+}
+
 .lc-mote.m1 { left: 10%; top: 22%; animation-delay: 0s; }
 .lc-mote.m2 { right: 12%; top: 34%; width: 6px; height: 6px; animation-delay: -1.4s; }
 .lc-mote.m3 { left: 14%; bottom: 26%; width: 7px; height: 7px; animation-delay: -2.2s; }
@@ -924,7 +960,7 @@ html[data-theme='light'] .warp-pity-nums strong {
 }
 
 .lc-stage.size-hero .lc-sprite-wrap {
-  padding: 2.9rem 1.1rem 6.1rem;
+  padding: 2.65rem 0.95rem 5.8rem;
 }
 
 .lc-sprite {
@@ -962,11 +998,20 @@ html[data-theme='light'] .warp-pity-nums strong {
 
 .lc-stage.rarity-SSR .lc-holo,
 .lc-stage.rarity-SP .lc-holo {
-  opacity: 0.38;
+  opacity: 0.42;
+}
+
+.lc-stage.rarity-SSR:not(.is-hovering) .lc-holo {
+  animation: lcSsrFoilSweep 5.5s ease-in-out infinite;
+}
+
+@keyframes lcSsrFoilSweep {
+  0%, 100% { background-position: 18% 25%; }
+  50% { background-position: 82% 75%; }
 }
 
 .lc-stage.is-hovering .lc-holo {
-  opacity: 0.56;
+  opacity: 0.58;
 }
 
 .lc-glare {
@@ -1188,6 +1233,14 @@ html[data-theme='light'] .warp-pity-nums strong {
   pointer-events: auto;
 }
 
+.warp-topbar-left {
+  min-width: 0;
+}
+
+.warp-topbar-actions {
+  flex-shrink: 0;
+}
+
 .warp-protocol-badge {
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -1199,6 +1252,7 @@ html[data-theme='light'] .warp-pity-nums strong {
   border: 1px solid rgba(255, 255, 255, 0.18);
   color: #dbeafe;
   backdrop-filter: blur(10px);
+  white-space: nowrap;
 }
 
 .warp-progress-pips {
@@ -1209,6 +1263,7 @@ html[data-theme='light'] .warp-pity-nums strong {
   border-radius: 999px;
   background: rgba(10, 17, 32, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.14);
+  flex-shrink: 0;
 }
 
 .warp-pip {
@@ -1242,6 +1297,7 @@ html[data-theme='light'] .warp-pity-nums strong {
   font-family: var(--font-mono);
   font-size: 0.68rem;
   color: rgba(226, 238, 252, 0.85);
+  white-space: nowrap;
 }
 
 .warp-inspect-chip {
@@ -1252,6 +1308,7 @@ html[data-theme='light'] .warp-pity-nums strong {
   background: rgba(244, 196, 48, 0.16);
   border: 1px solid rgba(244, 196, 48, 0.45);
   color: #fde68a;
+  white-space: nowrap;
 }
 
 .warp-pill-btn {
@@ -1267,6 +1324,8 @@ html[data-theme='light'] .warp-pity-nums strong {
   color: #f8fafc;
   font-size: 0.8rem;
   font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
   cursor: pointer;
   backdrop-filter: blur(10px);
   transition: background-color 0.14s ease, border-color 0.14s ease, transform 0.14s ease;
@@ -1414,6 +1473,15 @@ html[data-theme='light'] .warp-pity-nums strong {
     rgba(218, 236, 255, 0.88) 100%
   );
   animation: warpWhiteoutDissolve 0.56s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.warp-reveal-stage.rarity-SSR .warp-whiteout-flash {
+  background: radial-gradient(
+    circle at 56% 48%,
+    #ffffff 0%,
+    rgba(254, 249, 195, 0.96) 45%,
+    rgba(253, 224, 71, 0.82) 100%
+  );
 }
 
 @keyframes warpWhiteoutDissolve {
@@ -1633,73 +1701,67 @@ html[data-theme='light'] .warp-pity-nums strong {
   min-height: 360px;
 }
 
-.warp-reveal-ssr-stage {
+.warp-reveal-lc-wrap {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  animation: warpSsrZoomIn 0.56s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: warpLcEntrance 0.48s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-@keyframes warpSsrZoomIn {
-  from {
-    opacity: 0;
-    transform: scale(1.08);
-    filter: brightness(2.2);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-    filter: brightness(1);
-  }
+.warp-reveal-lc-wrap.is-ssr {
+  animation: warpSsrLcEntrance 0.56s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.warp-ssr-prism-frame {
+.warp-reveal-lc-wrap .lc-stage {
+  position: relative;
+  z-index: 2;
+}
+
+.warp-ssr-back-halo {
   position: absolute;
-  width: min(360px, 66vw);
-  height: min(470px, 62vh);
-  border: 1.5px solid rgba(251, 191, 36, 0.55);
-  background: linear-gradient(
-    160deg,
-    rgba(255, 255, 255, 0.09) 0%,
-    rgba(251, 191, 36, 0.08) 52%,
-    rgba(34, 199, 242, 0.06) 100%
-  );
-  transform: rotate(-3.5deg);
-  box-shadow:
-    0 0 42px rgba(244, 196, 48, 0.26),
-    inset 0 0 28px rgba(255, 255, 255, 0.08);
-  pointer-events: none;
-}
-
-.warp-ssr-halo {
-  position: absolute;
-  width: min(440px, 78vw);
-  height: min(440px, 78vw);
+  width: 132%;
+  height: 118%;
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(251, 191, 36, 0.34) 0%,
-    color-mix(in srgb, var(--card-accent) 28%, transparent) 42%,
+    rgba(251, 191, 36, 0.36) 0%,
+    color-mix(in srgb, var(--card-accent) 26%, transparent) 45%,
     transparent 70%
   );
-  filter: blur(18px);
+  filter: blur(22px);
   pointer-events: none;
+  z-index: 0;
 }
 
-.warp-ssr-cutout {
-  position: relative;
-  z-index: 2;
-  max-width: 100%;
-  max-height: min(72vh, 620px);
-  object-fit: contain;
-  filter: drop-shadow(0 20px 36px rgba(0, 0, 0, 0.65))
-    drop-shadow(0 0 26px rgba(251, 191, 36, 0.35));
+.warp-ssr-astrolabe {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(410px, 78vw);
+  height: min(410px, 78vw);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px dashed rgba(253, 224, 71, 0.48);
+  box-shadow:
+    inset 0 0 32px rgba(251, 191, 36, 0.14),
+    0 0 36px rgba(251, 191, 36, 0.22);
+  pointer-events: none;
+  z-index: 0;
+  animation: warpSlowSpin 32s linear infinite;
 }
 
-.warp-reveal-lc-wrap {
-  animation: warpLcEntrance 0.48s cubic-bezier(0.16, 1, 0.3, 1) both;
+@keyframes warpSsrLcEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(1.06);
+    filter: brightness(1.75);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: brightness(1);
+  }
 }
 
 @keyframes warpLcEntrance {
@@ -1872,63 +1934,112 @@ html[data-font-size='2xl'] .warp-summary-grid.cols-5 {
   }
 
   .warp-reveal-stage {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.85rem;
     overflow-y: auto;
-    align-items: flex-start;
-    padding: 4.8rem 1.4rem 5.8rem;
+    padding: 4.5rem 1.25rem 2.2rem;
   }
 
   .warp-reveal-content {
     grid-template-columns: 1fr;
     gap: 1.05rem;
-    margin: auto;
+    margin: 0 auto;
   }
 
   .warp-reveal-visual {
     order: -1;
-    min-height: 240px;
+    min-height: 0;
+    padding: 0.35rem 0;
   }
 
   .lc-stage.size-hero {
     width: min(276px, 76vw);
-    height: min(356px, 44vh);
+    height: min(376px, 46vh);
   }
 
-  .warp-ssr-cutout {
-    max-height: 40vh;
+  .warp-ssr-astrolabe {
+    width: min(296px, 70vw);
+    height: min(296px, 70vw);
   }
 
-  .warp-ssr-prism-frame {
-    height: 38vh;
+  .warp-reveal-toast {
+    position: relative;
+    right: auto;
+    left: auto;
+    bottom: auto;
+    margin: 0 auto;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .warp-reveal-prompt {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    transform: none;
+    margin: 0.1rem auto 0;
+    text-align: center;
   }
 }
 
 @media (max-width: 640px) {
   .warp-cinema-topbar {
-    padding: 0.65rem 0.75rem;
+    padding: 0.6rem 0.7rem;
+    gap: 0.45rem;
+  }
+
+  .warp-topbar-left,
+  .warp-topbar-actions {
+    gap: 0.35rem;
   }
 
   .warp-protocol-badge {
-    max-width: 175px;
-    white-space: nowrap;
+    max-width: 120px;
+    padding: 0.28rem 0.55rem;
+    font-size: 0.66rem;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
+  .warp-progress-pips {
+    padding: 0.28rem 0.5rem;
+    gap: 0.24rem;
+  }
+
+  .warp-pip {
+    width: 7px;
+    height: 7px;
+  }
+
+  .warp-inspect-chip {
+    max-width: 132px;
+    padding: 0.26rem 0.52rem;
+    font-size: 0.66rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .warp-pill-btn {
+    height: 32px;
+    padding: 0 0.68rem;
+    font-size: 0.74rem;
+  }
+
+  .warp-pill-btn.icon-only {
+    width: 32px;
+    padding: 0;
+  }
+
   .warp-reveal-stage {
-    padding: 3.8rem 0.9rem 4.6rem;
+    padding: 4.2rem 0.9rem 2rem;
     overflow-y: auto;
-    align-items: flex-start;
+    overflow-x: hidden;
   }
 
   .warp-nameplate-stem .stem-line {
     min-height: 95px;
-  }
-
-  .warp-reveal-toast {
-    right: 0.85rem;
-    left: 0.85rem;
-    bottom: 2.55rem;
-    text-align: center;
   }
 
   .warp-summary-backdrop {
@@ -1949,6 +2060,9 @@ html[data-font-size='2xl'] .warp-summary-grid.cols-5 {
 }
 
 @media (max-width: 440px) {
+  .warp-protocol-badge {
+    max-width: 104px;
+  }
   .warp-summary-grid,
   .warp-summary-grid.cols-5 {
     grid-template-columns: 1fr;
@@ -1958,8 +2072,10 @@ html[data-font-size='2xl'] .warp-summary-grid.cols-5 {
 @media (prefers-reduced-motion: reduce) {
   .warp-art-backdrop-halo,
   .warp-art-cutout,
+  .warp-ssr-astrolabe,
   .lc-mote,
   .lc-bloom-wash,
+  .lc-stage.rarity-SSR:not(.is-hovering) .lc-holo,
   .warp-whiteout-flash,
   .warp-star-item {
     animation: none !important;

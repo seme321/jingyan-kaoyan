@@ -137,6 +137,7 @@ export const PackOpeningModal: React.FC<PackOpeningModalProps> = ({
       setFlashToken((t) => t + 1);
       if (nextPull) {
         if (nextPull.rarity === 'SSR') {
+          stopWarpAudio();
           playWarpBurst('SSR');
         } else {
           playCardReveal(nextPull.rarity, nextPull.isNew);
@@ -329,7 +330,10 @@ export const PackOpeningModal: React.FC<PackOpeningModalProps> = ({
 
           <div className="warp-reveal-content">
             {/* Left Floating Nameplate HUD + Vertical Glowing Lead Line */}
-            <div className="warp-reveal-hud">
+            <div
+              key={`hud-${activeRevealPull.cardId}-${inspectPull ? 'inspect' : revealIdx}`}
+              className="warp-reveal-hud"
+            >
               <div className="warp-hud-badges">
                 <span className="warp-archive-pill">ARCHIVE // {activeRevealPull.code}</span>
                 <span className={`rarity-tag rarity-${activeRevealPull.rarity}`}>
@@ -416,37 +420,36 @@ export const PackOpeningModal: React.FC<PackOpeningModalProps> = ({
               </div>
             </div>
 
-            {/* Center-Right Visual Showcase: Oversized Cutout for SSR, 3D LightConeCard for R/SR */}
+            {/* Center-Right Visual Showcase: Unified 3D LightConeCard with Golden Astrolabe for SSR */}
             <div className="warp-reveal-visual">
-              {activeRevealPull.rarity === 'SSR' ? (
-                <div className="warp-reveal-ssr-stage">
-                  <div className="warp-ssr-prism-frame" aria-hidden="true" />
-                  <div className="warp-ssr-halo" aria-hidden="true" />
-                  <img
-                    src={activeRevealPull.sprite}
-                    alt={`${activeRevealPull.charName} ${activeRevealPull.variantLabel}`}
-                    className="warp-ssr-cutout"
-                  />
-                </div>
-              ) : (
-                <div className="warp-reveal-lc-wrap">
-                  <LightConeCard
-                    name={activeRevealPull.charName}
-                    code={activeRevealPull.code}
-                    subtitle={activeRevealPull.subtitle}
-                    variantLabel={activeRevealPull.variantLabel}
-                    rarity={activeRevealPull.rarity}
-                    color={activeRevealPull.color}
-                    sprite={activeRevealPull.sprite}
-                    tags={activeRevealPull.tags}
-                    isNew={activeRevealPull.isNew}
-                    isEquipped={equippedCardId === activeRevealPull.cardId}
-                    bloomOnMount={!reducedMotion}
-                    interactive={!reducedMotion}
-                    size="hero"
-                  />
-                </div>
-              )}
+              <div
+                key={`lc-${activeRevealPull.cardId}-${inspectPull ? 'inspect' : revealIdx}`}
+                className={`warp-reveal-lc-wrap ${
+                  activeRevealPull.rarity === 'SSR' ? 'is-ssr' : ''
+                }`}
+              >
+                {activeRevealPull.rarity === 'SSR' && (
+                  <>
+                    <div className="warp-ssr-back-halo" aria-hidden="true" />
+                    <div className="warp-ssr-astrolabe" aria-hidden="true" />
+                  </>
+                )}
+                <LightConeCard
+                  name={activeRevealPull.charName}
+                  code={activeRevealPull.code}
+                  subtitle={activeRevealPull.subtitle}
+                  variantLabel={activeRevealPull.variantLabel}
+                  rarity={activeRevealPull.rarity}
+                  color={activeRevealPull.color}
+                  sprite={activeRevealPull.sprite}
+                  tags={activeRevealPull.tags}
+                  isNew={activeRevealPull.isNew}
+                  isEquipped={equippedCardId === activeRevealPull.cardId}
+                  bloomOnMount={!reducedMotion}
+                  interactive={!reducedMotion}
+                  size="hero"
+                />
+              </div>
             </div>
           </div>
 
@@ -510,7 +513,12 @@ export const PackOpeningModal: React.FC<PackOpeningModalProps> = ({
                       interactive={!reducedMotion}
                       size="compact"
                       onClick={() => {
-                        playCardReveal(pull.rarity, pull.isNew);
+                        if (pull.rarity === 'SSR') {
+                          stopWarpAudio();
+                          playWarpBurst('SSR');
+                        } else {
+                          playCardReveal(pull.rarity, pull.isNew);
+                        }
                         setFlashToken((t) => t + 1);
                         setInspectPull(pull);
                       }}

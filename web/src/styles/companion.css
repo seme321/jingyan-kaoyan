@@ -203,8 +203,9 @@ html[data-theme='light'] .operator-stage-badge {
 }
 
 .operator-quick-bar {
-  width: calc(100% + 1.5rem);
-  margin: 0 -0.75rem 0;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   border-top: 1px solid var(--border-subtle);
@@ -1863,7 +1864,7 @@ html[data-theme='light'] .locked-silhouette {
 }
 
 .stage-preview-visual {
-  height: 240px;
+  height: 252px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1871,7 +1872,7 @@ html[data-theme='light'] .locked-silhouette {
     radial-gradient(circle at 50% 55%, color-mix(in srgb, var(--operator-accent) 22%, transparent), transparent 72%),
     var(--bg-input);
   border: 1px solid var(--border-strong);
-  padding: 0.6rem;
+  padding: 0.95rem 0.75rem 0.65rem;
 }
 
 .stage-preview-visual img {
@@ -2008,7 +2009,7 @@ html[data-theme='light'] .locked-silhouette {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   cursor: pointer;
 }
 

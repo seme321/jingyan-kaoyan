@@ -242,10 +242,16 @@ html[data-theme='light'] .hero-title-sub::before {
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   border: 1px solid var(--border-subtle);
-  background: linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-input) 100%);
-  padding: 0.75rem 0.75rem 0;
+  background:
+    radial-gradient(
+      circle at 50% 44%,
+      color-mix(in srgb, var(--operator-accent, var(--primary)) 16%, transparent),
+      transparent 66%
+    ),
+    linear-gradient(180deg, var(--bg-elevated) 0%, var(--bg-input) 100%);
+  padding: 0;
   cursor: pointer;
   transition: border-color 0.18s ease;
 }
@@ -276,7 +282,8 @@ html[data-theme='light'] .hero-title-sub::before {
 }
 
 .operator-stage-top {
-  width: 100%;
+  width: auto;
+  margin: 0 0.82rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -284,7 +291,7 @@ html[data-theme='light'] .hero-title-sub::before {
   font-size: 0.65rem;
   letter-spacing: 0.12em;
   color: var(--text-dim);
-  padding-bottom: 0.25rem;
+  padding: 0.72rem 0 0.36rem;
   border-bottom: 1px dashed var(--border-subtle);
 }
 
@@ -292,10 +299,16 @@ html[data-theme='light'] .hero-title-sub::before {
   color: var(--sky);
 }
 
+.hero-operator-stage .mascot {
+  align-self: center;
+  margin: 0.85rem auto 0.52rem;
+}
+
 .operator-dialogue-strip {
-  width: calc(100% + 1.5rem);
-  margin: 0.2rem -0.75rem 0;
-  padding: 0.58rem 0.78rem;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0.6rem 0.82rem;
   background: var(--bg-slab);
   color: var(--bg-slab-text);
   border-top: 2px solid var(--primary);
