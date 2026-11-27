@@ -1,4 +1,4 @@
-const CACHE_NAME = 'jingyan-multi-v33';
+const CACHE_NAME = 'jingyan-multi-v34';
 const PRECACHE_URLS = [
   './',
   './index.html',
